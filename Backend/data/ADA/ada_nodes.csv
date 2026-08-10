@@ -1,0 +1,55 @@
+id,label,type,subject
+Algorithm,Algorithm,Concept,ADA
+Algorithm_Design_Technique,Algorithm Design Technique,Concept,ADA
+Complexity_Analysis,Complexity Analysis,Method,ADA
+O_notation,O-notation,Concept,ADA
+Omega_notation,Omega-notation,Concept,ADA
+Theta_notation,Theta-notation,Concept,ADA
+Divide_and_Conquer,Divide and Conquer,Method,ADA
+Merge_Sort,Merge Sort,Algorithm,ADA
+Quick_Sort,Quick Sort,Algorithm,ADA
+Binary_Search,Binary Search,Algorithm,ADA
+Greedy_Method,Greedy Method,Method,ADA
+Prims_Algorithm,Prim's Algorithm,Algorithm,ADA
+Kruskals_Algorithm,Kruskal's Algorithm,Algorithm,ADA
+Dijkstras_Algorithm,Dijkstra's Algorithm,Algorithm,ADA
+Dynamic_Programming,Dynamic Programming,Method,ADA
+Knapsack_Problem,Knapsack Problem,Concept,ADA
+Floyd_Warshall_Algorithm,Floyd-Warshall Algorithm,Algorithm,ADA
+Backtracking,Backtracking,Method,ADA
+N_Queens_Problem,N-Queens Problem,Concept,ADA
+Branch_and_Bound,Branch and Bound,Method,ADA
+Traveling_Salesman_Problem,Traveling Salesman Problem,Concept,ADA
+Minimum_Spanning_Tree,Minimum Spanning Tree,Concept,ADA
+Shortest_Path_Problem,Shortest Path Problem,Concept,ADA
+Euclids_Algorithm,Euclid's Algorithm,Algorithm,ADA
+Sieve_of_Eratosthenes,Sieve of Eratosthenes,Algorithm,ADA
+Strassens_Algorithm,Strassen's Algorithm,Algorithm,ADA
+Shellsort,Shellsort,Algorithm,ADA
+Insertion_Sort,Insertion Sort,Algorithm,ADA
+Selection_Sort,Selection Sort,Algorithm,ADA
+Bubblesort,Bubblesort,Algorithm,ADA
+Warshalls_Algorithm,Warshall's Algorithm,Algorithm,ADA
+Floyds_Algorithm,Floyd's Algorithm,Algorithm,ADA
+Array,Array,Data_Structure,ADA
+Linked_List,Linked List,Data_Structure,ADA
+Min_Heap,Min-Heap,Data_Structure,ADA
+Fibonacci_Heap,Fibonacci Heap,Data_Structure,ADA
+Binary_Search_Tree,Binary Search Tree,Data_Structure,ADA
+Two_Three_Tree,2-3 Tree,Data_Structure,ADA
+Priority_Queue,Priority Queue,Data_Structure,ADA
+State_Space_Tree,State-Space Tree,Data_Structure,ADA
+Euclid,Euclid of Alexandria,Person,ADA
+Eratosthenes,Eratosthenes,Person,ADA
+John_von_Neumann,John von Neumann,Person,ADA
+Joseph_Kruskal,Joseph Kruskal,Person,ADA
+Robert_Sedgewick,Robert Sedgewick,Person,ADA
+Anany_Levitin,Anany Levitin,Person,ADA
+George_Polya,George Pï¿½ï¿,Person,ADA
+Elements_Book,Elements,Book,ADA
+Algorithms_Data_Structures_Programs_Book,Algorithms + Data Structures = Programs,Book,ADA
+How_To_Solve_It_Book,How To Solve It,Book,ADA
+Introduction_to_The_Design_and_Analysis_of_Algorithms_Book,Introduction to The Design and Analysis of Algorithms,Book,ADA
+Random_Access_Machine,Random-Access Machine (RAM),Device,ADA
+Time_Efficiency,Time Efficiency,Concept,ADA
+Space_Efficiency,Space Efficiency,Concept,ADA

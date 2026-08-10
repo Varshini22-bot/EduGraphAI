@@ -1,0 +1,77 @@
+id,label,type,subject
+data_communications,Data Communications,Concept,CN
+transmission_medium,Transmission Medium,Concept,CN
+protocol,Protocol,Concept,CN
+simplex,Simplex Mode,Concept,CN
+half_duplex,Half-Duplex Mode,Concept,CN
+full_duplex,Full-Duplex Mode,Concept,CN
+network,Network,Concept,CN
+router,Router,Device,CN
+switch,Switch,Device,CN
+modem,Modem,Device,CN
+performance,Performance,Concept,CN
+throughput,Throughput,Concept,CN
+delay,Delay,Concept,CN
+reliability,Reliability,Concept,CN
+security,Security,Concept,CN
+point_to_point,Point-to-Point Connection,Addressing,CN
+multipoint,Multipoint Connection,Addressing,CN
+physical_topology,Physical Topology,Concept,CN
+mesh_topology,Mesh Topology,Concept,CN
+star_topology,Star Topology,Concept,CN
+bus_topology,Bus Topology,Concept,CN
+ring_topology,Ring Topology,Concept,CN
+hub,Hub,Device,CN
+repeater,Repeater,Device,CN
+lan,Local Area Network (LAN),Network_Model,CN
+wan,Wide Area Network (WAN),Network_Model,CN
+ethernet,Ethernet,Standard,CN
+token_ring,Token Ring,Standard,CN
+ibm,IBM,Organization,CN
+switching,Switching,Concept,CN
+circuit_switched,Circuit-Switched Network,Network_Model,CN
+packet_switched,Packet-Switched Network,Network_Model,CN
+the_internet,The Internet,Network_Model,CN
+isp,Internet Service Provider (ISP),Service,CN
+dsl,DSL Service,Service,CN
+dial_up,Dial-Up Service,Service,CN
+protocol_layering,Protocol Layering,Concept,CN
+tcp_ip_suite,TCP/IP Protocol Suite,Network_Model,CN
+osi_model,OSI Model,Network_Model,CN
+dnssec,DNS Security (DNSSEC),Protocol,CN
+dns,Domain Name System (DNS),Service,CN
+digital_signature,Digital Signature,Security_Mechanism,CN
+physical_layer,Physical Layer,Layer,CN
+data_link_layer,Data Link Layer,Layer,CN
+network_layer,Network Layer,Layer,CN
+transport_layer,Transport Layer,Layer,CN
+session_layer,Session Layer,Layer,CN
+presentation_layer,Presentation Layer,Layer,CN
+application_layer,Application Layer,Layer,CN
+network_access_layer,Network Access Layer,Layer,CN
+internet_layer,Internet Layer,Layer,CN
+ip_address,IP Address,Addressing,CN
+ipv4,IPv4,Addressing,CN
+ipv6,IPv6,Addressing,CN
+subnet_mask,Subnet Mask,Addressing,CN
+cidr,CIDR,Addressing,CN
+tcp,TCP,Protocol,CN
+udp,UDP,Protocol,CN
+http,HTTP,Protocol,CN
+https,HTTPS,Protocol,CN
+ftp,FTP,Protocol,CN
+smtp,SMTP,Protocol,CN
+pop3,POP3,Protocol,CN
+imap,IMAP,Protocol,CN
+arp,ARP,Protocol,CN
+icmp,ICMP,Protocol,CN
+dhcp,DHCP,Protocol,CN
+routing,Routing,Routing_Concept,CN
+rip,RIP,Protocol,CN
+ospf,OSPF,Protocol,CN
+distance_vector_routing,Distance Vector Routing,Algorithm,CN
+link_state_routing,Link State Routing,Algorithm,CN
+firewall,Firewall,Security_Mechanism,CN
+ssl,SSL,Protocol,CN
+tls,TLS,Protocol,CN
+vpn,VPN,Security_Mechanism,CN

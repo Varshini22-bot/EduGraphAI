@@ -1,0 +1,69 @@
+id,label,type,subject
+Artificial_Intelligence,Artificial Intelligence,Concept,ML
+Machine_Learning,Machine Learning,Concept,ML
+Deep_Learning,Deep Learning,Concept,ML
+Data_Science,Data Science,Concept,ML
+Data_Mining,Data Mining,Concept,ML
+Data_Analytics,Data Analytics,Concept,ML
+Pattern_Recognition,Pattern Recognition,Concept,ML
+Statistics,Statistics,Concept,ML
+Supervised_Learning,Supervised Learning,Learning_Type,ML
+Unsupervised_Learning,Unsupervised Learning,Learning_Type,ML
+Semi_Supervised_Learning,Semi-Supervised Learning,Learning_Type,ML
+Reinforcement_Learning,Reinforcement Learning,Learning_Type,ML
+Classification,Classification,Technique,ML
+Regression,Regression,Technique,ML
+Clustering,Clustering,Technique,ML
+Dimensionality_Reduction,Dimensionality Reduction,Technique,ML
+Linear_Regression,Linear Regression,Algorithm,ML
+Logistic_Regression,Logistic Regression,Algorithm,ML
+Decision_Tree,Decision Tree,Algorithm,ML
+Random_Forest,Random Forest,Algorithm,ML
+KNN,K-Nearest Neighbors (KNN),Algorithm,ML
+Naive_Bayes,Naive Bayes,Algorithm,ML
+SVM,Support Vector Machine (SVM),Algorithm,ML
+KMeans,K-Means Clustering,Algorithm,ML
+Hierarchical_Clustering,Hierarchical Clustering,Algorithm,ML
+PCA,Principal Component Analysis (PCA),Algorithm,ML
+Neural_Network,Neural Network,Neural_Network,ML
+Perceptron,Perceptron,Neural_Network,ML
+CNN,Convolutional Neural Network (CNN),Neural_Network,ML
+RNN,Recurrent Neural Network (RNN),Neural_Network,ML
+Input_Layer,Input Layer,Concept,ML
+Hidden_Layer,Hidden Layer,Concept,ML
+Output_Layer,Output Layer,Concept,ML
+Training_Data,Training Data,Dataset,ML
+Testing_Data,Testing Data,Dataset,ML
+Feature,Feature,Concept,ML
+Label,Label,Concept,ML
+Model,Model,Model,ML
+Accuracy,Accuracy,Metric,ML
+Precision,Precision,Metric,ML
+Recall,Recall,Metric,ML
+F1_Score,F1 Score,Metric,ML
+Confusion_Matrix,Confusion Matrix,Metric,ML
+Gradient_Descent,Gradient Descent,Optimization_Method,ML
+Overfitting,Overfitting,Concept,ML
+Underfitting,Underfitting,Concept,ML
+Cross_Validation,Cross Validation,Technique,ML
+Sentiment_Analysis,Sentiment Analysis,Application,ML
+Recommendation_Systems,Recommendation Systems,Application,ML
+Voice_Assistants,Voice Assistants,Application,ML
+Image_Processing,Image Processing,Application,ML
+CRISP_DM,CRISP-DM,Technique,ML
+Bias_Variance_Tradeoff,Bias-Variance Tradeoff,Concept,ML
+Feature_Engineering,Feature Engineering,Technique,ML
+Feature_Selection,Feature Selection,Technique,ML
+Feature_Extraction,Feature Extraction,Technique,ML
+Data_Preprocessing,Data Preprocessing,Technique,ML
+Normalization,Normalization,Technique,ML
+Standardization,Standardization,Technique,ML
+Missing_Value_Handling,Missing Value Handling,Technique,ML
+Agent,Agent,Concept,ML
+Environment,Environment,Concept,ML
+Reward,Reward,Concept,ML
+Policy,Policy,Concept,ML
+Activation_Function,Activation Function,Concept,ML
+ReLU,ReLU,Concept,ML
+Sigmoid,Sigmoid,Concept,ML
+Softmax,Softmax,Concept,ML

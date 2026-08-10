@@ -1,0 +1,76 @@
+id,label,type,subject
+Operating_System,Operating System,Operating_System,OS
+Kernel,Kernel,Concept,OS
+System_Call,System Call,Technique,OS
+User_Mode,User Mode,Concept,OS
+Kernel_Mode,Kernel Mode,Concept,OS
+Batch_System,Batch System,Operating_System,OS
+Multiprogramming,Multiprogramming,Technique,OS
+Multitasking,Multitasking,Technique,OS
+Time_Sharing_System,Time Sharing System,Operating_System,OS
+Distributed_System,Distributed System,Operating_System,OS
+Real_Time_System,Real Time System,Operating_System,OS
+Process,Process,Process,OS
+Thread,Thread,Process,OS
+Process_Management,Process Management,Concept,OS
+PCB,Process Control Block (PCB),Data_Structure,OS
+New_State,New State,Concept,OS
+Ready_State,Ready State,Concept,OS
+Running_State,Running State,Concept,OS
+Waiting_State,Waiting State,Concept,OS
+Terminated_State,Terminated State,Concept,OS
+Context_Switching,Context Switching,Technique,OS
+IPC,Inter Process Communication,Concept,OS
+Shared_Memory,Shared Memory,Technique,OS
+Message_Passing,Message Passing,Technique,OS
+CPU_Scheduling,CPU Scheduling,Concept,OS
+FCFS_Scheduling,FCFS Scheduling,Scheduling_Algorithm,OS
+SJF_Scheduling,SJF Scheduling,Scheduling_Algorithm,OS
+Priority_Scheduling,Priority Scheduling,Scheduling_Algorithm,OS
+Round_Robin_Scheduling,Round Robin Scheduling,Scheduling_Algorithm,OS
+Multilevel_Queue_Scheduling,Multilevel Queue Scheduling,Scheduling_Algorithm,OS
+Turnaround_Time,Turnaround Time,Metric,OS
+Waiting_Time,Waiting Time,Metric,OS
+Response_Time,Response Time,Metric,OS
+Process_Synchronization,Process Synchronization,Concept,OS
+Critical_Section,Critical Section,Concept,OS
+Semaphore,Semaphore,Data_Structure,OS
+Mutex,Mutex,Security_Mechanism,OS
+Monitor,Monitor,Technique,OS
+Producer_Consumer_Problem,Producer Consumer Problem,Concept,OS
+Readers_Writers_Problem,Readers Writers Problem,Concept,OS
+Dining_Philosophers_Problem,Dining Philosophers Problem,Concept,OS
+Deadlock,Deadlock,Concept,OS
+Resource_Allocation_Graph,Resource Allocation Graph,Data_Structure,OS
+Deadlock_Prevention,Deadlock Prevention,Technique,OS
+Deadlock_Avoidance,Deadlock Avoidance,Technique,OS
+Deadlock_Detection,Deadlock Detection,Algorithm,OS
+Deadlock_Recovery,Deadlock Recovery,Technique,OS
+Bankers_Algorithm,Banker's Algorithm,Algorithm,OS
+Memory_Management,Memory Management,Concept,OS
+Paging,Paging,Memory_Technique,OS
+Segmentation,Segmentation,Memory_Technique,OS
+Virtual_Memory,Virtual Memory,Memory_Technique,OS
+Demand_Paging,Demand Paging,Memory_Technique,OS
+Page_Fault,Page Fault,Concept,OS
+Page_Replacement,Page Replacement,Concept,OS
+FIFO_Page_Replacement,FIFO Page Replacement,Algorithm,OS
+LRU_Page_Replacement,LRU Page Replacement,Algorithm,OS
+Optimal_Page_Replacement,Optimal Page Replacement,Algorithm,OS
+Thrashing,Thrashing,Concept,OS
+File_System,File System,File_System,OS
+Directory_Structure,Directory Structure,Data_Structure,OS
+Hierarchical_Directory,Hierarchical Directory,Data_Structure,OS
+Contiguous_Allocation,Contiguous Allocation,Technique,OS
+Linked_Allocation,Linked Allocation,Technique,OS
+Indexed_Allocation,Indexed Allocation,Technique,OS
+Disk_Scheduling,Disk Scheduling,Concept,OS
+FCFS_Disk_Scheduling,FCFS Disk Scheduling,Algorithm,OS
+SSTF_Scheduling,SSTF Scheduling,Algorithm,OS
+SCAN_Scheduling,SCAN Scheduling,Algorithm,OS
+C_SCAN_Scheduling,C-SCAN Scheduling,Algorithm,OS
+Authentication,Authentication,Security_Mechanism,OS
+Authorization,Authorization,Security_Mechanism,OS
+Access_Control,Access Control,Security_Mechanism,OS
+Protection_Mechanism,Protection Mechanism,Security_Mechanism,OS
+OS_Security,Operating System Security,Concept,OS

@@ -1,0 +1,37 @@
+import ollama
+
+from llm.prompt import SYSTEM_PROMPT
+
+
+def generate_answer(question, graph_context):
+
+    prompt = f"""
+Question:
+
+{question}
+
+Knowledge Graph Context:
+
+{graph_context}
+
+Answer:
+"""
+
+    response = ollama.chat(
+
+        model="phi4-mini",
+
+        messages=[
+            {
+                "role": "system",
+                "content": SYSTEM_PROMPT
+            },
+
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
+
+    return response["message"]["content"]

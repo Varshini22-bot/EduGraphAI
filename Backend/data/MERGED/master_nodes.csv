@@ -1,0 +1,459 @@
+id,label,type,subject
+Algorithm,Algorithm,Concept,ADA
+Algorithm_Design_Technique,Algorithm Design Technique,Concept,ADA
+Complexity_Analysis,Complexity Analysis,Method,ADA
+O_notation,O-notation,Concept,ADA
+Omega_notation,Omega-notation,Concept,ADA
+Theta_notation,Theta-notation,Concept,ADA
+Divide_and_Conquer,Divide and Conquer,Method,ADA
+Merge_Sort,Merge Sort,Algorithm,ADA
+Quick_Sort,Quick Sort,Algorithm,ADA
+Binary_Search,Binary Search,Algorithm,ADA
+Greedy_Method,Greedy Method,Method,ADA
+Prims_Algorithm,Prim's Algorithm,Algorithm,ADA
+Kruskals_Algorithm,Kruskal's Algorithm,Algorithm,ADA
+Dijkstras_Algorithm,Dijkstra's Algorithm,Algorithm,ADA
+Dynamic_Programming,Dynamic Programming,Method,ADA
+Knapsack_Problem,Knapsack Problem,Concept,ADA
+Floyd_Warshall_Algorithm,Floyd-Warshall Algorithm,Algorithm,ADA
+Backtracking,Backtracking,Method,ADA
+N_Queens_Problem,N-Queens Problem,Concept,ADA
+Branch_and_Bound,Branch and Bound,Method,ADA
+Traveling_Salesman_Problem,Traveling Salesman Problem,Concept,ADA
+Minimum_Spanning_Tree,Minimum Spanning Tree,Concept,ADA
+Shortest_Path_Problem,Shortest Path Problem,Concept,ADA
+Euclids_Algorithm,Euclid's Algorithm,Algorithm,ADA
+Sieve_of_Eratosthenes,Sieve of Eratosthenes,Algorithm,ADA
+Strassens_Algorithm,Strassen's Algorithm,Algorithm,ADA
+Shellsort,Shellsort,Algorithm,ADA
+Insertion_Sort,Insertion Sort,Algorithm,ADA
+Selection_Sort,Selection Sort,Algorithm,ADA
+Bubblesort,Bubblesort,Algorithm,ADA
+Warshalls_Algorithm,Warshall's Algorithm,Algorithm,ADA
+Floyds_Algorithm,Floyd's Algorithm,Algorithm,ADA
+Array,Array,Data_Structure,ADA
+Linked_List,Linked List,Data_Structure,ADA
+Min_Heap,Min-Heap,Data_Structure,ADA
+Fibonacci_Heap,Fibonacci Heap,Data_Structure,ADA
+Binary_Search_Tree,Binary Search Tree,Data_Structure,ADA
+Two_Three_Tree,2-3 Tree,Data_Structure,ADA
+Priority_Queue,Priority Queue,Data_Structure,ADA
+State_Space_Tree,State-Space Tree,Data_Structure,ADA
+Euclid,Euclid of Alexandria,Person,ADA
+Eratosthenes,Eratosthenes,Person,ADA
+John_von_Neumann,John von Neumann,Person,ADA
+Joseph_Kruskal,Joseph Kruskal,Person,ADA
+Robert_Sedgewick,Robert Sedgewick,Person,ADA
+Anany_Levitin,Anany Levitin,Person,ADA
+George_Polya,George Pï¿½ï¿,Person,ADA
+Elements_Book,Elements,Book,ADA
+Algorithms_Data_Structures_Programs_Book,Algorithms + Data Structures = Programs,Book,ADA
+How_To_Solve_It_Book,How To Solve It,Book,ADA
+Introduction_to_The_Design_and_Analysis_of_Algorithms_Book,Introduction to The Design and Analysis of Algorithms,Book,ADA
+Random_Access_Machine,Random-Access Machine (RAM),Device,ADA
+Time_Efficiency,Time Efficiency,Concept,ADA
+Space_Efficiency,Space Efficiency,Concept,ADA
+data_communications,Data Communications,Concept,CN
+transmission_medium,Transmission Medium,Concept,CN
+protocol,Protocol,Concept,CN
+simplex,Simplex Mode,Concept,CN
+half_duplex,Half-Duplex Mode,Concept,CN
+full_duplex,Full-Duplex Mode,Concept,CN
+network,Network,Concept,CN
+router,Router,Device,CN
+switch,Switch,Device,CN
+modem,Modem,Device,CN
+performance,Performance,Concept,CN
+throughput,Throughput,Concept,CN
+delay,Delay,Concept,CN
+reliability,Reliability,Concept,CN
+security,Security,Concept,CN
+point_to_point,Point-to-Point Connection,Addressing,CN
+multipoint,Multipoint Connection,Addressing,CN
+physical_topology,Physical Topology,Concept,CN
+mesh_topology,Mesh Topology,Concept,CN
+star_topology,Star Topology,Concept,CN
+bus_topology,Bus Topology,Concept,CN
+ring_topology,Ring Topology,Concept,CN
+hub,Hub,Device,CN
+repeater,Repeater,Device,CN
+lan,Local Area Network (LAN),Network_Model,CN
+wan,Wide Area Network (WAN),Network_Model,CN
+ethernet,Ethernet,Standard,CN
+token_ring,Token Ring,Standard,CN
+ibm,IBM,Organization,CN
+switching,Switching,Concept,CN
+circuit_switched,Circuit-Switched Network,Network_Model,CN
+packet_switched,Packet-Switched Network,Network_Model,CN
+the_internet,The Internet,Network_Model,CN
+isp,Internet Service Provider (ISP),Service,CN
+dsl,DSL Service,Service,CN
+dial_up,Dial-Up Service,Service,CN
+protocol_layering,Protocol Layering,Concept,CN
+tcp_ip_suite,TCP/IP Protocol Suite,Network_Model,CN
+osi_model,OSI Model,Network_Model,CN
+dnssec,DNS Security (DNSSEC),Protocol,CN
+dns,Domain Name System (DNS),Service,CN
+digital_signature,Digital Signature,Security_Mechanism,CN
+physical_layer,Physical Layer,Layer,CN
+data_link_layer,Data Link Layer,Layer,CN
+network_layer,Network Layer,Layer,CN
+transport_layer,Transport Layer,Layer,CN
+session_layer,Session Layer,Layer,CN
+presentation_layer,Presentation Layer,Layer,CN
+application_layer,Application Layer,Layer,CN
+network_access_layer,Network Access Layer,Layer,CN
+internet_layer,Internet Layer,Layer,CN
+ip_address,IP Address,Addressing,CN
+ipv4,IPv4,Addressing,CN
+ipv6,IPv6,Addressing,CN
+subnet_mask,Subnet Mask,Addressing,CN
+cidr,CIDR,Addressing,CN
+tcp,TCP,Protocol,CN
+udp,UDP,Protocol,CN
+http,HTTP,Protocol,CN
+https,HTTPS,Protocol,CN
+ftp,FTP,Protocol,CN
+smtp,SMTP,Protocol,CN
+pop3,POP3,Protocol,CN
+imap,IMAP,Protocol,CN
+arp,ARP,Protocol,CN
+icmp,ICMP,Protocol,CN
+dhcp,DHCP,Protocol,CN
+routing,Routing,Routing_Concept,CN
+rip,RIP,Protocol,CN
+ospf,OSPF,Protocol,CN
+distance_vector_routing,Distance Vector Routing,Algorithm,CN
+link_state_routing,Link State Routing,Algorithm,CN
+firewall,Firewall,Security_Mechanism,CN
+ssl,SSL,Protocol,CN
+tls,TLS,Protocol,CN
+vpn,VPN,Security_Mechanism,CN
+Data_Structure,Data Structure,Concept,DSA
+Primitive_Data_Structure,Primitive Data Structure,Concept,DSA
+Non_Primitive_Data_Structure,Non-Primitive Data Structure,Concept,DSA
+Linear_Data_Structure,Linear Data Structure,Concept,DSA
+Non_Linear_Data_Structure,Non-Linear Data Structure,Concept,DSA
+Integer,Integer,Concept,DSA
+Float,Floating Point Number,Concept,DSA
+Character,Character,Concept,DSA
+Pointer,Pointer,Concept,DSA
+One_Dimensional_Array,One-Dimensional Array,Data_Structure,DSA
+Two_Dimensional_Array,Two-Dimensional Array,Data_Structure,DSA
+Singly_Linked_List,Singly Linked List,Data_Structure,DSA
+Doubly_Linked_List,Doubly Linked List,Data_Structure,DSA
+Circular_Linked_List,Circular Linked List,Data_Structure,DSA
+Stack,Stack,Data_Structure,DSA
+Queue,Queue,Data_Structure,DSA
+Circular_Queue,Circular Queue,Data_Structure,DSA
+Deque,Deque,Data_Structure,DSA
+Tree,Tree,Tree,DSA
+Binary_Tree,Binary Tree,Tree,DSA
+AVL_Tree,AVL Tree,Tree,DSA
+Heap,Heap,Tree,DSA
+Max_Heap,Max Heap,Tree,DSA
+Graph,Graph,Graph,DSA
+Directed_Graph,Directed Graph,Graph,DSA
+Undirected_Graph,Undirected Graph,Graph,DSA
+Hash_Table,Hash Table,Data_Structure,DSA
+Sparse_Matrix,Sparse Matrix,Data_Structure,DSA
+String,String,Data_Structure,DSA
+Operation,Data Structure Operation,Operation,DSA
+Create,Create Operation,Operation,DSA
+Destroy,Destroy Operation,Operation,DSA
+Selection,Selection Operation,Operation,DSA
+Updating,Updating Operation,Operation,DSA
+Push,Push Operation,Operation,DSA
+Pop,Pop Operation,Operation,DSA
+Enqueue,Enqueue Operation,Operation,DSA
+Dequeue,Dequeue Operation,Operation,DSA
+Recursion,Recursion / Recursive Algorithm,Algorithm,DSA
+Searching,Searching Technique,Searching_Technique,DSA
+Sequential_Search,Sequential Search,Searching_Technique,DSA
+Sorting,Sorting Technique,Sorting_Technique,DSA
+Bubble_Sort,Bubble Sort,Sorting_Technique,DSA
+Hashing,Hashing,Algorithm,DSA
+Linear_Probing,Linear Probing,Algorithm,DSA
+Quadratic_Probing,Quadratic Probing,Algorithm,DSA
+Double_Hashing,Double Hashing,Algorithm,DSA
+Chaining,Chaining technique,Algorithm,DSA
+DFS,Depth First Search (DFS),Method,DSA
+BFS,Breadth First Search (BFS),Method,DSA
+Inorder_Traversal,Inorder Traversal,Method,DSA
+Preorder_Traversal,Preorder Traversal,Method,DSA
+Postorder_Traversal,Postorder Traversal,Method,DSA
+Adjacency_Matrix,Adjacency Matrix representation,Concept,DSA
+Adjacency_List,Adjacency List representation,Concept,DSA
+Expression_Evaluation,Expression Evaluation,Application,DSA
+Tower_of_Hanoi,Tower of Hanoi problem,Application,DSA
+Pattern_Matching,Pattern Matching,Application,DSA
+KMP_Algorithm,Knuth-Morris-Pratt Algorithm,Algorithm,DSA
+Function_Call,Function Call,Application,DSA
+Parenthesis_Matching,Parenthesis Matching,Application,DSA
+CPU_Scheduling,CPU Scheduling,Application,DSA
+Printer_Scheduling,Printer Scheduling,Application,DSA
+Artificial_Intelligence,Artificial Intelligence,Concept,ML
+Machine_Learning,Machine Learning,Concept,ML
+Deep_Learning,Deep Learning,Concept,ML
+Data_Science,Data Science,Concept,ML
+Data_Mining,Data Mining,Concept,ML
+Data_Analytics,Data Analytics,Concept,ML
+Pattern_Recognition,Pattern Recognition,Concept,ML
+Statistics,Statistics,Concept,ML
+Supervised_Learning,Supervised Learning,Learning_Type,ML
+Unsupervised_Learning,Unsupervised Learning,Learning_Type,ML
+Semi_Supervised_Learning,Semi-Supervised Learning,Learning_Type,ML
+Reinforcement_Learning,Reinforcement Learning,Learning_Type,ML
+Classification,Classification,Technique,ML
+Regression,Regression,Technique,ML
+Clustering,Clustering,Technique,ML
+Dimensionality_Reduction,Dimensionality Reduction,Technique,ML
+Linear_Regression,Linear Regression,Algorithm,ML
+Logistic_Regression,Logistic Regression,Algorithm,ML
+Decision_Tree,Decision Tree,Algorithm,ML
+Random_Forest,Random Forest,Algorithm,ML
+KNN,K-Nearest Neighbors (KNN),Algorithm,ML
+Naive_Bayes,Naive Bayes,Algorithm,ML
+SVM,Support Vector Machine (SVM),Algorithm,ML
+KMeans,K-Means Clustering,Algorithm,ML
+Hierarchical_Clustering,Hierarchical Clustering,Algorithm,ML
+PCA,Principal Component Analysis (PCA),Algorithm,ML
+Neural_Network,Neural Network,Neural_Network,ML
+Perceptron,Perceptron,Neural_Network,ML
+CNN,Convolutional Neural Network (CNN),Neural_Network,ML
+RNN,Recurrent Neural Network (RNN),Neural_Network,ML
+Input_Layer,Input Layer,Concept,ML
+Hidden_Layer,Hidden Layer,Concept,ML
+Output_Layer,Output Layer,Concept,ML
+Training_Data,Training Data,Dataset,ML
+Testing_Data,Testing Data,Dataset,ML
+Feature,Feature,Concept,ML
+Label,Label,Concept,ML
+Model,Model,Model,ML
+Accuracy,Accuracy,Metric,ML
+Precision,Precision,Metric,ML
+Recall,Recall,Metric,ML
+F1_Score,F1 Score,Metric,ML
+Confusion_Matrix,Confusion Matrix,Metric,ML
+Gradient_Descent,Gradient Descent,Optimization_Method,ML
+Overfitting,Overfitting,Concept,ML
+Underfitting,Underfitting,Concept,ML
+Cross_Validation,Cross Validation,Technique,ML
+Sentiment_Analysis,Sentiment Analysis,Application,ML
+Recommendation_Systems,Recommendation Systems,Application,ML
+Voice_Assistants,Voice Assistants,Application,ML
+Image_Processing,Image Processing,Application,ML
+CRISP_DM,CRISP-DM,Technique,ML
+Bias_Variance_Tradeoff,Bias-Variance Tradeoff,Concept,ML
+Feature_Engineering,Feature Engineering,Technique,ML
+Feature_Selection,Feature Selection,Technique,ML
+Feature_Extraction,Feature Extraction,Technique,ML
+Data_Preprocessing,Data Preprocessing,Technique,ML
+Normalization,Normalization,Technique,ML
+Standardization,Standardization,Technique,ML
+Missing_Value_Handling,Missing Value Handling,Technique,ML
+Agent,Agent,Concept,ML
+Environment,Environment,Concept,ML
+Reward,Reward,Concept,ML
+Policy,Policy,Concept,ML
+Activation_Function,Activation Function,Concept,ML
+ReLU,ReLU,Concept,ML
+Sigmoid,Sigmoid,Concept,ML
+Softmax,Softmax,Concept,ML
+Operating_System,Operating System,Operating_System,OS
+Kernel,Kernel,Concept,OS
+System_Call,System Call,Technique,OS
+User_Mode,User Mode,Concept,OS
+Kernel_Mode,Kernel Mode,Concept,OS
+Batch_System,Batch System,Operating_System,OS
+Multiprogramming,Multiprogramming,Technique,OS
+Multitasking,Multitasking,Technique,OS
+Time_Sharing_System,Time Sharing System,Operating_System,OS
+Distributed_System,Distributed System,Operating_System,OS
+Real_Time_System,Real Time System,Operating_System,OS
+Process,Process,Process,OS
+Thread,Thread,Process,OS
+Process_Management,Process Management,Concept,OS
+PCB,Process Control Block (PCB),Data_Structure,OS
+New_State,New State,Concept,OS
+Ready_State,Ready State,Concept,OS
+Running_State,Running State,Concept,OS
+Waiting_State,Waiting State,Concept,OS
+Terminated_State,Terminated State,Concept,OS
+Context_Switching,Context Switching,Technique,OS
+IPC,Inter Process Communication,Concept,OS
+Shared_Memory,Shared Memory,Technique,OS
+Message_Passing,Message Passing,Technique,OS
+FCFS_Scheduling,FCFS Scheduling,Scheduling_Algorithm,OS
+SJF_Scheduling,SJF Scheduling,Scheduling_Algorithm,OS
+Priority_Scheduling,Priority Scheduling,Scheduling_Algorithm,OS
+Round_Robin_Scheduling,Round Robin Scheduling,Scheduling_Algorithm,OS
+Multilevel_Queue_Scheduling,Multilevel Queue Scheduling,Scheduling_Algorithm,OS
+Turnaround_Time,Turnaround Time,Metric,OS
+Waiting_Time,Waiting Time,Metric,OS
+Response_Time,Response Time,Metric,OS
+Process_Synchronization,Process Synchronization,Concept,OS
+Critical_Section,Critical Section,Concept,OS
+Semaphore,Semaphore,Data_Structure,OS
+Mutex,Mutex,Security_Mechanism,OS
+Monitor,Monitor,Technique,OS
+Producer_Consumer_Problem,Producer Consumer Problem,Concept,OS
+Readers_Writers_Problem,Readers Writers Problem,Concept,OS
+Dining_Philosophers_Problem,Dining Philosophers Problem,Concept,OS
+Deadlock,Deadlock,Concept,OS
+Resource_Allocation_Graph,Resource Allocation Graph,Data_Structure,OS
+Deadlock_Prevention,Deadlock Prevention,Technique,OS
+Deadlock_Avoidance,Deadlock Avoidance,Technique,OS
+Deadlock_Detection,Deadlock Detection,Algorithm,OS
+Deadlock_Recovery,Deadlock Recovery,Technique,OS
+Bankers_Algorithm,Banker's Algorithm,Algorithm,OS
+Memory_Management,Memory Management,Concept,OS
+Paging,Paging,Memory_Technique,OS
+Segmentation,Segmentation,Memory_Technique,OS
+Virtual_Memory,Virtual Memory,Memory_Technique,OS
+Demand_Paging,Demand Paging,Memory_Technique,OS
+Page_Fault,Page Fault,Concept,OS
+Page_Replacement,Page Replacement,Concept,OS
+FIFO_Page_Replacement,FIFO Page Replacement,Algorithm,OS
+LRU_Page_Replacement,LRU Page Replacement,Algorithm,OS
+Optimal_Page_Replacement,Optimal Page Replacement,Algorithm,OS
+Thrashing,Thrashing,Concept,OS
+File_System,File System,File_System,OS
+Directory_Structure,Directory Structure,Data_Structure,OS
+Hierarchical_Directory,Hierarchical Directory,Data_Structure,OS
+Contiguous_Allocation,Contiguous Allocation,Technique,OS
+Linked_Allocation,Linked Allocation,Technique,OS
+Indexed_Allocation,Indexed Allocation,Technique,OS
+Disk_Scheduling,Disk Scheduling,Concept,OS
+FCFS_Disk_Scheduling,FCFS Disk Scheduling,Algorithm,OS
+SSTF_Scheduling,SSTF Scheduling,Algorithm,OS
+SCAN_Scheduling,SCAN Scheduling,Algorithm,OS
+C_SCAN_Scheduling,C-SCAN Scheduling,Algorithm,OS
+Authentication,Authentication,Security_Mechanism,OS
+Authorization,Authorization,Security_Mechanism,OS
+Access_Control,Access Control,Security_Mechanism,OS
+Protection_Mechanism,Protection Mechanism,Security_Mechanism,OS
+OS_Security,Operating System Security,Concept,OS
+se,Software Engineering,Core Discipline,SEPM
+software_process,Software Process,Core Discipline,SEPM
+software_crisis,Software Crisis,Concept,SEPM
+sdlc,Software Development Life Cycle (SDLC),Framework,SEPM
+feasibility_study,Feasibility Study,Phase,SEPM
+technical_feasibility,Technical Feasibility,Feasibility Type,SEPM
+economic_feasibility,Economic Feasibility,Feasibility Type,SEPM
+operational_feasibility,Operational Feasibility,Feasibility Type,SEPM
+schedule_feasibility,Schedule Feasibility,Feasibility Type,SEPM
+process_models,Software Process Models,Category,SEPM
+waterfall,Waterfall Model,Process Model,SEPM
+incremental,Incremental Model,Process Model,SEPM
+prototype_model,Prototype Model,Process Model,SEPM
+spiral,Spiral Model,Process Model,SEPM
+rad,RAD Model,Process Model,SEPM
+agile,Agile Model,Process Model,SEPM
+scrum,Scrum,Agile Framework,SEPM
+xp,Extreme Programming (XP),Agile Framework,SEPM
+devops,DevOps,Framework,SEPM
+product_backlog,Product Backlog,Agile Artifact,SEPM
+sprint_backlog,Sprint Backlog,Agile Artifact,SEPM
+sprint,Sprint,Agile Process,SEPM
+daily_scrum,Daily Scrum,Agile Ceremony,SEPM
+burndown_chart,Burndown Chart,Agile Tool,SEPM
+requirements_eng,Requirement Engineering,Phase,SEPM
+req_elicitation,Requirement Elicitation,Activity,SEPM
+interview,Interview,Elicitation Technique,SEPM
+questionnaire,Questionnaire,Elicitation Technique,SEPM
+observation,Observation,Elicitation Technique,SEPM
+brainstorming,Brainstorming,Elicitation Technique,SEPM
+jad,JAD (Joint Application Design),Elicitation Technique,SEPM
+req_analysis,Requirement Analysis,Activity,SEPM
+req_validation,Requirement Validation,Activity,SEPM
+functional_req,Functional Requirements,Requirement Type,SEPM
+non_functional_req,Non-Functional Requirements,Requirement Type,SEPM
+srs,Software Requirement Specification,Document,SEPM
+system_modeling,System Modeling,Activity,SEPM
+uml,Unified Modeling Language (UML),Standard,SEPM
+use_case_diagram,Use Case Diagram,UML Diagram,SEPM
+actor,Actor,UML Element,SEPM
+class_diagram,Class Diagram,UML Diagram,SEPM
+sequence_diagram,Sequence Diagram,UML Diagram,SEPM
+activity_diagram,Activity Diagram,UML Diagram,SEPM
+state_diagram,State Diagram,UML Diagram,SEPM
+er_diagram,Entity-Relationship (ER) Diagram,Data Diagram,SEPM
+dfd,Data Flow Diagram (DFD),Data Diagram,SEPM
+software_design,Software Design,Phase,SEPM
+software_architecture,Software Architecture,Concept,SEPM
+modular_design,Modular Design,Concept,SEPM
+cohesion,Cohesion,Design Metric,SEPM
+coupling,Coupling,Design Metric,SEPM
+design_patterns,Design Patterns,Concept,SEPM
+design_document,Design Document,Document,SEPM
+abstraction,Abstraction,Design Concept,SEPM
+encapsulation,Encapsulation,Design Concept,SEPM
+inheritance,Inheritance,Design Concept,SEPM
+polymorphism,Polymorphism,Design Concept,SEPM
+implementation,Implementation,Phase,SEPM
+coding_standards,Coding Standards,Standard,SEPM
+code_review,Code Review,Activity,SEPM
+refactoring,Refactoring,Activity,SEPM
+software_testing,Software Testing,Phase,SEPM
+unit_testing,Unit Testing,Testing Level,SEPM
+integration_testing,Integration Testing,Testing Level,SEPM
+system_testing,System Testing,Testing Level,SEPM
+acceptance_testing,Acceptance Testing,Testing Level,SEPM
+alpha_testing,Alpha Testing,Testing Subtype,SEPM
+beta_testing,Beta Testing,Testing Subtype,SEPM
+black_box,Black Box Testing,Testing Strategy,SEPM
+white_box,White Box Testing,Testing Strategy,SEPM
+regression_testing,Regression Testing,Testing Type,SEPM
+test_case,Test Case,Artifact,SEPM
+test_plan,Test Plan,Document,SEPM
+defect,Defect,Testing Metric,SEPM
+bug,Bug,Testing Metric,SEPM
+error,Error,Testing Metric,SEPM
+failure,Failure,Testing Metric,SEPM
+software_quality,Software Quality,Core Discipline,SEPM
+sqa,Software Quality Assurance (SQA),Process,SEPM
+verification,Verification,Activity,SEPM
+validation,Validation,Activity,SEPM
+maintainability,Maintainability,Quality Attribute,SEPM
+availability,Availability,Quality Attribute,SEPM
+iso_9126,ISO 9126,Standard,SEPM
+cmmi,CMMI,Framework,SEPM
+project_management,Project Management,Core Discipline,SEPM
+project_planning,Project Planning,Activity,SEPM
+project_scheduling,Project Scheduling,Activity,SEPM
+wbs,Work Breakdown Structure (WBS),Technique,SEPM
+gantt_chart,Gantt Chart,Technique,SEPM
+pert_chart,PERT Chart,Technique,SEPM
+cpm,Critical Path Method (CPM),Technique,SEPM
+cost_estimation,Cost Estimation,Activity,SEPM
+loc,Lines of Code (LOC),Metric,SEPM
+fp_analysis,Function Point Analysis,Metric,SEPM
+cocomo,COCOMO Model,Estimation Model,SEPM
+basic_cocomo,Basic COCOMO,COCOMO Type,SEPM
+intermediate_cocomo,Intermediate COCOMO,COCOMO Type,SEPM
+detailed_cocomo,Detailed COCOMO,COCOMO Type,SEPM
+effort_estimation,Effort Estimation,Activity,SEPM
+risk_management,Risk Management,Process,SEPM
+risk_identification,Risk Identification,Activity,SEPM
+risk_analysis,Risk Analysis,Activity,SEPM
+risk_mitigation,Risk Mitigation,Activity,SEPM
+scm,Software Configuration Management,Process,SEPM
+version_control,Version Control,Activity,SEPM
+change_management,Change Management,Activity,SEPM
+git,Git,SCM Tool,SEPM
+github,GitHub,SCM Tool,SEPM
+svn,SVN,SCM Tool,SEPM
+software_maintenance,Software Maintenance,Phase,SEPM
+corrective_maintenance,Corrective Maintenance,Maintenance Type,SEPM
+adaptive_maintenance,Adaptive Maintenance,Maintenance Type,SEPM
+perfective_maintenance,Perfective Maintenance,Maintenance Type,SEPM
+preventive_maintenance,Preventive Maintenance,Maintenance Type,SEPM
+software_evolution,Software Evolution,Concept,SEPM
+legacy_system,Legacy System,Concept,SEPM
+project_manager,Project Manager,Project Role,SEPM
+software_engineer,Software Engineer,Project Role,SEPM
+tester,Tester,Project Role,SEPM
+customer,Customer,Project Role,SEPM
+stakeholder,Stakeholder,Project Role,SEPM
+user_manual,User Manual,Document,SEPM

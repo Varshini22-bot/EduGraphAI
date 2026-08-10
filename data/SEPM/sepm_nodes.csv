@@ -1,0 +1,125 @@
+id,label,type,subject
+se,Software Engineering,Core Discipline,SEPM
+software_process,Software Process,Core Discipline,SEPM
+software_crisis,Software Crisis,Concept,SEPM
+sdlc,Software Development Life Cycle (SDLC),Framework,SEPM
+feasibility_study,Feasibility Study,Phase,SEPM
+technical_feasibility,Technical Feasibility,Feasibility Type,SEPM
+economic_feasibility,Economic Feasibility,Feasibility Type,SEPM
+operational_feasibility,Operational Feasibility,Feasibility Type,SEPM
+schedule_feasibility,Schedule Feasibility,Feasibility Type,SEPM
+process_models,Software Process Models,Category,SEPM
+waterfall,Waterfall Model,Process Model,SEPM
+incremental,Incremental Model,Process Model,SEPM
+prototype_model,Prototype Model,Process Model,SEPM
+spiral,Spiral Model,Process Model,SEPM
+rad,RAD Model,Process Model,SEPM
+agile,Agile Model,Process Model,SEPM
+scrum,Scrum,Agile Framework,SEPM
+xp,Extreme Programming (XP),Agile Framework,SEPM
+devops,DevOps,Framework,SEPM
+product_backlog,Product Backlog,Agile Artifact,SEPM
+sprint_backlog,Sprint Backlog,Agile Artifact,SEPM
+sprint,Sprint,Agile Process,SEPM
+daily_scrum,Daily Scrum,Agile Ceremony,SEPM
+burndown_chart,Burndown Chart,Agile Tool,SEPM
+requirements_eng,Requirement Engineering,Phase,SEPM
+req_elicitation,Requirement Elicitation,Activity,SEPM
+interview,Interview,Elicitation Technique,SEPM
+questionnaire,Questionnaire,Elicitation Technique,SEPM
+observation,Observation,Elicitation Technique,SEPM
+brainstorming,Brainstorming,Elicitation Technique,SEPM
+jad,JAD (Joint Application Design),Elicitation Technique,SEPM
+req_analysis,Requirement Analysis,Activity,SEPM
+req_validation,Requirement Validation,Activity,SEPM
+functional_req,Functional Requirements,Requirement Type,SEPM
+non_functional_req,Non-Functional Requirements,Requirement Type,SEPM
+srs,Software Requirement Specification,Document,SEPM
+system_modeling,System Modeling,Activity,SEPM
+uml,Unified Modeling Language (UML),Standard,SEPM
+use_case_diagram,Use Case Diagram,UML Diagram,SEPM
+actor,Actor,UML Element,SEPM
+class_diagram,Class Diagram,UML Diagram,SEPM
+sequence_diagram,Sequence Diagram,UML Diagram,SEPM
+activity_diagram,Activity Diagram,UML Diagram,SEPM
+state_diagram,State Diagram,UML Diagram,SEPM
+er_diagram,Entity-Relationship (ER) Diagram,Data Diagram,SEPM
+dfd,Data Flow Diagram (DFD),Data Diagram,SEPM
+software_design,Software Design,Phase,SEPM
+software_architecture,Software Architecture,Concept,SEPM
+modular_design,Modular Design,Concept,SEPM
+cohesion,Cohesion,Design Metric,SEPM
+coupling,Coupling,Design Metric,SEPM
+design_patterns,Design Patterns,Concept,SEPM
+design_document,Design Document,Document,SEPM
+abstraction,Abstraction,Design Concept,SEPM
+encapsulation,Encapsulation,Design Concept,SEPM
+inheritance,Inheritance,Design Concept,SEPM
+polymorphism,Polymorphism,Design Concept,SEPM
+implementation,Implementation,Phase,SEPM
+coding_standards,Coding Standards,Standard,SEPM
+code_review,Code Review,Activity,SEPM
+refactoring,Refactoring,Activity,SEPM
+software_testing,Software Testing,Phase,SEPM
+unit_testing,Unit Testing,Testing Level,SEPM
+integration_testing,Integration Testing,Testing Level,SEPM
+system_testing,System Testing,Testing Level,SEPM
+acceptance_testing,Acceptance Testing,Testing Level,SEPM
+alpha_testing,Alpha Testing,Testing Subtype,SEPM
+beta_testing,Beta Testing,Testing Subtype,SEPM
+black_box,Black Box Testing,Testing Strategy,SEPM
+white_box,White Box Testing,Testing Strategy,SEPM
+regression_testing,Regression Testing,Testing Type,SEPM
+test_case,Test Case,Artifact,SEPM
+test_plan,Test Plan,Document,SEPM
+defect,Defect,Testing Metric,SEPM
+bug,Bug,Testing Metric,SEPM
+error,Error,Testing Metric,SEPM
+failure,Failure,Testing Metric,SEPM
+software_quality,Software Quality,Core Discipline,SEPM
+sqa,Software Quality Assurance (SQA),Process,SEPM
+verification,Verification,Activity,SEPM
+validation,Validation,Activity,SEPM
+reliability,Reliability,Quality Attribute,SEPM
+maintainability,Maintainability,Quality Attribute,SEPM
+availability,Availability,Quality Attribute,SEPM
+iso_9126,ISO 9126,Standard,SEPM
+cmmi,CMMI,Framework,SEPM
+project_management,Project Management,Core Discipline,SEPM
+project_planning,Project Planning,Activity,SEPM
+project_scheduling,Project Scheduling,Activity,SEPM
+wbs,Work Breakdown Structure (WBS),Technique,SEPM
+gantt_chart,Gantt Chart,Technique,SEPM
+pert_chart,PERT Chart,Technique,SEPM
+cpm,Critical Path Method (CPM),Technique,SEPM
+cost_estimation,Cost Estimation,Activity,SEPM
+loc,Lines of Code (LOC),Metric,SEPM
+fp_analysis,Function Point Analysis,Metric,SEPM
+cocomo,COCOMO Model,Estimation Model,SEPM
+basic_cocomo,Basic COCOMO,COCOMO Type,SEPM
+intermediate_cocomo,Intermediate COCOMO,COCOMO Type,SEPM
+detailed_cocomo,Detailed COCOMO,COCOMO Type,SEPM
+effort_estimation,Effort Estimation,Activity,SEPM
+risk_management,Risk Management,Process,SEPM
+risk_identification,Risk Identification,Activity,SEPM
+risk_analysis,Risk Analysis,Activity,SEPM
+risk_mitigation,Risk Mitigation,Activity,SEPM
+scm,Software Configuration Management,Process,SEPM
+version_control,Version Control,Activity,SEPM
+change_management,Change Management,Activity,SEPM
+git,Git,SCM Tool,SEPM
+github,GitHub,SCM Tool,SEPM
+svn,SVN,SCM Tool,SEPM
+software_maintenance,Software Maintenance,Phase,SEPM
+corrective_maintenance,Corrective Maintenance,Maintenance Type,SEPM
+adaptive_maintenance,Adaptive Maintenance,Maintenance Type,SEPM
+perfective_maintenance,Perfective Maintenance,Maintenance Type,SEPM
+preventive_maintenance,Preventive Maintenance,Maintenance Type,SEPM
+software_evolution,Software Evolution,Concept,SEPM
+legacy_system,Legacy System,Concept,SEPM
+project_manager,Project Manager,Project Role,SEPM
+software_engineer,Software Engineer,Project Role,SEPM
+tester,Tester,Project Role,SEPM
+customer,Customer,Project Role,SEPM
+stakeholder,Stakeholder,Project Role,SEPM
+user_manual,User Manual,Document,SEPM

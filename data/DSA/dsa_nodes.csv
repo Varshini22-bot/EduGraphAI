@@ -1,0 +1,75 @@
+id,label,type,subject
+Data_Structure,Data Structure,Concept,DSA
+Primitive_Data_Structure,Primitive Data Structure,Concept,DSA
+Non_Primitive_Data_Structure,Non-Primitive Data Structure,Concept,DSA
+Linear_Data_Structure,Linear Data Structure,Concept,DSA
+Non_Linear_Data_Structure,Non-Linear Data Structure,Concept,DSA
+Integer,Integer,Concept,DSA
+Float,Floating Point Number,Concept,DSA
+Character,Character,Concept,DSA
+Pointer,Pointer,Concept,DSA
+Array,Array,Data_Structure,DSA
+One_Dimensional_Array,One-Dimensional Array,Data_Structure,DSA
+Two_Dimensional_Array,Two-Dimensional Array,Data_Structure,DSA
+Linked_List,Linked List,Data_Structure,DSA
+Singly_Linked_List,Singly Linked List,Data_Structure,DSA
+Doubly_Linked_List,Doubly Linked List,Data_Structure,DSA
+Circular_Linked_List,Circular Linked List,Data_Structure,DSA
+Stack,Stack,Data_Structure,DSA
+Queue,Queue,Data_Structure,DSA
+Circular_Queue,Circular Queue,Data_Structure,DSA
+Priority_Queue,Priority Queue,Data_Structure,DSA
+Deque,Deque,Data_Structure,DSA
+Tree,Tree,Tree,DSA
+Binary_Tree,Binary Tree,Tree,DSA
+Binary_Search_Tree,Binary Search Tree,Tree,DSA
+AVL_Tree,AVL Tree,Tree,DSA
+Heap,Heap,Tree,DSA
+Min_Heap,Min Heap,Tree,DSA
+Max_Heap,Max Heap,Tree,DSA
+Graph,Graph,Graph,DSA
+Directed_Graph,Directed Graph,Graph,DSA
+Undirected_Graph,Undirected Graph,Graph,DSA
+Hash_Table,Hash Table,Data_Structure,DSA
+Sparse_Matrix,Sparse Matrix,Data_Structure,DSA
+String,String,Data_Structure,DSA
+Operation,Data Structure Operation,Operation,DSA
+Create,Create Operation,Operation,DSA
+Destroy,Destroy Operation,Operation,DSA
+Selection,Selection Operation,Operation,DSA
+Updating,Updating Operation,Operation,DSA
+Push,Push Operation,Operation,DSA
+Pop,Pop Operation,Operation,DSA
+Enqueue,Enqueue Operation,Operation,DSA
+Dequeue,Dequeue Operation,Operation,DSA
+Algorithm,Algorithm,Algorithm,DSA
+Recursion,Recursion / Recursive Algorithm,Algorithm,DSA
+Searching,Searching Technique,Searching_Technique,DSA
+Sequential_Search,Sequential Search,Searching_Technique,DSA
+Binary_Search,Binary Search,Searching_Technique,DSA
+Sorting,Sorting Technique,Sorting_Technique,DSA
+Bubble_Sort,Bubble Sort,Sorting_Technique,DSA
+Selection_Sort,Selection Sort,Sorting_Technique,DSA
+Insertion_Sort,Insertion Sort,Sorting_Technique,DSA
+Merge_Sort,Merge Sort,Sorting_Technique,DSA
+Quick_Sort,Quick Sort,Sorting_Technique,DSA
+Hashing,Hashing,Algorithm,DSA
+Linear_Probing,Linear Probing,Algorithm,DSA
+Quadratic_Probing,Quadratic Probing,Algorithm,DSA
+Double_Hashing,Double Hashing,Algorithm,DSA
+Chaining,Chaining technique,Algorithm,DSA
+DFS,Depth First Search (DFS),Method,DSA
+BFS,Breadth First Search (BFS),Method,DSA
+Inorder_Traversal,Inorder Traversal,Method,DSA
+Preorder_Traversal,Preorder Traversal,Method,DSA
+Postorder_Traversal,Postorder Traversal,Method,DSA
+Adjacency_Matrix,Adjacency Matrix representation,Concept,DSA
+Adjacency_List,Adjacency List representation,Concept,DSA
+Expression_Evaluation,Expression Evaluation,Application,DSA
+Tower_of_Hanoi,Tower of Hanoi problem,Application,DSA
+Pattern_Matching,Pattern Matching,Application,DSA
+KMP_Algorithm,Knuth-Morris-Pratt Algorithm,Algorithm,DSA
+Function_Call,Function Call,Application,DSA
+Parenthesis_Matching,Parenthesis Matching,Application,DSA
+CPU_Scheduling,CPU Scheduling,Application,DSA
+Printer_Scheduling,Printer Scheduling,Application,DSA
