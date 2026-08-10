@@ -34,3 +34,6 @@ build/
 .DS_Store
 Thumbs.db
 "@ | Set-Content .gitignore
+# Nested Git backup
+frontend/.git-backup/
+frontend/tsconfig.tsbuildinfo
