@@ -150,6 +150,7 @@ export default function ChatMessage({
             <ResponseActions
               answerText={message.response.answer}
               topic={message.response.topic}
+              originalQuery={message.query}
               isBookmarked={isBookmarked}
               onToggleBookmark={() =>
                 onToggleBookmark(message.response!.topic, message.response!.answer)

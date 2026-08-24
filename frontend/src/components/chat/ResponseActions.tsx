@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { buildContextualActionQuery, ContextualAction } from "@/lib/answerIntent";
 
 interface ResponseActionsProps {
   answerText: string;
   topic: string;
+  originalQuery: string;
   isBookmarked: boolean;
   onToggleBookmark: () => void;
   onRegenerate: () => void;
@@ -12,31 +14,32 @@ interface ResponseActionsProps {
 }
 
 type SpeechState = "idle" | "speaking" | "paused";
+type Feedback = "up" | "down" | null;
 
 function isSpeechSynthesisSupported(): boolean {
   return typeof window !== "undefined" && "speechSynthesis" in window;
 }
 
-// Educational follow-up actions — moved out of the always-visible row and
-// into the "More" menu per this pass. Each still builds a natural-language
-// follow-up and submits it through the same onSelectTopic → onSubmitQuery
-// pipeline as before (handlers preserved exactly, only the UI location
-// changed).
-const MORE_ACTIONS: { label: string; buildQuery: (topic: string) => string }[] = [
-  { label: "Explain simpler", buildQuery: (t) => `Explain ${t} more simply` },
-  { label: "More detail", buildQuery: (t) => `Give a more detailed explanation of ${t}` },
-  { label: "Revision notes", buildQuery: (t) => `Create revision notes for ${t}` },
-  { label: "Viva questions", buildQuery: (t) => `Generate viva questions for ${t}` },
-  { label: "Exam questions", buildQuery: (t) => `Generate likely exam questions for ${t}` },
-  { label: "Short quiz", buildQuery: (t) => `Create a short quiz on ${t}` },
-  { label: "Prerequisites", buildQuery: (t) => `Show prerequisites for ${t}` },
-  { label: "Related concepts", buildQuery: (t) => `Show related concepts for ${t}` },
-  { label: "Compare", buildQuery: (t) => `Compare ${t} with a similar concept` },
+// Educational follow-up actions — each maps to a stable ContextualAction
+// key (not a free-form sentence template). The actual query text is built
+// by buildContextualActionQuery(), which anchors the topic first and
+// preserves the original marks — see answerIntent.ts for why.
+const MORE_ACTIONS: { label: string; action: ContextualAction }[] = [
+  { label: "Explain simpler", action: "explain_simpler" },
+  { label: "More detail", action: "more_detail" },
+  { label: "Revision notes", action: "revision_notes" },
+  { label: "Viva questions", action: "viva_questions" },
+  { label: "Exam questions", action: "exam_questions" },
+  { label: "Short quiz", action: "short_quiz" },
+  { label: "Prerequisites", action: "prerequisites" },
+  { label: "Related concepts", action: "related_concepts" },
+  { label: "Compare", action: "compare" },
 ];
 
 export default function ResponseActions({
   answerText,
   topic,
+  originalQuery,
   isBookmarked,
   onToggleBookmark,
   onRegenerate,
@@ -46,6 +49,7 @@ export default function ResponseActions({
   const [speechState, setSpeechState] = useState<SpeechState>("idle");
   const [speechError, setSpeechError] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [feedback, setFeedback] = useState<Feedback>(null);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -141,8 +145,8 @@ export default function ResponseActions({
     setSpeechState("idle");
   }
 
-  function handleMoreAction(buildQuery: (topic: string) => string) {
-    onSelectTopic(buildQuery(topic));
+  function handleMoreAction(action: ContextualAction) {
+    onSelectTopic(buildContextualActionQuery(topic, action, originalQuery));
     setMenuOpen(false);
   }
 
@@ -226,6 +230,29 @@ export default function ResponseActions({
       </button>
 
       <button
+        onClick={() => setFeedback((prev) => (prev === "up" ? null : "up"))}
+        title="Good answer"
+        aria-label="Good answer"
+        aria-pressed={feedback === "up"}
+        className={`flex items-center rounded-md px-2 py-1 text-[13px] transition-colors hover:bg-hoverbg ${
+          feedback === "up" ? "text-teal" : "text-ink-tertiary hover:text-ink-primary"
+        }`}
+      >
+        👍
+      </button>
+      <button
+        onClick={() => setFeedback((prev) => (prev === "down" ? null : "down"))}
+        title="Poor answer"
+        aria-label="Poor answer"
+        aria-pressed={feedback === "down"}
+        className={`flex items-center rounded-md px-2 py-1 text-[13px] transition-colors hover:bg-hoverbg ${
+          feedback === "down" ? "text-danger" : "text-ink-tertiary hover:text-ink-primary"
+        }`}
+      >
+        👎
+      </button>
+
+      <button
         ref={menuButtonRef}
         onClick={() => setMenuOpen((prev) => !prev)}
         title="More actions"
@@ -250,7 +277,7 @@ export default function ResponseActions({
             <button
               key={action.label}
               role="menuitem"
-              onClick={() => handleMoreAction(action.buildQuery)}
+              onClick={() => handleMoreAction(action.action)}
               className="block w-full px-3 py-2 text-left text-[12.5px] text-ink-secondary transition-colors hover:bg-hoverbg hover:text-ink-primary"
             >
               {action.label}

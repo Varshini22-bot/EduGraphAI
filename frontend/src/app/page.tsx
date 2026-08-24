@@ -41,45 +41,64 @@ export default function HomePage() {
   const [activeView, setActiveView] = useState<ActiveView>("chat");
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout, loading: authLoading } = useAuth();
   const { settings } = useSettings();
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [hasHydrated, setHasHydrated] = useState(false);
+  // Tracks which scope (signed-in user id, or null for guest) the current
+  // `conversations`/`bookmarks` state actually belongs to. This is what
+  // lets the save effects below detect "the scope just changed but state
+  // hasn't caught up yet" and skip that one stale pass, instead of writing
+  // the previous user's data into the new scope's storage key.
+  const [activeScope, setActiveScope] = useState<string | null>(null);
 
-  // ---- Load conversations/bookmarks from localStorage once, on mount ----
-  // (user/session loading is handled entirely by AuthProvider, not here)
+  // ---- Load conversations/bookmarks scoped to the signed-in user (or the
+  // shared "guest" namespace when signed out). Re-runs whenever the user
+  // signs in/out while the app is open, not just once on mount — this is
+  // what fixes one user's chats being visible to the next person on the
+  // same browser. ----
   useEffect(() => {
-    const loadedConversations = loadConversations();
-    const loadedBookmarks = loadBookmarks();
+    if (authLoading) return;
+    const scope = user ? String(user.id) : null;
+    const loadedConversations = loadConversations(scope);
+    const loadedBookmarks = loadBookmarks(scope);
     setConversations(loadedConversations);
     setBookmarks(loadedBookmarks);
+    setActiveScope(scope);
 
     if (loadedConversations.length > 0) {
       const mostRecent = [...loadedConversations].sort(
         (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       )[0];
       setActiveConversationId(mostRecent.id);
+    } else {
+      setActiveConversationId(null);
     }
 
     setHasHydrated(true);
-  }, []);
+  }, [authLoading, user?.id]);
 
-  // ---- Persist on every change (guarded so we don't clobber storage
-  // with the empty initial state before hydration finishes) ----
+  // ---- Persist on every change. Guarded on activeScope matching the
+  // CURRENT user — on the render where user?.id has just changed but the
+  // load effect above hasn't committed its setState yet, activeScope still
+  // reflects the OLD scope, so this correctly skips that one stale pass
+  // instead of saving old data under the new scope's key. ----
   useEffect(() => {
     if (!hasHydrated) return;
+    if (activeScope !== (user ? String(user.id) : null)) return;
     // "Auto-save conversations" gates persistence to localStorage only —
     // in-session state (switching conversations, asking questions) keeps
     // working identically either way; disabling it just means nothing
     // survives a refresh.
     if (!settings.autoSaveConversations) return;
-    saveConversations(conversations);
-  }, [conversations, hasHydrated, settings.autoSaveConversations]);
+    saveConversations(conversations, activeScope);
+  }, [conversations, hasHydrated, activeScope, user, settings.autoSaveConversations]);
 
   useEffect(() => {
     if (!hasHydrated) return;
-    saveBookmarks(bookmarks);
-  }, [bookmarks, hasHydrated]);
+    if (activeScope !== (user ? String(user.id) : null)) return;
+    saveBookmarks(bookmarks, activeScope);
+  }, [bookmarks, hasHydrated, activeScope, user]);
 
   const activeConversation =
     conversations.find((c) => c.id === activeConversationId) ?? null;
@@ -267,6 +286,18 @@ export default function HomePage() {
     }
   }
 
+  function handlePinConversation(id: string) {
+    setConversations((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, pinned: !c.pinned, updatedAt: nowIso() } : c))
+    );
+  }
+
+  function handleArchiveConversation(id: string) {
+    setConversations((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, archived: !c.archived, updatedAt: nowIso() } : c))
+    );
+  }
+
   function handleToggleBookmark(topic: string, answer: string) {
     setBookmarks((prev) => {
       const existing = prev.find((b) => b.topic === topic);
@@ -300,6 +331,19 @@ export default function HomePage() {
     setSidebarOpen(false);
   }
 
+  function handleSignOut() {
+    // Storage is now scoped per user (see storage.ts / the hydration effect
+    // above), so signing out no longer needs to destructively clear
+    // anything — the guest namespace is already separate from this user's
+    // data. Resetting in-memory state immediately just avoids a one-frame
+    // flash of this user's chats before the scope-change effect reloads
+    // the guest namespace.
+    setConversations([]);
+    setBookmarks([]);
+    setActiveConversationId(null);
+    logout();
+  }
+
   function navbarTitle(): string {
     if (activeView === "dashboard") return "Progress Dashboard";
     if (activeView === "bookmarks") return "Bookmarks";
@@ -327,9 +371,11 @@ export default function HomePage() {
         }}
         onRenameConversation={handleRenameConversation}
         onDeleteConversation={handleDeleteConversation}
+        onPinConversation={handlePinConversation}
+        onArchiveConversation={handleArchiveConversation}
         onNewChat={handleNewChat}
         user={user}
-        onSignOut={logout}
+        onSignOut={handleSignOut}
         activeView={activeView}
         onChangeView={handleChangeView}
         isOpen={sidebarOpen}

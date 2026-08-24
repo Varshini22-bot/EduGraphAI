@@ -95,6 +95,21 @@ class GraphService:
 
 
     # ==========================================================
+    # TOPIC EXISTS
+    #
+    # FIX: this method was called by api/graph_routes.py's
+    # GET /graph/exists/{topic_name} route but never actually defined on
+    # this class, causing an AttributeError (HTTP 500) on every call.
+    # Minimal fix: reuse get_topic() rather than a new Cypher query, so
+    # there's no duplicate topic-lookup logic.
+    # ==========================================================
+
+    @staticmethod
+    def topic_exists(topic: str) -> bool:
+        return GraphService.get_topic(topic) is not None
+
+
+    # ==========================================================
     # GET OUTGOING RELATIONSHIPS
     # ==========================================================
 

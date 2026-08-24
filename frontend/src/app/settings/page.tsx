@@ -89,7 +89,7 @@ export default function SettingsPage() {
   >(null);
 
   function handleExportConversations() {
-    const data = loadConversations();
+    const data = loadConversations(user ? String(user.id) : null);
     const blob = new Blob([JSON.stringify(data, null, 2)], {
       type: "application/json",
     });
@@ -107,11 +107,12 @@ export default function SettingsPage() {
   }
 
   function handleConfirmDestructive() {
+    const scope = user ? String(user.id) : null;
     if (confirmAction === "clear-conversations") {
-      saveConversations([]);
+      saveConversations([], scope);
       showToast("All conversations cleared.");
     } else if (confirmAction === "clear-bookmarks") {
-      saveBookmarks([]);
+      saveBookmarks([], scope);
       showToast("All bookmarks cleared.");
     }
     setConfirmAction(null);

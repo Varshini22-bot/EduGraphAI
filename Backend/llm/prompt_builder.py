@@ -250,17 +250,18 @@ less detail.
 
 Use a clear structure such as:
 
-1. Definition / Introduction
-2. Main Concept
+1. Definition
+2. Need (why this concept/technique matters)
 3. Working Principle
-4. Step-by-Step Process
-5. Algorithm / Pseudocode if applicable
-6. Example
-7. Complexity Analysis if applicable
-8. Advantages
-9. Limitations
-10. Applications
-11. Conclusion
+4. Algorithm
+5. Flow / Step-by-Step Process
+6. Pseudocode if applicable
+7. Example
+8. Complexity Analysis if applicable
+9. Advantages
+10. Disadvantages
+11. Applications
+12. Exam Tips (quick points likely to earn marks, common mistakes to avoid)
 
 Do not force irrelevant sections, but make the answer substantial enough
 to genuinely represent a 7–8 mark university answer.
@@ -312,6 +313,27 @@ Do not add meaningless filler just to increase word count.
 """
 
     # ==========================================================
+    # TOKEN BUDGET
+    #
+    # Must track mark_requirements' word targets above, or the model gets
+    # cut off mid-answer regardless of what the prompt text asks for.
+    # generate_answer() must be called with num_predict=token_budget(marks)
+    # for this to have any effect.
+    # ==========================================================
+
+    @staticmethod
+    def token_budget(marks: int) -> int:
+        if marks <= 2:
+            return 180          # ~50-100 words + headroom
+        if marks <= 5:
+            return 400          # ~150-250 words + headroom
+        if marks <= 8:
+            return 950          # ~450-650 words + headroom
+        if marks <= 10:
+            return 1300         # ~650-900 words + headroom
+        return 1700             # 11-15+: detailed university answer
+
+    # ==========================================================
     # INTENT REQUIREMENTS
     # ==========================================================
 
@@ -322,21 +344,29 @@ Do not add meaningless filler just to increase word count.
             return """
 THE USER EXPLICITLY ASKED FOR AN ALGORITHM.
 
-This is mandatory.
+This is mandatory. Theory alone is NOT an acceptable answer.
 
-The answer MUST contain:
+Structure the algorithm itself using these procedural stages — include
+only the ones that genuinely apply to this algorithm, in this order:
 
-1. Short definition.
-2. A clearly labelled "Algorithm" section.
-3. Numbered algorithm steps.
-4. Pseudocode where appropriate.
-5. A worked example.
-6. Time complexity.
-7. Space complexity.
-8. Advantages/limitations when relevant.
-9. Conclusion.
+1. Input — what data/parameters the algorithm receives.
+2. Initialization — starting values/pointers/variables before the main loop.
+3. Steps — the main repeated procedure, as a numbered list.
+4. Comparison — the specific condition(s) checked at each step.
+5. Search/update — how the working range, state, or position is updated
+   after each comparison (e.g. narrowing a search interval, moving a
+   pointer, updating a running value).
+6. Termination — the exact condition under which the algorithm stops.
+7. Output — what is returned/reported.
 
-Do NOT answer with theory alone.
+Around this core algorithm, also include:
+- A short (1-2 sentence) definition before the algorithm.
+- Pseudocode presented as a numbered list or code block.
+- One worked example applying the algorithm to concrete input.
+- Time complexity and space complexity, with brief justification.
+
+Keep it concise and exam-friendly — use numbered/bulleted points rather
+than long paragraphs. Do not pad with unrelated theory.
 """
 
         if intent == "complexity":

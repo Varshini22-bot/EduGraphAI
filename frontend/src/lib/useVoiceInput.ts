@@ -57,7 +57,19 @@ export function useVoiceInput({ onTranscript }: UseVoiceInputOptions): UseVoiceI
   const recognitionRef = useRef<MinimalSpeechRecognition | null>(null);
   const errorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isMountedRef = useRef(true);
-  const isSupported = getRecognitionConstructor() !== null;
+  // FIX: computing this synchronously (getRecognitionConstructor() !== null)
+  // caused a hydration mismatch — on the server, `window` doesn't exist, so
+  // this was always false there, but true on the client if the browser
+  // supports speech recognition. That made the mic button present in the
+  // client's expected markup but absent from the server-rendered HTML,
+  // which React reported as mismatched text on the wrong button. Starting
+  // at false on both server and the first client render, then flipping to
+  // the real value only after mount (client-only, post-hydration), keeps
+  // the initial render identical on both sides.
+  const [isSupported, setIsSupported] = useState(false);
+  useEffect(() => {
+    setIsSupported(getRecognitionConstructor() !== null);
+  }, []);
 
   // Clears any pending "revert to idle" timer — called before scheduling a
   // new one and on unmount, so timers can never stack up or fire after the

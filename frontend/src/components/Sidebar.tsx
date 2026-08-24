@@ -46,6 +46,8 @@ export default function Sidebar({
   onSelectConversation,
   onRenameConversation,
   onDeleteConversation,
+  onPinConversation,
+  onArchiveConversation,
   onNewChat,
   user,
   onSignOut,
@@ -152,6 +154,8 @@ export default function Sidebar({
               onSelectConversation={onSelectConversation}
               onRenameConversation={onRenameConversation}
               onDeleteConversation={onDeleteConversation}
+              onPinConversation={onPinConversation}
+              onArchiveConversation={onArchiveConversation}
             />
           )}
         </div>

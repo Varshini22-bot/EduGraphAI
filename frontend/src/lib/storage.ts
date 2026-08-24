@@ -5,10 +5,24 @@ import { Bookmark, Conversation } from "./types";
 // backend. Every function is defensive: localStorage can be unavailable
 // (SSR, private browsing) or contain corrupted/foreign data, and none of
 // that should crash the app.
+//
+// SCOPING: keys are namespaced by an optional `scope` (the signed-in
+// user's id). This fixes a real data-leak: previously every user on the
+// same browser shared one fixed key, so signing in as a different person
+// (or just visiting signed out) showed whoever last used that browser's
+// chats. Passing no scope (signed out) uses a separate "guest" namespace,
+// so anonymous browsing never sees a signed-in user's data and vice versa.
 // ---------------------------------------------------------------------------
 
-const CONVERSATIONS_KEY = "kg-learning-assistant:conversations";
-const BOOKMARKS_KEY = "kg-learning-assistant:bookmarks";
+const GUEST_SCOPE = "guest";
+
+function conversationsKey(scope: string | null): string {
+  return `kg-learning-assistant:conversations:${scope ?? GUEST_SCOPE}`;
+}
+
+function bookmarksKey(scope: string | null): string {
+  return `kg-learning-assistant:bookmarks:${scope ?? GUEST_SCOPE}`;
+}
 
 function isConversation(value: unknown): value is Conversation {
   if (!value || typeof value !== "object") return false;
@@ -56,18 +70,25 @@ function writeArray<T>(key: string, value: T[]): void {
   }
 }
 
-export function loadConversations(): Conversation[] {
-  return readArray(CONVERSATIONS_KEY, isConversation);
+/**
+ * @param scope Pass the signed-in user's id, or `null`/omit for the
+ * signed-out "guest" namespace.
+ */
+export function loadConversations(scope?: string | null): Conversation[] {
+  return readArray(conversationsKey(scope ?? null), isConversation);
 }
 
-export function saveConversations(conversations: Conversation[]): void {
-  writeArray(CONVERSATIONS_KEY, conversations);
+export function saveConversations(
+  conversations: Conversation[],
+  scope?: string | null
+): void {
+  writeArray(conversationsKey(scope ?? null), conversations);
 }
 
-export function loadBookmarks(): Bookmark[] {
-  return readArray(BOOKMARKS_KEY, isBookmark);
+export function loadBookmarks(scope?: string | null): Bookmark[] {
+  return readArray(bookmarksKey(scope ?? null), isBookmark);
 }
 
-export function saveBookmarks(bookmarks: Bookmark[]): void {
-  writeArray(BOOKMARKS_KEY, bookmarks);
+export function saveBookmarks(bookmarks: Bookmark[], scope?: string | null): void {
+  writeArray(bookmarksKey(scope ?? null), bookmarks);
 }
