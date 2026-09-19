@@ -1,10 +1,17 @@
 import requests
 import json
 
-from config import (
-    OLLAMA_URL,
-    OLLAMA_MODEL
-)
+import os
+
+try:
+    from config import (
+        OLLAMA_URL,
+        OLLAMA_MODEL
+    )
+except ImportError:
+    OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+    OLLAMA_URL = os.getenv("OLLAMA_URL", f"{OLLAMA_BASE_URL.rstrip('/')}/api/generate")
+    OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2")
 
 
 def generate_quiz(topic: str):

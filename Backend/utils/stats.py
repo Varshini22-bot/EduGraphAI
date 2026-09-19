@@ -21,4 +21,13 @@ def get_stats():
             relationship_query
         ).single()["count"]
 
-    return nodes, relationships
+    return {
+        "nodes": nodes,
+        "relationships": relationships,
+        "total_nodes": nodes,
+        "total_relationships": relationships,
+    }
+
+
+# Backward-compatibility alias
+get_graph_statistics = get_stats
