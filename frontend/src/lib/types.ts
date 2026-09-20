@@ -15,6 +15,15 @@ export interface AskResponse {
   graph_context: GraphContextItem[];
   learning_path: string[];
   recommendations: string[];
+  // DERIVED, not a backend field: api.ts builds this from the same /ask
+  // payload (graph_context + incoming), so the UI can render the knowledge
+  // graph without a second GET /graph/topic request for data the backend
+  // just computed.
+  //
+  // Optional because conversations saved before this change are replayed
+  // from localStorage without it — those messages already have their own
+  // ChatMessage.graph, so a missing value here is simply ignored.
+  graph?: GraphResponse | null;
 }
 
 export interface GraphNodeData {

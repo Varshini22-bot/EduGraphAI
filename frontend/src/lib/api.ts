@@ -124,8 +124,11 @@ interface BackendAskResponse {
   query?: string;
   topic?: string | null;
   answer?: string | null;
-  graph_context?: { relationship: string; target: string }[];
-  incoming?: unknown[];
+  // Same element shape as GET /graph/topic's `outgoing`/`incoming`: /ask
+  // returns the graph_service output verbatim (graph_context IS `outgoing`),
+  // including the *_type / *_subject fields — verified in llm/rag_service.py.
+  graph_context?: BackendGraphRelation[];
+  incoming?: BackendGraphRelation[];
   learning_path?: string[];
   recommendations?: string[];
   error?: string;
@@ -166,14 +169,22 @@ export async function askQuestion(query: string): Promise<AskResponse> {
     // frontend shape (relation/related) here at the API boundary, so
     // types.ts's GraphContextItem and RelatedTopics.tsx stay unchanged.
     // Items missing either field are dropped rather than rendered blank.
-    graph_context: (data.graph_context ?? [])
-      .filter((item) => item && item.relationship && item.target)
-      .map((item) => ({
-        relation: item.relationship,
-        related: item.target,
-      })),
+    // flatMap (not filter+map) because only flatMap's conditional narrows
+    // the optional `target` to a string for the compiler.
+    graph_context: (data.graph_context ?? []).flatMap((item) =>
+      item && item.relationship && item.target
+        ? [{ relation: item.relationship, related: item.target }]
+        : []
+    ),
     learning_path: data.learning_path ?? [],
     recommendations: data.recommendations ?? [],
+    // Built here from THIS SAME response. /ask already returns the topic's
+    // outgoing (as graph_context) and incoming relationships, which is
+    // everything buildGraphResponse needs — so the UI no longer has to make
+    // a second, sequential GET /graph/topic call that re-ran the identical
+    // Cypher the backend had just run. See buildGraphResponse's note on why
+    // the result is byte-identical to what getGraph() returns.
+    graph: buildGraphResponse(data.topic, data.graph_context, data.incoming),
   };
 }
 
@@ -206,12 +217,11 @@ interface BackendGraphTopicResponse {
  * not the user's raw question — verified requirement, since the backend
  * route matches on an exact topic name, not a free-text query.
  *
- * Transforms the backend's { node, outgoing, incoming } shape into the
- * { nodes, links } shape GraphViewer.tsx already expects, so GraphViewer
- * itself does not need to change. The center node's id/label uses the
- * known `topic` string rather than the raw backend `node` object, since
- * that object's own property names for a display label aren't guaranteed
- * by graph_service.py (it returns the raw Neo4j node dict as-is).
+ * NOTE: this is no longer part of the normal ask flow — askQuestion() now
+ * returns the graph built from its own response, so the happy path makes
+ * ONE request instead of two. This is kept (and still exported) as the
+ * standalone/retry path: "Retry graph" in the UI calls it, and it remains
+ * the route for fetching a topic's graph without asking a question.
  */
 export async function getGraph(topic: string): Promise<GraphResponse> {
   const data = await fetchJson<BackendGraphTopicResponse>(
@@ -225,12 +235,38 @@ export async function getGraph(topic: string): Promise<GraphResponse> {
     );
   }
 
+  return buildGraphResponse(topic, data.outgoing, data.incoming);
+}
+
+/**
+ * Turns the backend's { outgoing, incoming } relationship lists into the
+ * { nodes, links } shape GraphViewer.tsx expects.
+ *
+ * Extracted from getGraph() so that askQuestion() can build the graph from
+ * the /ask response it ALREADY has instead of triggering a second HTTP
+ * request for data the backend just computed. Both callers pass the same
+ * field shapes (verified: /ask returns graph_service's `outgoing` verbatim
+ * as graph_context, and `incoming` unchanged), so the graph rendered from
+ * /ask is identical to the one /graph/topic would have produced.
+ *
+ * Kept as a pure function with no fetching and no shared mutable state:
+ * every call builds its own Map/array, so nothing can leak between
+ * requests or between users.
+ */
+function buildGraphResponse(
+  topic: string,
+  outgoing: BackendGraphRelation[] | undefined,
+  incoming: BackendGraphRelation[] | undefined
+): GraphResponse {
   const nodesById = new Map<string, GraphNodeData>();
   const links: GraphLinkData[] = [];
 
+  // The center node's id/label uses the known `topic` string rather than the
+  // raw backend `node` object, since that object's property names for a
+  // display label aren't guaranteed by graph_service.py.
   nodesById.set(topic, { id: topic, label: topic });
 
-  for (const item of data.outgoing ?? []) {
+  for (const item of outgoing ?? []) {
     if (!item.target) continue;
     if (!nodesById.has(item.target)) {
       nodesById.set(item.target, {
@@ -248,7 +284,7 @@ export async function getGraph(topic: string): Promise<GraphResponse> {
     });
   }
 
-  for (const item of data.incoming ?? []) {
+  for (const item of incoming ?? []) {
     if (!item.source) continue;
     if (!nodesById.has(item.source)) {
       nodesById.set(item.source, {

@@ -5,6 +5,15 @@ import ChatHistory from "./ChatHistory";
 interface ConversationContainerProps {
   conversation: Conversation | null;
   isLoading: boolean;
+  // True when a request is in flight in ANY conversation, not just this one.
+  //
+  // isLoading stays per-conversation (so "Thinking..." never appears in a
+  // chat that isn't waiting), but handleSubmitQuery only allows ONE request
+  // at a time across the whole app. Without this, the composer in another
+  // chat looked fully usable: the user typed, pressed send, the textarea
+  // cleared, and the message was silently discarded by that guard. The
+  // composer must therefore reflect the global guard, not the local one.
+  isSendBlocked?: boolean;
   onSubmitQuery: (query: string) => void;
   onRetryAsk: (messageId: string, query: string) => void;
   onRetryGraph: (messageId: string, query: string) => void;
@@ -26,6 +35,7 @@ const EXAMPLE_PROMPTS = [
 export default function ConversationContainer({
   conversation,
   isLoading,
+  isSendBlocked = false,
   onSubmitQuery,
   onRetryAsk,
   onRetryGraph,
@@ -34,6 +44,10 @@ export default function ConversationContainer({
   onToggleBookmark,
 }: ConversationContainerProps) {
   const hasMessages = !!conversation && conversation.messages.length > 0;
+
+  // Applied to the composer only. ChatHistory keeps the per-conversation
+  // isLoading so the typing indicator still belongs to the right chat.
+  const inputDisabled = isLoading || isSendBlocked;
 
   if (!hasMessages) {
     return (
@@ -63,7 +77,7 @@ export default function ConversationContainer({
             learn next.
           </p>
           <div className="w-full max-w-[640px]">
-            <ChatInput onSubmit={onSubmitQuery} isLoading={isLoading} variant="hero" />
+            <ChatInput onSubmit={onSubmitQuery} isLoading={inputDisabled} variant="hero" />
           </div>
           <div className="mt-4.5 flex max-w-[640px] flex-wrap justify-center gap-2">
             {EXAMPLE_PROMPTS.map((prompt) => (
@@ -95,7 +109,7 @@ export default function ConversationContainer({
       />
       <div className="border-t border-border-subtle bg-base px-4 py-4 sm:px-6">
         <div className="mx-auto max-w-[920px]">
-          <ChatInput onSubmit={onSubmitQuery} isLoading={isLoading} />
+          <ChatInput onSubmit={onSubmitQuery} isLoading={inputDisabled} />
         </div>
       </div>
     </div>

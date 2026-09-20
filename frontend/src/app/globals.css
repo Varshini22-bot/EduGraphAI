@@ -8,6 +8,23 @@
    Settings. [data-theme="light"] overrides every variable with a real,
    independently-chosen light palette.
 --------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   Font-family variables. These were previously injected by next/font/google,
+   which fetched the typefaces on the SERVER at compile time — a blocked or
+   slow fonts.googleapis.com request there stalls compilation and, if the
+   retries exhaust, fails the server render (a bare "Internal Server Error").
+   The fonts are now requested by the BROWSER via the <link> tags in
+   layout.tsx, so a failed font fetch degrades gracefully to the
+   sans-serif/monospace fallbacks declared in tailwind.config.ts instead of
+   taking the page down. Variable names are unchanged, so every existing
+   font-display / font-body / font-mono utility keeps working.
+--------------------------------------------------------------------------- */
+:root {
+  --font-space-grotesk: "Space Grotesk";
+  --font-inter: "Inter";
+  --font-jetbrains-mono: "JetBrains Mono";
+}
+
 :root {
   --color-base: 10 13 19;
   --color-surface: 18 21 29;
