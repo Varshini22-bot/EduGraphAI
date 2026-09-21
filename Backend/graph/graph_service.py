@@ -44,24 +44,24 @@ class GraphService:
         LIMIT 20
         """
 
-        with get_session() as session:
-
-            result = session.run(
-                query,
-                keyword=keyword
-            )
-
-            return [
-                {
-                    "label": record["label"],
-                    "type": record["type"],
-                    "subject": record["subject"]
-                }
-
-                for record in result
-
-                if record["label"] is not None
-            ]
+        try:
+            with get_session() as session:
+                result = session.run(
+                    query,
+                    keyword=keyword
+                )
+                return [
+                    {
+                        "label": record["label"],
+                        "type": record["type"],
+                        "subject": record["subject"]
+                    }
+                    for record in result
+                    if record["label"] is not None
+                ]
+        except Exception as e:
+            print(f"[GRAPH SERVICE] search failed: {e}")
+            return []
 
 
     # ==========================================================
@@ -94,21 +94,19 @@ class GraphService:
             COALESCE(n.label, n.name) AS label
         """
 
-        with get_session() as session:
-
-            result = session.run(query)
-
-            labels = [
-                record["label"]
-
-                for record in result
-
-                if record["label"] is not None
-            ]
-
-        GraphService._cached_topic_labels = labels
-
-        return labels
+        try:
+            with get_session() as session:
+                result = session.run(query)
+                labels = [
+                    record["label"]
+                    for record in result
+                    if record["label"] is not None
+                ]
+            GraphService._cached_topic_labels = labels
+            return labels
+        except Exception as e:
+            print(f"[GRAPH SERVICE] get_all_topic_labels failed: {e}")
+            return GraphService._cached_topic_labels or []
 
 
     # ==========================================================
@@ -129,22 +127,20 @@ class GraphService:
             n
         """
 
-        with get_session() as session:
-
-            result = session.run(
-                query,
-                topic=topic
-            )
-
-            record = result.single()
-
-            if record is None:
-
-                return None
-
-            node = record["n"]
-
-            return dict(node)
+        try:
+            with get_session() as session:
+                result = session.run(
+                    query,
+                    topic=topic
+                )
+                record = result.single()
+                if record is None:
+                    return None
+                node = record["n"]
+                return dict(node)
+        except Exception as e:
+            print(f"[GRAPH SERVICE] get_topic failed for '{topic}': {e}")
+            return None
 
 
     # ==========================================================
@@ -187,30 +183,25 @@ class GraphService:
             m.subject AS target_subject
         """
 
-        with get_session() as session:
-
-            result = session.run(
-                query,
-                topic=topic
-            )
-
-            return [
-
-                {
-                    "relationship": record["relationship"],
-
-                    "target": record["target"],
-
-                    "target_type": record["target_type"],
-
-                    "target_subject": record["target_subject"]
-
-                }
-
-                for record in result
-
-                if record["target"] is not None
-            ]
+        try:
+            with get_session() as session:
+                result = session.run(
+                    query,
+                    topic=topic
+                )
+                return [
+                    {
+                        "relationship": record["relationship"],
+                        "target": record["target"],
+                        "target_type": record["target_type"],
+                        "target_subject": record["target_subject"]
+                    }
+                    for record in result
+                    if record["target"] is not None
+                ]
+        except Exception as e:
+            print(f"[GRAPH SERVICE] get_outgoing failed for '{topic}': {e}")
+            return []
 
 
     # ==========================================================
@@ -238,30 +229,25 @@ class GraphService:
             m.subject AS source_subject
         """
 
-        with get_session() as session:
-
-            result = session.run(
-                query,
-                topic=topic
-            )
-
-            return [
-
-                {
-                    "source": record["source"],
-
-                    "relationship": record["relationship"],
-
-                    "source_type": record["source_type"],
-
-                    "source_subject": record["source_subject"]
-
-                }
-
-                for record in result
-
-                if record["source"] is not None
-            ]
+        try:
+            with get_session() as session:
+                result = session.run(
+                    query,
+                    topic=topic
+                )
+                return [
+                    {
+                        "source": record["source"],
+                        "relationship": record["relationship"],
+                        "source_type": record["source_type"],
+                        "source_subject": record["source_subject"]
+                    }
+                    for record in result
+                    if record["source"] is not None
+                ]
+        except Exception as e:
+            print(f"[GRAPH SERVICE] get_incoming failed for '{topic}': {e}")
+            return []
 
 
     # ==========================================================
@@ -290,30 +276,25 @@ class GraphService:
             m.subject AS target_subject
         """
 
-        with get_session() as session:
-
-            result = session.run(
-                query,
-                topic=topic
-            )
-
-            return [
-
-                {
-                    "relationship": record["relationship"],
-
-                    "target": record["target"],
-
-                    "target_type": record["target_type"],
-
-                    "target_subject": record["target_subject"]
-
-                }
-
-                for record in result
-
-                if record["target"] is not None
-            ]
+        try:
+            with get_session() as session:
+                result = session.run(
+                    query,
+                    topic=topic
+                )
+                return [
+                    {
+                        "relationship": record["relationship"],
+                        "target": record["target"],
+                        "target_type": record["target_type"],
+                        "target_subject": record["target_subject"]
+                    }
+                    for record in result
+                    if record["target"] is not None
+                ]
+        except Exception as e:
+            print(f"[GRAPH SERVICE] get_neighbors failed for '{topic}': {e}")
+            return []
 
 
     # ==========================================================
@@ -367,14 +348,23 @@ class GraphService:
             }) AS incoming
         """
 
-        with get_session() as session:
-
-            result = session.run(
-                query,
-                topic=topic
-            )
-
-            record = result.single()
+        try:
+            with get_session() as session:
+                result = session.run(
+                    query,
+                    topic=topic
+                )
+                record = result.single()
+        except Exception as e:
+            print(f"[GRAPH SERVICE] Error fetching complete response for topic '{topic}': {e}")
+            return {
+                "status": False,
+                "message": "Database connection unavailable or paused",
+                "is_connection_error": True,
+                "node": None,
+                "outgoing": [],
+                "incoming": []
+            }
 
         if record is None:
 
@@ -383,6 +373,8 @@ class GraphService:
                 "status": False,
 
                 "message": "Topic not found",
+
+                "is_connection_error": False,
 
                 "node": None,
 

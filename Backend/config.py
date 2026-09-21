@@ -6,6 +6,7 @@ All project-wide settings should be defined here.
 """
 
 import os
+from pathlib import Path
 
 # Load secrets from a local .env file for non-Docker (local) runs. This is
 # best-effort: python-dotenv is a project dependency, but if it is ever
@@ -13,12 +14,36 @@ import os
 # .env inside the image (it is .dockerignore'd) and Compose injects the same
 # variables as real environment variables, so this call is simply a no-op
 # there. Values already present in the real environment are NOT overridden.
+def _load_env_fallback(filepath: Path):
+    if not filepath.is_file():
+        return
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                k, v = line.split("=", 1)
+                k = k.strip()
+                v = v.strip().strip("'\"")
+                if k and k not in os.environ:
+                    os.environ[k] = v
+    except Exception:
+        pass
+
+backend_env = Path(__file__).resolve().parent / ".env"
+root_env = Path(__file__).resolve().parent.parent / ".env"
+
 try:
     from dotenv import load_dotenv
-
     load_dotenv()
+    if backend_env.exists():
+        load_dotenv(backend_env)
+    if root_env.exists():
+        load_dotenv(root_env)
 except Exception:
-    pass
+    _load_env_fallback(backend_env)
+    _load_env_fallback(root_env)
 
 # ==========================================================
 # Neo4j Configuration
@@ -35,6 +60,31 @@ NEO4J_USERNAME = os.getenv(
 )
 
 NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "")
+
+NEO4J_DATABASE = os.getenv(
+    "NEO4J_DATABASE",
+    "neo4j"
+)
+
+# Neo4j Operation Mode:
+# - 'auto': Attempt primary (cloud/configured); auto-failover to fallback (local) if primary is paused/down
+# - 'cloud': Strictly use primary cloud instance
+# - 'local': Strictly use fallback/local instance
+NEO4J_MODE = os.getenv("NEO4J_MODE", "auto").lower().strip()
+
+# Fallback Local Neo4j connection (used when primary cloud instance is paused or unreachable)
+NEO4J_FALLBACK_URI = os.getenv(
+    "NEO4J_FALLBACK_URI",
+    "bolt://127.0.0.1:7687"
+)
+NEO4J_FALLBACK_USERNAME = os.getenv(
+    "NEO4J_FALLBACK_USERNAME",
+    "neo4j"
+)
+NEO4J_FALLBACK_PASSWORD = os.getenv(
+    "NEO4J_FALLBACK_PASSWORD",
+    os.getenv("NEO4J_PASSWORD", "")
+)
 
 # ==========================================================
 # Ollama Configuration
