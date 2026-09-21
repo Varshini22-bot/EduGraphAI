@@ -10,10 +10,18 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+k8s/*secret*.yaml
+!k8s/02-secret.example.yaml
+
+# Local SQLite databases
+*.db
+*.sqlite
+*.sqlite3
 
 # Python
 __pycache__/
 *.py[cod]
+*.pyo
 .venv/
 venv/
 env/

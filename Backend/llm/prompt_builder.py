@@ -262,9 +262,15 @@ Use a clear structure such as:
 10. Disadvantages
 11. Applications
 12. Exam Tips (quick points likely to earn marks, common mistakes to avoid)
+13. Conclusion (a short closing paragraph, 2-3 sentences)
 
 Do not force irrelevant sections, but make the answer substantial enough
-to genuinely represent a 7–8 mark university answer.
+to genuinely represent a 7-8 mark university answer.
+
+Sections that do not apply to this topic should be OMITTED, not filled
+with padding. A conceptual topic (for example a definition-style or
+process-style topic) has no algorithm, pseudocode or complexity - skip
+those entirely rather than inventing them.
 """
 
         if marks <= 10:
@@ -287,6 +293,10 @@ Include:
 - limitations
 - applications
 - conclusion
+
+Sections that do not apply to this topic should be OMITTED rather than
+padded. Do not invent an algorithm or a complexity analysis for a
+conceptual topic that has neither.
 """
 
         return """

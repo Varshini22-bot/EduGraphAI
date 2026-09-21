@@ -24,12 +24,16 @@ from database.models import User
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
-# NOTE: for a real deployment, move SECRET_KEY into config.py / a .env file
-# and load it via os.getenv there instead. Kept local here for now so this
-# step doesn't require touching your existing config.py.
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "change-this-secret-in-production")
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
+try:
+    from config import (
+        JWT_SECRET_KEY as SECRET_KEY,
+        JWT_ALGORITHM as ALGORITHM,
+        ACCESS_TOKEN_EXPIRE_MINUTES,
+    )
+except ImportError:
+    SECRET_KEY = os.getenv("JWT_SECRET_KEY", "knowledge_graph_secret_key_change_this")
+    ALGORITHM = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 
 pwd_context = CryptContext(
     schemes=["pbkdf2_sha256"],

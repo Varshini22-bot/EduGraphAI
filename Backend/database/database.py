@@ -23,7 +23,15 @@ from typing import Generator
 # this database/ package), so it sits alongside app.py and config.py rather
 # than inside the database/ folder itself.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'knowledge_graph.db')}"
+
+# DATABASE_URL can be overridden via the environment (e.g. Docker points it
+# at a mounted volume so user accounts survive container restarts). When the
+# variable is not set it falls back to the original file beside app.py, so
+# existing local (non-Docker) behavior is completely unchanged.
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    f"sqlite:///{os.path.join(BASE_DIR, 'knowledge_graph.db')}",
+)
 
 # ---------------------------------------------------------------------------
 # Engine

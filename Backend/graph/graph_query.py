@@ -4,21 +4,13 @@ graph_query.py
 Handles all communication with the Neo4j Knowledge Graph.
 """
 
-from neo4j import GraphDatabase
-from config import (
-    NEO4J_URI,
-    NEO4J_USERNAME,
-    NEO4J_PASSWORD,
-)
+from graph.neo4j_client import get_driver, get_session
 
 # -------------------------------------------------------
-# Neo4j Driver
+# Neo4j Driver (shared instance)
 # -------------------------------------------------------
 
-driver = GraphDatabase.driver(
-    NEO4J_URI,
-    auth=(NEO4J_USERNAME, NEO4J_PASSWORD)
-)
+driver = get_driver()
 
 # -------------------------------------------------------
 # Get Related Concepts

@@ -1,0 +1,21 @@
+# ==============================================================================
+# EduGraphAI - Persistent Volume Claim for SQLite Auth Database
+#
+# Ensures user accounts, registrations, and credentials persist across
+# backend pod restarts and rolling updates without ephemeral data loss.
+# ==============================================================================
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backend-data-pvc
+  namespace: edugraphai
+  labels:
+    app.kubernetes.io/name: edugraphai
+    app.kubernetes.io/component: storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

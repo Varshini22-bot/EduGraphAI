@@ -1,4 +1,4 @@
-from graph.graph_query import driver
+from graph.neo4j_client import get_session
 
 
 def get_learning_path(topic):
@@ -9,12 +9,14 @@ def get_learning_path(topic):
     WHERE toLower(COALESCE(n.label, n.name))
           = toLower($topic)
 
+    WITH n LIMIT 1
+
     MATCH (n)-[:USES]->(m)
 
     RETURN COALESCE(m.label, m.name) AS concept
     """
 
-    with driver.session() as session:
+    with get_session() as session:
 
         result = session.run(
             query,

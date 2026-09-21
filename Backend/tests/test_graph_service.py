@@ -8,7 +8,7 @@ print(GraphService.topic_exists(topic))
 
 print("--------------------------------")
 
-print(GraphService.get_node(topic))
+print(GraphService.get_topic(topic))
 
 print("--------------------------------")
 

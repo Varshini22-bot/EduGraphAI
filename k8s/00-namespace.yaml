@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: edugraphai
+  labels:
+    app.kubernetes.io/name: edugraphai
+    app.kubernetes.io/part-of: edugraphai

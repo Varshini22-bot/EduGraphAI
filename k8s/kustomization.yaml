@@ -1,0 +1,25 @@
+# ==============================================================================
+# EduGraphAI - Kustomization Manifest
+#
+# Enables single-command declarative deployment of all EduGraphAI resources:
+#   kubectl apply -k k8s/
+# ==============================================================================
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: edugraphai
+
+resources:
+  - 00-namespace.yaml
+  - 01-configmap.yaml
+  - 03-pvc.yaml
+  - 04-backend-deployment.yaml
+  - 05-backend-service.yaml
+  - 06-frontend-deployment.yaml
+  - 07-frontend-service.yaml
+
+# Note:
+# 1. '02-secret.example.yaml' is omitted because real secrets must be created via:
+#      kubectl create secret generic edugraph-secret ...
+# 2. '08-neo4j-statefulset.yaml' can be added if running in-cluster Neo4j.

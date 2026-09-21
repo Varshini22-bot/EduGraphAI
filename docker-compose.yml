@@ -1,0 +1,138 @@
+# ==============================================================================
+# EduGraphAI - Production-Oriented Docker Compose Architecture
+# Academic Final-Year Project Deployment Configuration
+#
+# Quick Start:
+#   1. Copy .env.example to .env and configure passwords:
+#      cp .env.example .env
+#   2. Start services (Neo4j, Backend, Frontend):
+#      docker compose up --build -d
+#
+# Notes on Ollama LLM:
+#   By default, Backend connects to the host's native Ollama instance at:
+#     http://host.docker.internal:11434
+#   If you prefer a fully containerized Ollama, start with the profile:
+#     docker compose --profile with-ollama up --build -d
+# ==============================================================================
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. Neo4j Graph Database
+  # ----------------------------------------------------------------------------
+  neo4j:
+    image: neo4j:5-community
+    container_name: edugraph-neo4j
+    restart: unless-stopped
+    ports:
+      - "7474:7474"   # Neo4j Browser UI
+      - "7687:7687"   # Bolt Protocol Endpoint
+    environment:
+      - NEO4J_AUTH=${NEO4J_USERNAME:-neo4j}/${NEO4J_PASSWORD:-password}
+      - NEO4J_server_memory_pagecache_size=512M
+      - NEO4J_server_memory_heap_initial__size=512M
+      - NEO4J_server_memory_heap_max__size=1G
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    networks:
+      - edugraph-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:7474 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
+
+  # ----------------------------------------------------------------------------
+  # 2. FastAPI Backend
+  # ----------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: edugraph-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - NEO4J_URI=${NEO4J_URI:-bolt://neo4j:7687}
+      - NEO4J_USERNAME=${NEO4J_USERNAME:-neo4j}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD:-password}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.2:latest}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-insecure-default-change-in-env}
+      - JWT_ALGORITHM=${JWT_ALGORITHM:-HS256}
+      - JWT_ACCESS_TOKEN_EXPIRE_MINUTES=${JWT_ACCESS_TOKEN_EXPIRE_MINUTES:-60}
+      - SQLITE_DB_PATH=${SQLITE_DB_PATH:-/app/data/knowledge_graph.db}
+      - FASTAPI_HOST=0.0.0.0
+      - FASTAPI_PORT=8000
+    extra_hosts:
+      # Resolves host.docker.internal to host gateway across Linux, Windows, macOS
+      - "host.docker.internal:host-gateway"
+    volumes:
+      # Persistent SQLite user auth database
+      - backend_data:/app/data
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    networks:
+      - edugraph-net
+
+  # ----------------------------------------------------------------------------
+  # 3. Next.js Frontend (Standalone Multi-stage)
+  # ----------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    container_name: edugraph-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - edugraph-net
+
+  # ----------------------------------------------------------------------------
+  # 4. Optional Ollama Container (Run via: --profile with-ollama)
+  # ----------------------------------------------------------------------------
+  ollama:
+    image: ollama/ollama:latest
+    container_name: edugraph-ollama
+    profiles:
+      - with-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - edugraph-net
+
+# ------------------------------------------------------------------------------
+# Persistent Volumes
+# ------------------------------------------------------------------------------
+volumes:
+  backend_data:
+    name: edugraph_backend_data
+  neo4j_data:
+    name: edugraph_neo4j_data
+  neo4j_logs:
+    name: edugraph_neo4j_logs
+  ollama_data:
+    name: edugraph_ollama_data
+
+# ------------------------------------------------------------------------------
+# Isolated Bridge Network
+# ------------------------------------------------------------------------------
+networks:
+  edugraph-net:
+    name: edugraph-network
+    driver: bridge

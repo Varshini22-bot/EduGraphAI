@@ -1,0 +1,25 @@
+# ==============================================================================
+# EduGraphAI - Frontend Service
+#
+# Exposes the Next.js frontend to the developer / student browser via NodePort 30080.
+# Access URL: http://localhost:30080 (or http://<node-ip>:30080)
+# ==============================================================================
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: edugraph-frontend
+  namespace: edugraphai
+  labels:
+    app.kubernetes.io/name: edugraphai
+    app.kubernetes.io/component: frontend
+spec:
+  type: NodePort
+  selector:
+    app: edugraph-frontend
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      nodePort: 30080
+      protocol: TCP

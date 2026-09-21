@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { buildContextualActionQuery, ContextualAction } from "@/lib/answerIntent";
 
+type SpeechState = "idle" | "speaking" | "paused";
+
 interface ResponseActionsProps {
   answerText: string;
   topic: string;
@@ -13,11 +15,40 @@ interface ResponseActionsProps {
   onSelectTopic: (query: string) => void;
 }
 
-type SpeechState = "idle" | "speaking" | "paused";
-type Feedback = "up" | "down" | null;
-
 function isSpeechSynthesisSupported(): boolean {
   return typeof window !== "undefined" && "speechSynthesis" in window;
+}
+
+// ---------------------------------------------------------------------------
+// Read Aloud reads the ANSWER DATA (the answerText prop), never the rendered
+// DOM — so action-bar labels/icons (Copy, Bookmark, Regenerate, ⋯, ▶, ■ …)
+// can never leak into speech. This strips the Markdown *scaffolding* the
+// answer text carries (heading #, list bullets, emphasis/code marks, link
+// URLs, and horizontal-rule / setext separator lines) so the synthesizer
+// speaks the prose, not "hash", "asterisk", or "dash dash dash".
+//
+// Deliberately conservative: only whole-line separators (e.g. "---", "***",
+// "-------------") are removed. Ordinary hyphens and em-dashes inside a
+// sentence are meaningful in educational answers and are left untouched.
+// ---------------------------------------------------------------------------
+function cleanTextForSpeech(text: string): string {
+  return text
+    // Horizontal rules / setext underlines: a whole line of only -, *, _ or =
+    // (3+), e.g. "---", "***", "_____", "=====", "-------------".
+    .replace(/^[ \t]*([-*_=])(?:[ \t]*\1){2,}[ \t]*$/gm, "\n")
+    // Leading heading markers: "### Title" -> "Title"
+    .replace(/^[ \t]*#{1,6}[ \t]+/gm, "")
+    // Leading list bullets: "- item" / "* item" / "+ item" / "• item" -> "item"
+    .replace(/^[ \t]*[-*+•][ \t]+/gm, "")
+    // Blockquote marker: "> quote" -> "quote"
+    .replace(/^[ \t]*>[ \t]?/gm, "")
+    // Markdown links: "[text](url)" -> "text"
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    // Inline emphasis / inline-code markers (**bold**, _italic_, `code`)
+    .replace(/[`*_]/g, "")
+    // Collapse the whitespace/newlines left behind into single spaces
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 // Educational follow-up actions — each maps to a stable ContextualAction
@@ -49,7 +80,6 @@ export default function ResponseActions({
   const [speechState, setSpeechState] = useState<SpeechState>("idle");
   const [speechError, setSpeechError] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [feedback, setFeedback] = useState<Feedback>(null);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -121,7 +151,11 @@ export default function ResponseActions({
     }
 
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(answerText);
+    // Speak the cleaned ANSWER text only. Fall back to the raw answer on the
+    // (practically impossible) chance cleaning empties it, so Read Aloud is
+    // never silently a no-op.
+    const speechText = cleanTextForSpeech(answerText) || answerText;
+    const utterance = new SpeechSynthesisUtterance(speechText);
     utterance.onend = () => setSpeechState("idle");
     utterance.onerror = () => {
       setSpeechState("idle");
@@ -227,29 +261,6 @@ export default function ResponseActions({
         className="flex items-center gap-1 rounded-md px-2 py-1 text-[11.5px] text-ink-tertiary transition-colors hover:bg-hoverbg hover:text-ink-primary"
       >
         ↻ <span className="hidden sm:inline">Regenerate</span>
-      </button>
-
-      <button
-        onClick={() => setFeedback((prev) => (prev === "up" ? null : "up"))}
-        title="Good answer"
-        aria-label="Good answer"
-        aria-pressed={feedback === "up"}
-        className={`flex items-center rounded-md px-2 py-1 text-[13px] transition-colors hover:bg-hoverbg ${
-          feedback === "up" ? "text-teal" : "text-ink-tertiary hover:text-ink-primary"
-        }`}
-      >
-        👍
-      </button>
-      <button
-        onClick={() => setFeedback((prev) => (prev === "down" ? null : "down"))}
-        title="Poor answer"
-        aria-label="Poor answer"
-        aria-pressed={feedback === "down"}
-        className={`flex items-center rounded-md px-2 py-1 text-[13px] transition-colors hover:bg-hoverbg ${
-          feedback === "down" ? "text-danger" : "text-ink-tertiary hover:text-ink-primary"
-        }`}
-      >
-        👎
       </button>
 
       <button

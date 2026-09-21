@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
@@ -16,6 +17,7 @@ router = APIRouter()
 class QueryRequest(BaseModel):
 
     question: str
+    context_topic: Optional[str] = None
 
 
 # ============================================================
@@ -23,7 +25,7 @@ class QueryRequest(BaseModel):
 # ============================================================
 
 @router.get("/ask")
-def ask(query: str):
+def ask(query: str, context_topic: Optional[str] = None):
 
     if not query or not query.strip():
 
@@ -42,7 +44,8 @@ def ask(query: str):
     try:
 
         response = RAGService.answer(
-            query.strip()
+            query.strip(),
+            context_topic=context_topic.strip() if context_topic else None,
         )
 
         return response
@@ -83,7 +86,8 @@ def query(request: QueryRequest):
     try:
 
         response = RAGService.answer(
-            request.question.strip()
+            request.question.strip(),
+            context_topic=request.context_topic.strip() if request.context_topic else None,
         )
 
         return response

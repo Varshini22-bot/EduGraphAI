@@ -1,0 +1,125 @@
+# ==============================================================================
+# EduGraphAI - Optional In-Cluster Neo4j StatefulSet & Service
+#
+# ARCHITECTURAL NOTE FOR VIVA:
+# This manifest demonstrates how Neo4j can be run natively inside Kubernetes using
+# a StatefulSet with PersistentVolumeClaims (PVCs) for transactional graph storage.
+#
+# In local development and quick viva demonstrations, EduGraphAI defaults to connecting
+# to an external/host Neo4j instance to conserve memory. If you wish to run Neo4j
+# entirely within the Kubernetes cluster, apply this file:
+#
+#   kubectl apply -f k8s/08-neo4j-statefulset.yaml
+# ==============================================================================
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: neo4j
+  namespace: edugraphai
+  labels:
+    app.kubernetes.io/name: edugraphai
+    app.kubernetes.io/component: graph-database
+spec:
+  serviceName: neo4j
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neo4j
+  template:
+    metadata:
+      labels:
+        app: neo4j
+        app.kubernetes.io/name: edugraphai
+        app.kubernetes.io/component: graph-database
+    spec:
+      containers:
+        - name: neo4j
+          image: neo4j:5-community
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 7474
+              name: http
+            - containerPort: 7687
+              name: bolt
+
+          env:
+            - name: NEO4J_AUTH
+              value: "neo4j/$(NEO4J_PASSWORD)"
+            - name: NEO4J_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: edugraph-secret
+                  key: NEO4J_PASSWORD
+            - name: NEO4J_server_memory_pagecache_size
+              value: "512M"
+            - name: NEO4J_server_memory_heap_initial__size
+              value: "512M"
+            - name: NEO4J_server_memory_heap_max__size
+              value: "1G"
+
+          resources:
+            requests:
+              cpu: 250m
+              memory: 1Gi
+            limits:
+              cpu: 1500m
+              memory: 2Gi
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 7474
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 7474
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+
+          volumeMounts:
+            - name: neo4j-data
+              mountPath: /data
+            - name: neo4j-logs
+              mountPath: /logs
+
+  volumeClaimTemplates:
+    - metadata:
+        name: neo4j-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 2Gi
+    - metadata:
+        name: neo4j-logs
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: neo4j
+  namespace: edugraphai
+  labels:
+    app.kubernetes.io/name: edugraphai
+    app.kubernetes.io/component: graph-database
+spec:
+  type: ClusterIP
+  selector:
+    app: neo4j
+  ports:
+    - name: http
+      port: 7474
+      targetPort: 7474
+    - name: bolt
+      port: 7687
+      targetPort: 7687

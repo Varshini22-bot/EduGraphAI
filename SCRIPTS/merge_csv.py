@@ -1,8 +1,9 @@
 import pandas as pd
 import os
 
-# Project folder
-base_folder = r"C:\Users\varsh\OneDrive\Attachments\Desktop\Knowledge_Graph_Project"
+# Project folder (dynamically resolved from script location)
+script_dir = os.path.dirname(os.path.abspath(__file__))
+base_folder = os.path.abspath(os.path.join(script_dir, ".."))
 
 node_frames = []
 edge_frames = []
@@ -11,7 +12,9 @@ subjects = ["ADA", "CN", "DSA", "ML", "OS", "SEPM"]
 
 for subject in subjects:
 
-    subject_folder = os.path.join(base_folder, subject)
+    subject_folder = os.path.join(base_folder, "data", subject)
+    if not os.path.exists(subject_folder):
+        subject_folder = os.path.join(base_folder, subject)
 
     node_file = f"{subject.lower()}_nodes.csv"
     edge_file = f"{subject.lower()}_edges.csv"
