@@ -88,8 +88,8 @@ OLLAMA_NUM_CTX = int(
 # FastAPI Configuration
 # ==========================================================
 
-FASTAPI_HOST = "127.0.0.1"
-FASTAPI_PORT = 8000
+FASTAPI_HOST = os.getenv("FASTAPI_HOST", "0.0.0.0")
+FASTAPI_PORT = int(os.getenv("FASTAPI_PORT", "8000"))
 
 API_TITLE = "Knowledge Graph Learning Assistant API"
 API_VERSION = "1.0.0"

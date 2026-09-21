@@ -1,0 +1,28 @@
+# Dependencies and build outputs
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Environment files with potential secrets or local overrides
+.env
+.env*.local
+.env.development
+.env.production
+.env.test
+
+# Logs and temporary files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+
+# Git and IDE files
+.git/
+.gitignore
+.vscode/
+.idea/
