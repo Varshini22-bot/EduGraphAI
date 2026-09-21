@@ -1,5 +1,6 @@
 import re
 import time
+from concurrent.futures import ThreadPoolExecutor
 
 from graph.graph_service import GraphService
 from graph.learning_path import get_learning_path
@@ -8,6 +9,31 @@ from graph.recommendation import get_recommendations
 from llm.topic_extractor import TopicExtractor
 from llm.prompt_builder import PromptBuilder
 from llm.answer_generator import generate_answer
+
+_EXECUTOR = ThreadPoolExecutor(max_workers=4)
+
+
+def _fetch_recommendations_safe(topic_name: str) -> list:
+    try:
+        return get_recommendations(topic_name)
+    except Exception as error:
+        print(f"Recommendation error: {error}")
+        return []
+
+
+def _extract_learning_path(topic_name: str, outgoing: list) -> list:
+    lp = [
+        item["target"]
+        for item in outgoing
+        if item.get("relationship") == "USES" and item.get("target") is not None
+    ]
+    if lp:
+        return lp
+    try:
+        return get_learning_path(topic_name)
+    except Exception as error:
+        print(f"Learning path error: {error}")
+        return []
 
 
 # ==========================================================
@@ -29,22 +55,27 @@ ACTION_PHRASE_MAP = {
 }
 
 
-def _detect_contextual_action(question: str):
+def _detect_contextual_action(question: str, context_topic: str = None):
     """
     Returns (topic_name, action, marks) if the question matches
-    the frontend's contextual-action format.
+    the frontend's contextual-action format or is a direct follow-up action
+    referencing an active conversation topic.
 
     Example:
         Binary Search — give a more detailed explanation, for 8 marks
+        Explain it more simply (with context_topic="Binary Search")
     """
 
     match = CONTEXTUAL_PATTERN.match(question.strip())
 
-    if not match:
+    if match:
+        topic_part = match.group(1).strip()
+        instruction_part = match.group(2).strip()
+    elif context_topic and context_topic.strip():
+        topic_part = context_topic.strip()
+        instruction_part = question.strip()
+    else:
         return None
-
-    topic_part = match.group(1).strip()
-    instruction_part = match.group(2).strip()
 
     marks = None
 
@@ -59,7 +90,7 @@ def _detect_contextual_action(question: str):
     # explanation instead. The topic itself never drifted (TopicExtractor
     # still resolves it from the text), but the requested action was lost.
     marks_match = re.search(
-        r",\s*for\s+(\d+)(?:\s*[-–]\s*(\d+))?\s*marks?\s*$",
+        r",?\s*for\s+(\d+)(?:\s*[-–]\s*(\d+))?\s*marks?\s*$",
         instruction_part,
         re.IGNORECASE,
     )
@@ -72,9 +103,40 @@ def _detect_contextual_action(question: str):
         marks = int(marks_match.group(2) or marks_match.group(1))
         instruction_part = instruction_part[:marks_match.start()].strip()
 
-    instruction_lower = instruction_part.lower().rstrip(".")
+    instruction_lower = instruction_part.lower().rstrip(".?!")
 
     action = ACTION_PHRASE_MAP.get(instruction_lower)
+
+    if action is None:
+        synonyms = {
+            "explain more simply": "simpler",
+            "simpler": "simpler",
+            "make it simpler": "simpler",
+            "explain simpler": "simpler",
+            "more detail": "more_detail",
+            "in detail": "more_detail",
+            "explain in detail": "more_detail",
+            "explain this in detail": "more_detail",
+            "detailed explanation": "more_detail",
+            "give revision notes": "revision_notes",
+            "revision notes": "revision_notes",
+            "make revision notes": "revision_notes",
+            "viva questions": "viva_questions",
+            "give viva questions": "viva_questions",
+            "exam questions": "exam_questions",
+            "likely exam questions": "exam_questions",
+            "give likely exam questions": "exam_questions",
+            "short quiz": "short_quiz",
+            "give a quiz": "short_quiz",
+            "quiz": "short_quiz",
+            "prerequisites": "prerequisites",
+            "show prerequisites": "prerequisites",
+            "related concepts": "related_concepts",
+            "related topics": "related_concepts",
+            "compare": "compare",
+            "compare with similar concept": "compare",
+        }
+        action = synonyms.get(instruction_lower)
 
     if action is None:
         return None
@@ -89,7 +151,7 @@ def _detect_contextual_action(question: str):
 class RAGService:
 
     @staticmethod
-    def answer(question: str):
+    def answer(question: str, context_topic: str = None):
 
         # ==================================================
         # TOTAL TIMER
@@ -120,12 +182,17 @@ class RAGService:
         print("RAG REQUEST STARTED")
         print("=" * 70)
         print(f"Question: {question}")
+        if context_topic:
+            print(f"Context Topic: {context_topic}")
 
         # ==================================================
         # STEP 0: CONTEXTUAL ACTION BYPASS
         # ==================================================
 
-        contextual = _detect_contextual_action(question)
+        contextual = _detect_contextual_action(
+            question,
+            context_topic=context_topic,
+        )
 
         if contextual is not None:
 
@@ -177,6 +244,12 @@ class RAGService:
             outgoing = graph.get("outgoing", [])
 
             incoming = graph.get("incoming", [])
+
+            # Launch recommendations concurrently while prompt and LLM execute
+            rec_future = _EXECUTOR.submit(
+                _fetch_recommendations_safe,
+                topic_name
+            )
 
             # --------------------------------------------------
             # PROMPT CONSTRUCTION TIMER
@@ -256,59 +329,29 @@ class RAGService:
             )
 
             # --------------------------------------------------
-            # LEARNING PATH TIMER
+            # LEARNING PATH & RECOMMENDATIONS
             # --------------------------------------------------
 
-            learning_path_start = time.perf_counter()
-
-            try:
-
-                learning_path = get_learning_path(topic_name)
-
-            except Exception as error:
-
-                print(
-                    f"Learning path error: {error}"
-                )
-
-                learning_path = []
-
-            learning_path_time = (
-                time.perf_counter() - learning_path_start
-            )
+            lp_start = time.perf_counter()
+            learning_path = _extract_learning_path(topic_name, outgoing)
+            learning_path_time = time.perf_counter() - lp_start
 
             print(
-                f"[TIMING] Learning path: "
-                f"{learning_path_time:.2f} seconds"
+                f"[TIMING] Learning path (derived): "
+                f"{learning_path_time:.4f} seconds"
             )
 
-            # --------------------------------------------------
-            # RECOMMENDATIONS TIMER
-            # --------------------------------------------------
-
-            recommendations_start = time.perf_counter()
-
+            rec_start = time.perf_counter()
             try:
-
-                recommendations = get_recommendations(
-                    topic_name
-                )
-
+                recommendations = rec_future.result()
             except Exception as error:
-
-                print(
-                    f"Recommendation error: {error}"
-                )
-
+                print(f"Recommendation future error: {error}")
                 recommendations = []
-
-            recommendations_time = (
-                time.perf_counter() - recommendations_start
-            )
+            recommendations_time = time.perf_counter() - rec_start
 
             print(
-                f"[TIMING] Recommendations: "
-                f"{recommendations_time:.2f} seconds"
+                f"[TIMING] Recommendations (concurrent await): "
+                f"{recommendations_time:.4f} seconds"
             )
 
             # --------------------------------------------------
@@ -345,7 +388,8 @@ class RAGService:
         topic_start = time.perf_counter()
 
         topic_name = TopicExtractor.extract_topic(
-            question
+            question,
+            context_topic=context_topic,
         )
 
         topic_time = time.perf_counter() - topic_start
@@ -438,6 +482,12 @@ class RAGService:
             []
         )
 
+        # Launch recommendations concurrently while prompt and LLM execute
+        rec_future = _EXECUTOR.submit(
+            _fetch_recommendations_safe,
+            topic_name
+        )
+
         # ==================================================
         # STEP 4: BUILD GROUNDED PROMPT
         # ==================================================
@@ -527,65 +577,29 @@ class RAGService:
         )
 
         # ==================================================
-        # STEP 6: LEARNING PATH
+        # STEP 6: LEARNING PATH & RECOMMENDATIONS
         # ==================================================
 
-        learning_path_start = time.perf_counter()
-
-        try:
-
-            learning_path = get_learning_path(
-                topic_name
-            )
-
-        except Exception as error:
-
-            print(
-                f"Learning path error: "
-                f"{error}"
-            )
-
-            learning_path = []
-
-        learning_path_time = (
-            time.perf_counter()
-            - learning_path_start
-        )
+        lp_start = time.perf_counter()
+        learning_path = _extract_learning_path(topic_name, outgoing)
+        learning_path_time = time.perf_counter() - lp_start
 
         print(
-            f"[TIMING] Learning path: "
-            f"{learning_path_time:.2f} seconds"
+            f"[TIMING] Learning path (derived): "
+            f"{learning_path_time:.4f} seconds"
         )
 
-        # ==================================================
-        # STEP 7: RECOMMENDATIONS
-        # ==================================================
-
-        recommendations_start = time.perf_counter()
-
+        rec_start = time.perf_counter()
         try:
-
-            recommendations = get_recommendations(
-                topic_name
-            )
-
+            recommendations = rec_future.result()
         except Exception as error:
-
-            print(
-                f"Recommendation error: "
-                f"{error}"
-            )
-
+            print(f"Recommendation future error: {error}")
             recommendations = []
-
-        recommendations_time = (
-            time.perf_counter()
-            - recommendations_start
-        )
+        recommendations_time = time.perf_counter() - rec_start
 
         print(
-            f"[TIMING] Recommendations: "
-            f"{recommendations_time:.2f} seconds"
+            f"[TIMING] Recommendations (concurrent await): "
+            f"{recommendations_time:.4f} seconds"
         )
 
         # ==================================================

@@ -200,8 +200,43 @@ class TopicExtractor:
         return acronyms
 
 
+    PRONOUN_PATTERN = re.compile(r"\b(it|this|that|its|itself)\b", re.IGNORECASE)
+
+    FOLLOW_UP_INTENT_PHRASES = [
+        "how does it work",
+        "how it works",
+        "working principle",
+        "working of",
+        "time complexity",
+        "space complexity",
+        "complexity",
+        "give an example",
+        "give example",
+        "show an example",
+        "worked example",
+        "advantages",
+        "disadvantages",
+        "limitations",
+        "benefits",
+        "drawbacks",
+        "applications",
+        "uses of",
+        "more simply",
+        "in detail",
+        "more detail",
+        "detailed explanation",
+        "revision notes",
+        "viva questions",
+        "exam questions",
+        "short quiz",
+        "prerequisites",
+        "related concepts",
+        "compare",
+    ]
+
+
     @staticmethod
-    def extract_topic(question: str):
+    def extract_topic(question: str, context_topic: str = None):
 
         if not question or not question.strip():
 
@@ -240,6 +275,13 @@ class TopicExtractor:
 
             return None
 
+
+        has_valid_context = bool(context_topic and context_topic in labels)
+        has_pronoun = bool(TopicExtractor.PRONOUN_PATTERN.search(question))
+        q_lower = question.lower()
+        has_followup_phrase = any(
+            phrase in q_lower for phrase in TopicExtractor.FOLLOW_UP_INTENT_PHRASES
+        )
 
         haystack = TopicExtractor._normalize(
             cleaned_question
@@ -282,7 +324,19 @@ class TopicExtractor:
 
         if best_label:
 
+            # If user asked about a generic single-word label like "Algorithm" or "Process"
+            # while using pronouns or follow-up phrasing with an active context_topic,
+            # anchor on context_topic instead of drifting.
+            if has_valid_context and (has_pronoun or has_followup_phrase):
+                if len(best_label.split()) == 1 and best_label.lower() != context_topic.lower():
+                    return context_topic
+
             return best_label
+
+
+        # Step 3b: If context_topic is active and question has pronouns or follow-up phrasing
+        if has_valid_context and (has_pronoun or has_followup_phrase):
+            return context_topic
 
 
         # --------------------------------------------------
@@ -305,6 +359,11 @@ class TopicExtractor:
 
 
         if not question_words:
+
+            # If all words were stripped as stop words (e.g. "explain it more simply")
+            # and we have an active context topic, stay on context_topic
+            if has_valid_context:
+                return context_topic
 
             return None
 
@@ -395,6 +454,17 @@ class TopicExtractor:
                 best_score = score
 
 
+        if best_label:
+
+            return best_label
+
+
+        # Final context fallback if user had active topic and asked something without a new topic
+        if has_valid_context and (has_pronoun or has_followup_phrase):
+
+            return context_topic
+
+
         # --------------------------------------------------
         # Step 6: Unknown topic
         #
@@ -404,4 +474,4 @@ class TopicExtractor:
         # confidently answering about an unrelated node.
         # --------------------------------------------------
 
-        return best_label
+        return None
