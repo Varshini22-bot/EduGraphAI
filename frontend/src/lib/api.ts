@@ -142,9 +142,14 @@ interface BackendAskResponse {
  * verified directly in api/routes.py. That must be checked explicitly, or
  * the backend's real message/error text never reaches the UI.
  */
-export async function askQuestion(query: string): Promise<AskResponse> {
+export async function askQuestion(
+  query: string,
+  contextTopic?: string | null
+): Promise<AskResponse> {
+  const queryParam = `query=${encodeURIComponent(query)}`;
+  const contextParam = contextTopic ? `&context_topic=${encodeURIComponent(contextTopic)}` : "";
   const data = await fetchJson<BackendAskResponse>(
-    `/ask?query=${encodeURIComponent(query)}`
+    `/ask?${queryParam}${contextParam}`
   );
 
   if (data.status === false) {

@@ -17,7 +17,7 @@ import { computeDashboardMetrics } from "@/lib/metrics";
 import { buildAugmentedQuery } from "@/lib/answerIntent";
 import { useAuth } from "@/context/AuthContext";
 import { useSettings } from "@/context/SettingsContext";
-import { Bookmark, ChatMessage, Conversation } from "@/lib/types";
+import { Bookmark, ChatMessage, Conversation, User } from "@/lib/types";
 
 type ActiveView = "chat" | "dashboard" | "bookmarks";
 
@@ -35,7 +35,13 @@ function nowIso(): string {
   return new Date().toISOString();
 }
 
-export default function HomePage() {
+interface ChatAppProps {
+  scope: string | null;
+  user: User | null;
+  onSignOut: () => void;
+}
+
+function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
   const [activeView, setActiveView] = useState<ActiveView>("chat");
@@ -53,41 +59,27 @@ export default function HomePage() {
   // The scope (user id, or null for guest) that in-flight async work was
   // started under. Compared after every await so a response belonging to the
   // PREVIOUS user can never be written into the new user's state.
-  const scopeRef = useRef<string | null>(null);
+  const scopeRef = useRef<string | null>(scope);
+  const epochRef = useRef(0);
+  const isMountedRef = useRef(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user, logout, loading: authLoading } = useAuth();
   const { settings } = useSettings();
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [hasHydrated, setHasHydrated] = useState(false);
-  // Tracks which scope (signed-in user id, or null for guest) the current
-  // `conversations`/`bookmarks` state actually belongs to. This is what
-  // lets the save effects below detect "the scope just changed but state
-  // hasn't caught up yet" and skip that one stale pass, instead of writing
-  // the previous user's data into the new scope's storage key.
-  const [activeScope, setActiveScope] = useState<string | null>(null);
 
   // ---- Load conversations/bookmarks scoped to the signed-in user (or the
-  // shared "guest" namespace when signed out). Re-runs whenever the user
-  // signs in/out while the app is open, not just once on mount — this is
-  // what fixes one user's chats being visible to the next person on the
-  // same browser. ----
+  // shared "guest" namespace when signed out). Re-runs whenever the scope
+  // changes — because HomePage keys ChatApp by scopeKey, changing accounts
+  // or logging in/out mounts a fresh ChatApp instance with clean state. ----
   useEffect(() => {
-    if (authLoading) return;
-    const scope = user ? String(user.id) : null;
-
-    // Record the scope all subsequent async work runs under, and release any
-    // in-flight request lock: anything still pending was started by the
-    // PREVIOUS user, so its loading state must not carry over and its result
-    // is discarded by the scopeRef checks in runAskStage/runGraphStage.
+    isMountedRef.current = true;
     scopeRef.current = scope;
-    pendingRef.current = null;
-    setPendingConversationId(null);
+    epochRef.current++;
 
     const loadedConversations = loadConversations(scope);
     const loadedBookmarks = loadBookmarks(scope);
     setConversations(loadedConversations);
     setBookmarks(loadedBookmarks);
-    setActiveScope(scope);
 
     if (loadedConversations.length > 0) {
       const mostRecent = [...loadedConversations].sort(
@@ -99,29 +91,25 @@ export default function HomePage() {
     }
 
     setHasHydrated(true);
-  }, [authLoading, user?.id]);
 
-  // ---- Persist on every change. Guarded on activeScope matching the
-  // CURRENT user — on the render where user?.id has just changed but the
-  // load effect above hasn't committed its setState yet, activeScope still
-  // reflects the OLD scope, so this correctly skips that one stale pass
-  // instead of saving old data under the new scope's key. ----
+    return () => {
+      isMountedRef.current = false;
+      pendingRef.current = null;
+    };
+  }, [scope]);
+
+  // ---- Persist on change, strictly scoped to this component's scope.
+  // Guarded against running before hydration or after unmount. ----
   useEffect(() => {
-    if (!hasHydrated) return;
-    if (activeScope !== (user ? String(user.id) : null)) return;
-    // "Auto-save conversations" gates persistence to localStorage only —
-    // in-session state (switching conversations, asking questions) keeps
-    // working identically either way; disabling it just means nothing
-    // survives a refresh.
+    if (!hasHydrated || !isMountedRef.current) return;
     if (!settings.autoSaveConversations) return;
-    saveConversations(conversations, activeScope);
-  }, [conversations, hasHydrated, activeScope, user, settings.autoSaveConversations]);
+    saveConversations(conversations, scope);
+  }, [conversations, hasHydrated, scope, settings.autoSaveConversations]);
 
   useEffect(() => {
-    if (!hasHydrated) return;
-    if (activeScope !== (user ? String(user.id) : null)) return;
-    saveBookmarks(bookmarks, activeScope);
-  }, [bookmarks, hasHydrated, activeScope, user]);
+    if (!hasHydrated || !isMountedRef.current) return;
+    saveBookmarks(bookmarks, scope);
+  }, [bookmarks, hasHydrated, scope]);
 
   const activeConversation =
     conversations.find((c) => c.id === activeConversationId) ?? null;
@@ -158,6 +146,7 @@ export default function HomePage() {
     messageId: string,
     patch: Partial<ChatMessage>
   ) {
+    if (!isMountedRef.current) return;
     setConversations((prev) =>
       prev.map((conversation) => {
         if (conversation.id !== conversationId) return conversation;
@@ -173,17 +162,27 @@ export default function HomePage() {
   }
 
   async function runGraphStage(conversationId: string, messageId: string, topic: string) {
-    // Scope this request belongs to. Compared again after the await so a
-    // graph result fetched for the PREVIOUS user (or for guest, before a
-    // login) is dropped instead of being written into the new user's state.
-    const startScope = scopeRef.current;
+    const startScope = scope;
+    const startEpoch = epochRef.current;
     updateMessage(conversationId, messageId, { isGraphLoading: true, graphError: null });
     try {
       const graphResult = await getGraph(topic);
-      if (scopeRef.current !== startScope) return;
+      if (
+        !isMountedRef.current ||
+        scopeRef.current !== startScope ||
+        epochRef.current !== startEpoch
+      ) {
+        return;
+      }
       updateMessage(conversationId, messageId, { graph: graphResult, isGraphLoading: false });
     } catch (err) {
-      if (scopeRef.current !== startScope) return;
+      if (
+        !isMountedRef.current ||
+        scopeRef.current !== startScope ||
+        epochRef.current !== startEpoch
+      ) {
+        return;
+      }
       updateMessage(conversationId, messageId, {
         isGraphLoading: false,
         graphError: describeError(err),
@@ -191,41 +190,37 @@ export default function HomePage() {
     }
   }
 
-  async function runAskStage(conversationId: string, messageId: string, query: string) {
-    // Scope this request belongs to (see runGraphStage). Re-checked after the
-    // await so an answer for the previous user is discarded, not displayed.
-    const startScope = scopeRef.current;
+  async function runAskStage(
+    conversationId: string,
+    messageId: string,
+    query: string,
+    contextTopic?: string | null
+  ) {
+    const startScope = scope;
+    const startEpoch = epochRef.current;
 
-    // Mark this conversation pending: the ref is updated synchronously (so
-    // the duplicate-request guard sees it immediately, even for two clicks
-    // in the same tick), the state drives the UI.
     pendingRef.current = conversationId;
     setPendingConversationId(conversationId);
 
     function clearPending() {
       if (pendingRef.current === conversationId) pendingRef.current = null;
-      setPendingConversationId((prev) => (prev === conversationId ? null : prev));
+      if (isMountedRef.current) {
+        setPendingConversationId((prev) => (prev === conversationId ? null : prev));
+      }
     }
 
     try {
-      // Encodes marks/explanation-mode intent into the actual request text
-      // (real effect on what the LLM sees) — the displayed user message
-      // stays exactly what they typed; only the backend-bound copy changes.
       const augmentedQuery = buildAugmentedQuery(query, settings);
-      const askResult = await askQuestion(augmentedQuery);
+      const askResult = await askQuestion(augmentedQuery, contextTopic);
 
-      // Auth scope changed mid-flight (login/logout/user switch). This answer
-      // belongs to the previous scope, so drop it. The hydration effect has
-      // already reset the pending markers for the new scope.
-      if (scopeRef.current !== startScope) return;
+      if (
+        !isMountedRef.current ||
+        scopeRef.current !== startScope ||
+        epochRef.current !== startEpoch
+      ) {
+        return;
+      }
 
-      // The knowledge graph now arrives INSIDE the /ask response (api.ts
-      // builds it from the outgoing/incoming relationships the backend
-      // already returned), so it is committed in the SAME state update as
-      // the answer. Previously this triggered a second, sequential
-      // GET /graph/topic request that re-ran the exact Cypher the backend
-      // had just run — the user watched a graph spinner after already
-      // having waited for the LLM.
       const graphFromAsk = askResult.graph ?? null;
 
       setConversations((prev) =>
@@ -254,15 +249,17 @@ export default function HomePage() {
 
       clearPending();
 
-      // Defensive fallback only. askQuestion() always returns a graph on
-      // success, so this normally never runs — it exists so that if the
-      // response ever lacks one, the graph is still fetched the old way
-      // instead of silently disappearing from the UI.
       if (graphFromAsk === null) {
         await runGraphStage(conversationId, messageId, askResult.topic);
       }
     } catch (err) {
-      if (scopeRef.current !== startScope) return;
+      if (
+        !isMountedRef.current ||
+        scopeRef.current !== startScope ||
+        epochRef.current !== startEpoch
+      ) {
+        return;
+      }
       updateMessage(conversationId, messageId, { askError: describeError(err) });
       clearPending();
     }
@@ -296,6 +293,10 @@ export default function HomePage() {
       graphError: null,
     };
 
+    const activeTopic = activeConversation
+      ? [...activeConversation.messages].reverse().find((m) => m.response?.topic)?.response?.topic ?? null
+      : null;
+
     if (!conversationId || !activeConversation) {
       const newConversation: Conversation = {
         id: createId("conv"),
@@ -317,18 +318,22 @@ export default function HomePage() {
       );
     }
 
-    await runAskStage(conversationId, messageId, trimmedQuery);
+    await runAskStage(conversationId, messageId, trimmedQuery, activeTopic);
   }
 
   async function handleRetryAsk(messageId: string, query: string) {
-    if (!activeConversationId) return;
+    if (!activeConversationId || !activeConversation) return;
     if (pendingRef.current !== null) return;
     updateMessage(activeConversationId, messageId, { askError: null });
-    await runAskStage(activeConversationId, messageId, query);
+    const msgIndex = activeConversation.messages.findIndex((m) => m.id === messageId);
+    const priorMessages = msgIndex > 0 ? activeConversation.messages.slice(0, msgIndex) : [];
+    const priorTopic =
+      [...priorMessages].reverse().find((m) => m.response?.topic)?.response?.topic ?? null;
+    await runAskStage(activeConversationId, messageId, query, priorTopic);
   }
 
   async function handleRegenerate(messageId: string, query: string) {
-    if (!activeConversationId) return;
+    if (!activeConversationId || !activeConversation) return;
     if (pendingRef.current !== null) return;
     // Clears the previous answer for THIS message id only, then re-runs the
     // same stage against the same id — so the regenerated answer replaces the
@@ -340,7 +345,11 @@ export default function HomePage() {
       askError: null,
       graphError: null,
     });
-    await runAskStage(activeConversationId, messageId, query);
+    const msgIndex = activeConversation.messages.findIndex((m) => m.id === messageId);
+    const priorMessages = msgIndex > 0 ? activeConversation.messages.slice(0, msgIndex) : [];
+    const priorTopic =
+      [...priorMessages].reverse().find((m) => m.response?.topic)?.response?.topic ?? null;
+    await runAskStage(activeConversationId, messageId, query, priorTopic);
   }
 
   async function handleRetryGraph(messageId: string, _query: string) {
@@ -429,29 +438,15 @@ export default function HomePage() {
   }
 
   function handleSignOut() {
-    // Storage is scoped per user (storage.ts + the hydration effect above),
-    // so signing out never needs to delete anything from localStorage — the
-    // guest namespace is already a separate key from this user's.
-    //
-    // Three things must happen immediately, before the auth state change has
-    // re-rendered:
-    //  1. scopeRef is advanced so any /ask or /graph response still in flight
-    //     for this user fails its post-await scope check and is discarded
-    //     instead of landing in guest state.
-    //  2. The pending markers are released so this user's "Thinking..."
-    //     indicator can't carry over into the guest session.
-    //  3. In-memory conversations/bookmarks are emptied so the previous
-    //     user's messages are off screen on the very next frame.
-    // The save effects are guarded on activeScope === current user, so the
-    // cleared arrays are never written into either scope's storage key.
+    isMountedRef.current = false;
     scopeRef.current = null;
     pendingRef.current = null;
-    setPendingConversationId(null);
+    epochRef.current++;
     setConversations([]);
     setBookmarks([]);
     setActiveConversationId(null);
     setActiveView("chat");
-    logout();
+    onSignOut();
   }
 
   function navbarTitle(): string {
@@ -529,5 +524,50 @@ export default function HomePage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function HomePage() {
+  const { user, logout, loading: authLoading } = useAuth();
+
+  if (authLoading) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-base text-ink-tertiary">
+        <div className="flex items-center gap-2 text-sm">
+          <svg
+            className="h-4 w-4 animate-spin text-teal"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8H4z"
+            />
+          </svg>
+          Loading...
+        </div>
+      </div>
+    );
+  }
+
+  const currentScope = user && user.id != null ? String(user.id) : null;
+  const scopeKey = user ? `user_${user.id}_${user.email}` : "guest";
+
+  return (
+    <ChatApp
+      key={scopeKey}
+      scope={currentScope}
+      user={user}
+      onSignOut={logout}
+    />
   );
 }

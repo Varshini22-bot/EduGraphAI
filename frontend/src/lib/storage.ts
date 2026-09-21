@@ -16,12 +16,18 @@ import { Bookmark, Conversation } from "./types";
 
 const GUEST_SCOPE = "guest";
 
-function conversationsKey(scope: string | null): string {
-  return `kg-learning-assistant:conversations:${scope ?? GUEST_SCOPE}`;
+function normalizeScope(scope?: string | null): string {
+  if (!scope || typeof scope !== "string") return GUEST_SCOPE;
+  const trimmed = scope.trim();
+  return trimmed.length > 0 ? trimmed : GUEST_SCOPE;
 }
 
-function bookmarksKey(scope: string | null): string {
-  return `kg-learning-assistant:bookmarks:${scope ?? GUEST_SCOPE}`;
+function conversationsKey(scope?: string | null): string {
+  return `kg-learning-assistant:conversations:${normalizeScope(scope)}`;
+}
+
+function bookmarksKey(scope?: string | null): string {
+  return `kg-learning-assistant:bookmarks:${normalizeScope(scope)}`;
 }
 
 function isConversation(value: unknown): value is Conversation {
