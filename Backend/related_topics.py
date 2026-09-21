@@ -1,9 +1,4 @@
-from neo4j import GraphDatabase
-
-driver = GraphDatabase.driver(
-    "neo4j://127.0.0.1:7687",
-    auth=("neo4j", "Varshi1234")
-)
+from neo4j_connection import driver
 
 topic = input("Topic: ")
 
