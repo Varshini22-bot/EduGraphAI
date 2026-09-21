@@ -1,0 +1,90 @@
+# ==============================================================================
+# EduGraphAI - FastAPI Backend Deployment
+# ==============================================================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edugraph-backend
+  namespace: edugraphai
+  labels:
+    app.kubernetes.io/name: edugraphai
+    app.kubernetes.io/component: backend
+spec:
+  # Single replica is used because the auth system uses a local SQLite database
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: edugraph-backend
+  template:
+    metadata:
+      labels:
+        app: edugraph-backend
+        app.kubernetes.io/name: edugraphai
+        app.kubernetes.io/component: backend
+    spec:
+      containers:
+        - name: backend
+          image: edugraph-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+
+          # Inject non-sensitive configurations from ConfigMap
+          envFrom:
+            - configMapRef:
+                name: edugraph-config
+
+          # Inject sensitive credentials from Secret
+          env:
+            - name: NEO4J_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: edugraph-secret
+                  key: NEO4J_PASSWORD
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: edugraph-secret
+                  key: JWT_SECRET_KEY
+
+          # Compute resource requests and limits
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+
+          # Health checks
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 2
+
+          # Persistent volume mount for SQLite auth database
+          volumeMounts:
+            - name: backend-data
+              mountPath: /app/data
+
+      volumes:
+        - name: backend-data
+          persistentVolumeClaim:
+            claimName: backend-data-pvc

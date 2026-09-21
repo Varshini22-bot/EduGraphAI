@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: edugraph-config
+  namespace: edugraphai
+  labels:
+    app.kubernetes.io/name: edugraphai
+    app.kubernetes.io/component: configuration
+data:
+  # FastAPI Configuration
+  FASTAPI_HOST: "0.0.0.0"
+  FASTAPI_PORT: "8000"
+
+  # Neo4j Graph Database Configuration
+  # Note: Use 'bolt://neo4j:7687' if running in-cluster Neo4j StatefulSet (08-neo4j-statefulset.yaml)
+  # Or use 'bolt://host.docker.internal:7687' if connecting to host-managed Neo4j
+  NEO4J_URI: "bolt://neo4j:7687"
+  NEO4J_USERNAME: "neo4j"
+
+  # Ollama LLM Configuration (Host-Managed or External GPU Service)
+  # On Docker Desktop / Minikube, host.docker.internal resolves to the host machine
+  OLLAMA_BASE_URL: "http://host.docker.internal:11434"
+  OLLAMA_MODEL: "llama3.2:latest"
+
+  # SQLite Authentication Database Path (mounted to persistent volume)
+  SQLITE_DB_PATH: "/app/data/knowledge_graph.db"
+
+  # JWT Token Settings
+  JWT_ALGORITHM: "HS256"
+  JWT_ACCESS_TOKEN_EXPIRE_MINUTES: "60"
+
+  # Frontend Runtime Configuration
+  PORT: "3000"
+  NODE_ENV: "production"
+  # Client browser API URL (accessing backend NodePort or Ingress)
+  NEXT_PUBLIC_API_URL: "http://localhost:30800"
