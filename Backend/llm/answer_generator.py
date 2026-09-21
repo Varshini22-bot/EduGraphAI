@@ -39,6 +39,12 @@ def generate_answer(prompt, num_predict=None):
     if num_predict is not None:
         options["num_predict"] = num_predict
 
+    keep_alive = OLLAMA_KEEP_ALIVE
+    try:
+        keep_alive = int(keep_alive)
+    except (ValueError, TypeError):
+        pass
+
     response = ollama.chat(
         model=OLLAMA_MODEL,
         messages=[
@@ -48,7 +54,7 @@ def generate_answer(prompt, num_predict=None):
             }
         ],
         options=options,
-        keep_alive=OLLAMA_KEEP_ALIVE,
+        keep_alive=keep_alive,
     )
 
     return response["message"]["content"]

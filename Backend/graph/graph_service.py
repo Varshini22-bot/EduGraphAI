@@ -16,6 +16,12 @@ from graph.neo4j_client import get_session
 
 class GraphService:
 
+    _cached_topic_labels = None
+
+    @classmethod
+    def clear_topic_labels_cache(cls):
+        cls._cached_topic_labels = None
+
     # ==========================================================
     # SEARCH TOPICS
     # ==========================================================
@@ -68,12 +74,15 @@ class GraphService:
     # llm/topic_extractor.py for the details).
     #
     # This is global Knowledge Graph data, identical for every
-    # user and containing no user data, so it is safe to fetch on
-    # each request without any per-user isolation concern.
+    # user and containing no user data, so it is safe to cache in
+    # memory and reuse across requests without any per-user isolation concern.
     # ==========================================================
 
     @staticmethod
-    def get_all_topic_labels():
+    def get_all_topic_labels(force_refresh: bool = False):
+
+        if GraphService._cached_topic_labels is not None and not force_refresh:
+            return GraphService._cached_topic_labels
 
         query = """
         MATCH (n)
@@ -89,13 +98,17 @@ class GraphService:
 
             result = session.run(query)
 
-            return [
+            labels = [
                 record["label"]
 
                 for record in result
 
                 if record["label"] is not None
             ]
+
+        GraphService._cached_topic_labels = labels
+
+        return labels
 
 
     # ==========================================================
