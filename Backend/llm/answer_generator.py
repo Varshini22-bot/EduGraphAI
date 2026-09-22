@@ -1,37 +1,19 @@
+import requests
 import ollama
 
 from config import (
+    LLM_PROVIDER,
+    LLM_MODEL,
+    LLM_BASE_URL,
+    LLM_API_KEY,
     OLLAMA_KEEP_ALIVE,
     OLLAMA_MODEL,
     OLLAMA_NUM_CTX,
 )
 
 
-def generate_answer(prompt, num_predict=None):
-    """
-    Single LLM call site for the whole application.
-
-    num_predict is the MAXIMUM answer length (set from the marks
-    detected in the question) and is deliberately left untouched
-    here - shrinking it would shorten academic answers, which is
-    not an acceptable way to buy speed.
-
-    Two options are set that Ollama otherwise defaults badly for:
-
-    num_ctx    - the context window. Ollama's default of ~2048 is
-                 smaller than a large grounded prompt plus a
-                 10-mark answer budget, and when it overflows the
-                 prompt is truncated silently. The Knowledge Graph
-                 facts sit at the top of the prompt, so they were
-                 the first thing lost - the model then answered
-                 from its own memory instead of from the graph.
-
-    keep_alive - how long the model stays resident afterwards.
-                 Ollama unloads after 5 idle minutes by default,
-                 so the first question after any pause paid the
-                 model-load cost again before generating a token.
-    """
-
+def _generate_ollama(prompt: str, num_predict: int = None) -> str:
+    """Generate answer using local Ollama daemon."""
     options = {
         "num_ctx": OLLAMA_NUM_CTX,
     }
@@ -46,11 +28,11 @@ def generate_answer(prompt, num_predict=None):
         pass
 
     response = ollama.chat(
-        model=OLLAMA_MODEL,
+        model=LLM_MODEL or OLLAMA_MODEL,
         messages=[
             {
                 "role": "user",
-                "content": prompt
+                "content": prompt,
             }
         ],
         options=options,
@@ -58,3 +40,62 @@ def generate_answer(prompt, num_predict=None):
     )
 
     return response["message"]["content"]
+
+
+def _generate_openai_compatible(prompt: str, num_predict: int = None) -> str:
+    """Generate answer using hosted OpenAI-compatible REST API (Groq, OpenAI, Gemini, etc.)."""
+    if not LLM_API_KEY or not LLM_API_KEY.strip():
+        raise ValueError(
+            f"LLM_API_KEY environment variable is required when LLM_PROVIDER is set to '{LLM_PROVIDER}'."
+        )
+
+    base_url = (LLM_BASE_URL or "").rstrip("/")
+    if not base_url:
+        raise ValueError(
+            f"LLM_BASE_URL must be specified for OpenAI-compatible provider '{LLM_PROVIDER}'."
+        )
+
+    endpoint = f"{base_url}/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {LLM_API_KEY.strip()}",
+        "Content-Type": "application/json",
+    }
+
+    payload = {
+        "model": LLM_MODEL,
+        "messages": [
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+    }
+
+    if num_predict is not None:
+        payload["max_tokens"] = num_predict
+
+    try:
+        response = requests.post(endpoint, json=payload, headers=headers, timeout=60)
+        response.raise_for_status()
+        data = response.json()
+        return data["choices"][0]["message"]["content"]
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"Cloud LLM request to '{LLM_PROVIDER}' failed: {e}") from e
+
+
+def generate_answer(prompt, num_predict=None):
+    """
+    Single LLM call site for the whole application.
+
+    Dispatches to:
+    - Ollama (local daemon) when LLM_PROVIDER='ollama'
+    - Hosted OpenAI-compatible API (Groq, OpenAI, Gemini, OpenRouter) otherwise.
+
+    num_predict is the MAXIMUM answer length (set from the marks
+    detected in the question). When using Ollama it maps to 'num_predict',
+    and when using hosted cloud APIs it maps to 'max_tokens'.
+    """
+    if LLM_PROVIDER == "ollama":
+        return _generate_ollama(prompt, num_predict=num_predict)
+    else:
+        return _generate_openai_compatible(prompt, num_predict=num_predict)

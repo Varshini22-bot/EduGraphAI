@@ -50,6 +50,12 @@ spec:
                 secretKeyRef:
                   name: edugraph-secret
                   key: JWT_SECRET_KEY
+            - name: LLM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: edugraph-secret
+                  key: LLM_API_KEY
+                  optional: true
 
           # Compute resource requests and limits
           resources:
@@ -63,7 +69,7 @@ spec:
           # Health checks
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
               port: 8000
             initialDelaySeconds: 15
             periodSeconds: 20
@@ -72,7 +78,7 @@ spec:
 
           readinessProbe:
             httpGet:
-              path: /
+              path: /health
               port: 8000
             initialDelaySeconds: 5
             periodSeconds: 10

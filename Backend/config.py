@@ -135,6 +135,41 @@ OLLAMA_NUM_CTX = int(
 )
 
 # ==========================================================
+# LLM Provider Configuration
+# ==========================================================
+# Provider selection:
+# - 'ollama'     : Local Ollama daemon (default for local development)
+# - 'openai'     : OpenAI API (or OpenAI-compatible service)
+# - 'groq'       : Groq Cloud API (OpenAI-compatible)
+# - 'openrouter' : OpenRouter API (OpenAI-compatible)
+# - 'gemini'     : Google Gemini API (OpenAI-compatible endpoint)
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama").lower().strip()
+
+# Base URL for OpenAI-compatible providers.
+_default_base_urls = {
+    "openai": "https://api.openai.com/v1",
+    "groq": "https://api.groq.com/openai/v1",
+    "openrouter": "https://openrouter.ai/api/v1",
+    "gemini": "https://generativelanguage.googleapis.com/v1beta/openai",
+}
+
+LLM_BASE_URL = os.getenv("LLM_BASE_URL", _default_base_urls.get(LLM_PROVIDER, ""))
+LLM_API_KEY = os.getenv("LLM_API_KEY", "")
+
+# Active LLM Model name:
+# Defaults to OLLAMA_MODEL if provider is ollama, or standard models for cloud providers
+_default_cloud_models = {
+    "groq": "llama-3.3-70b-versatile",
+    "openai": "gpt-4o-mini",
+    "openrouter": "meta-llama/llama-3.2-3b-instruct:free",
+    "gemini": "gemini-1.5-flash",
+}
+LLM_MODEL = os.getenv(
+    "LLM_MODEL",
+    OLLAMA_MODEL if LLM_PROVIDER == "ollama" else _default_cloud_models.get(LLM_PROVIDER, "llama3.2")
+)
+
+# ==========================================================
 # FastAPI Configuration
 # ==========================================================
 
@@ -158,10 +193,18 @@ JWT_ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 
 # ==========================================================
-# Frontend Configuration
+# Frontend & CORS Configuration
 # ==========================================================
 
-FRONTEND_URL = "http://localhost:3000"
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
+# Comma-separated list of allowed origins.
+# In production, set to your deployed frontend domain(s), e.g. "https://edugraphai.vercel.app"
+_cors_origins_raw = os.getenv(
+    "CORS_ORIGINS",
+    "http://localhost:3000,http://127.0.0.1:3000"
+)
+CORS_ORIGINS = [origin.strip() for origin in _cors_origins_raw.split(",") if origin.strip()]
 
 # ==========================================================
 # Graph Visualization
@@ -179,6 +222,16 @@ TOPIC_MATCH_THRESHOLD = 70
 # Application Settings
 # ==========================================================
 
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "false").lower() in ("true", "1", "yes")
 
-LOG_LEVEL = "INFO"
+LOG_LEVEL = os.getenv("LOG_LEVEL", "DEBUG" if DEBUG else "INFO")
+
+# In production mode, issue an explicit warning if running with the insecure default secret key
+if not DEBUG and JWT_SECRET_KEY == "knowledge_graph_secret_key_change_this":
+    import warnings
+    warnings.warn(
+        "SECURITY WARNING: Running in production (DEBUG=False) with default insecure JWT_SECRET_KEY! "
+        "Please set a cryptographically secure key via the JWT_SECRET_KEY environment variable.",
+        UserWarning,
+        stacklevel=2,
+    )
