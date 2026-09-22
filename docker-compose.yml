@@ -55,9 +55,20 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - DEBUG=${DEBUG:-false}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+      - NEO4J_MODE=${NEO4J_MODE:-auto}
       - NEO4J_URI=${NEO4J_URI:-bolt://neo4j:7687}
       - NEO4J_USERNAME=${NEO4J_USERNAME:-neo4j}
       - NEO4J_PASSWORD=${NEO4J_PASSWORD:-password}
+      - NEO4J_DATABASE=${NEO4J_DATABASE:-neo4j}
+      - NEO4J_FALLBACK_URI=${NEO4J_FALLBACK_URI:-bolt://neo4j:7687}
+      - NEO4J_FALLBACK_USERNAME=${NEO4J_FALLBACK_USERNAME:-neo4j}
+      - NEO4J_FALLBACK_PASSWORD=${NEO4J_FALLBACK_PASSWORD:-password}
+      - LLM_PROVIDER=${LLM_PROVIDER:-ollama}
+      - LLM_MODEL=${LLM_MODEL:-llama3.2:latest}
+      - LLM_BASE_URL=${LLM_BASE_URL:-}
+      - LLM_API_KEY=${LLM_API_KEY:-}
       - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
       - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.2:latest}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY:-insecure-default-change-in-env}

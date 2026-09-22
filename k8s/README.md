@@ -46,11 +46,12 @@ Never commit secrets to Git. Create the Kubernetes Secret directly via the CLI:
 # 1. Create the namespace
 kubectl apply -f k8s/00-namespace.yaml
 
-# 2. Create the secret securely
+# 2. Create the secret securely (add LLM_API_KEY if using hosted cloud LLM)
 kubectl create secret generic edugraph-secret \
   --namespace=edugraphai \
   --from-literal=NEO4J_PASSWORD="YourStrongPassword123!" \
-  --from-literal=JWT_SECRET_KEY="c8f1e2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1"
+  --from-literal=JWT_SECRET_KEY="c8f1e2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1" \
+  --from-literal=LLM_API_KEY="your-optional-api-key"
 ```
 
 ### Step 4: Deploy the Workloads
@@ -58,6 +59,8 @@ Apply the manifests using Kustomize:
 ```bash
 kubectl apply -k k8s/
 ```
+*(For production domain routing and automated HTTPS TLS termination, see `k8s/09-ingress.example.yaml`)*
+
 *Or apply individually in sequence:*
 ```bash
 kubectl apply -f k8s/01-configmap.yaml

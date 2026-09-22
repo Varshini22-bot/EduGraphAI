@@ -1,0 +1,62 @@
+# ==============================================================================
+# EduGraphAI - Production Kubernetes Ingress Example
+#
+# Prerequisites:
+# 1. An Ingress Controller installed in the cluster (e.g. ingress-nginx):
+#    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+#
+# 2. cert-manager installed for automatic Let's Encrypt TLS certificates:
+#    kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.2/cert-manager.yaml
+#
+# Usage:
+#   1. Copy this file: cp k8s/09-ingress.example.yaml k8s/09-ingress.yaml
+#   2. Replace 'edugraphai.example.com' with your registered domain name.
+#   3. Apply: kubectl apply -f k8s/09-ingress.yaml
+# ==============================================================================
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: edugraph-ingress
+  namespace: edugraphai
+  labels:
+    app.kubernetes.io/name: edugraphai
+    app.kubernetes.io/component: ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/proxy-body-size: "16m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "120"
+spec:
+  tls:
+    - hosts:
+        - edugraphai.example.com
+      secretName: edugraphai-tls-cert
+  rules:
+    - host: edugraphai.example.com
+      http:
+        paths:
+          # Backend API & Health Routing
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: edugraph-backend-service
+                port:
+                  number: 8000
+          - path: /health
+            pathType: Exact
+            backend:
+              service:
+                name: edugraph-backend-service
+                port:
+                  number: 8000
+          # Frontend Next.js Application Routing
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: edugraph-frontend-service
+                port:
+                  number: 3000

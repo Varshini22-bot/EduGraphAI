@@ -224,6 +224,25 @@ class RAGService:
                     f"{total_time:.2f} seconds"
                 )
 
+                if graph.get("is_connection_error"):
+                    return {
+                        "status": False,
+                        "message": "Knowledge Graph database connection unavailable or paused.",
+                        "query": question,
+                        "topic": topic_name,
+                        "answer": (
+                            "The Knowledge Graph database is currently paused or unreachable. "
+                            "If you are using Neo4j AuraDB Free, the cloud instance automatically pauses "
+                            "after 3 days of inactivity. Please resume it from the Neo4j Cloud Console "
+                            "(console.neo4j.io) or ensure your local Neo4j service is running."
+                        ),
+                        "graph_context": [],
+                        "incoming": [],
+                        "learning_path": [],
+                        "recommendations": [],
+                        "is_connection_error": True,
+                    }
+
                 return {
                     "status": False,
                     "message": "Topic not found in the Knowledge Graph.",
@@ -454,6 +473,25 @@ class RAGService:
                 f"[TIMING] Total request time: "
                 f"{total_time:.2f} seconds"
             )
+
+            if graph.get("is_connection_error"):
+                return {
+                    "status": False,
+                    "message": "Knowledge Graph database connection unavailable or paused.",
+                    "query": question,
+                    "topic": topic_name,
+                    "answer": (
+                        "The Knowledge Graph database is currently paused or unreachable. "
+                        "If you are using Neo4j AuraDB Free, the cloud instance automatically pauses "
+                        "after 3 days of inactivity. Please resume it from the Neo4j Cloud Console "
+                        "(console.neo4j.io) or ensure your local Neo4j service is running."
+                    ),
+                    "graph_context": [],
+                    "incoming": [],
+                    "learning_path": [],
+                    "recommendations": [],
+                    "is_connection_error": True,
+                }
 
             return {
                 "status": False,

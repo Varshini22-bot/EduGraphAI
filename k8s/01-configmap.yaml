@@ -10,15 +10,23 @@ data:
   # FastAPI Configuration
   FASTAPI_HOST: "0.0.0.0"
   FASTAPI_PORT: "8000"
+  DEBUG: "false"
+  CORS_ORIGINS: "http://localhost:3000,http://127.0.0.1:3000,http://localhost:30800"
 
   # Neo4j Graph Database Configuration
   # Note: Use 'bolt://neo4j:7687' if running in-cluster Neo4j StatefulSet (08-neo4j-statefulset.yaml)
   # Or use 'bolt://host.docker.internal:7687' if connecting to host-managed Neo4j
+  # Or use 'neo4j+s://<instance-id>.databases.neo4j.io' if connecting to managed AuraDB
+  NEO4J_MODE: "auto"
   NEO4J_URI: "bolt://neo4j:7687"
   NEO4J_USERNAME: "neo4j"
+  NEO4J_DATABASE: "neo4j"
 
-  # Ollama LLM Configuration (Host-Managed or External GPU Service)
-  # On Docker Desktop / Minikube, host.docker.internal resolves to the host machine
+  # LLM Configuration (Ollama local daemon or Cloud OpenAI-compatible API)
+  # Provider options: 'ollama', 'groq', 'openai', 'gemini', 'openrouter'
+  LLM_PROVIDER: "ollama"
+  LLM_MODEL: "llama3.2:latest"
+  LLM_BASE_URL: ""
   OLLAMA_BASE_URL: "http://host.docker.internal:11434"
   OLLAMA_MODEL: "llama3.2:latest"
 
