@@ -4,6 +4,7 @@ interface NavbarProps {
   title: string;
   subtitle?: string;
   onOpenSidebar: () => void;
+  onNewChat?: () => void;
   showBookmarkAction: boolean;
   isBookmarked: boolean;
   onToggleBookmark: () => void;
@@ -13,6 +14,7 @@ export default function Navbar({
   title,
   subtitle,
   onOpenSidebar,
+  onNewChat,
   showBookmarkAction,
   isBookmarked,
   onToggleBookmark,
@@ -38,6 +40,17 @@ export default function Navbar({
       </div>
 
       <div className="flex flex-shrink-0 items-center gap-2">
+        {onNewChat && (
+          <button
+            onClick={onNewChat}
+            aria-label="New Chat"
+            title="Start a new chat"
+            className="flex items-center gap-1.5 rounded-md border border-border-subtle bg-elevated px-2.5 py-1 text-[13px] font-medium text-ink-primary transition-colors hover:border-teal hover:text-teal"
+          >
+            <span aria-hidden="true" className="text-sm font-bold leading-none">+</span>
+            <span className="hidden sm:inline">New Chat</span>
+          </button>
+        )}
         {showBookmarkAction && (
           <button
             onClick={onToggleBookmark}

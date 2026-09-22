@@ -202,14 +202,28 @@ class TopicExtractor:
 
     PRONOUN_PATTERN = re.compile(r"\b(it|this|that|its|itself)\b", re.IGNORECASE)
 
+    # Canonical synonym and concept mappings to official Knowledge Graph node labels
+    SYNONYM_TOPIC_MAP = {
+        "time complexity": "Complexity Analysis",
+        "space complexity": "Complexity Analysis",
+        "complexity analysis": "Complexity Analysis",
+        "time and space complexity": "Complexity Analysis",
+        "computational complexity": "Complexity Analysis",
+        "big o notation": "O-notation",
+        "big o": "O-notation",
+        "big-o": "O-notation",
+        "big-o notation": "O-notation",
+        "theta notation": "Theta-notation",
+        "omega notation": "Omega-notation",
+        "asymptotic notation": "Theta-notation",
+        "asymptotic analysis": "Complexity Analysis",
+    }
+
     FOLLOW_UP_INTENT_PHRASES = [
         "how does it work",
         "how it works",
         "working principle",
         "working of",
-        "time complexity",
-        "space complexity",
-        "complexity",
         "give an example",
         "give example",
         "show an example",
@@ -231,7 +245,6 @@ class TopicExtractor:
         "short quiz",
         "prerequisites",
         "related concepts",
-        "compare",
     ]
 
 
@@ -286,6 +299,17 @@ class TopicExtractor:
         haystack = TopicExtractor._normalize(
             cleaned_question
         )
+
+        # --------------------------------------------------
+        # Step 2.5: Canonical Synonym Mapping
+        # Maps queries like "Define time complexity" -> "Complexity Analysis"
+        # Only applied when there is no pronoun referring back to context_topic.
+        # --------------------------------------------------
+        if not has_pronoun:
+            q_clean_lower = " " + cleaned_question.lower() + " "
+            for synonym_phrase, target_label in TopicExtractor.SYNONYM_TOPIC_MAP.items():
+                if f" {synonym_phrase} " in q_clean_lower and target_label in labels:
+                    return target_label
 
 
         # --------------------------------------------------

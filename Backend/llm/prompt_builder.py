@@ -334,14 +334,14 @@ Do not add meaningless filler just to increase word count.
     @staticmethod
     def token_budget(marks: int) -> int:
         if marks <= 2:
-            return 180          # ~50-100 words + headroom
+            return 450          # ~50-100 words + headroom & tips
         if marks <= 5:
-            return 400          # ~150-250 words + headroom
+            return 1000         # ~150-250 words + structure & example
         if marks <= 8:
-            return 950          # ~450-650 words + headroom
+            return 2200         # ~450-650 words + full 13-stage exam answer
         if marks <= 10:
-            return 1300         # ~650-900 words + headroom
-        return 1700             # 11-15+: detailed university answer
+            return 3000         # ~650-900 words + comprehensive analysis
+        return 4000             # 11-16+: deep university-level answer
 
     # ==========================================================
     # INTENT REQUIREMENTS

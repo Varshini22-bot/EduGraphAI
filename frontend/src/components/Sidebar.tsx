@@ -18,6 +18,7 @@ interface SidebarProps {
   onPinConversation: (id: string) => void;
   onArchiveConversation: (id: string) => void;
   onNewChat: () => void;
+  onClearAllConversations?: () => void;
   user: User | null;
   onSignOut: () => void;
   activeView: "chat" | "dashboard" | "bookmarks";
@@ -49,6 +50,7 @@ export default function Sidebar({
   onPinConversation,
   onArchiveConversation,
   onNewChat,
+  onClearAllConversations,
   user,
   onSignOut,
   activeView,
@@ -156,6 +158,7 @@ export default function Sidebar({
               onDeleteConversation={onDeleteConversation}
               onPinConversation={onPinConversation}
               onArchiveConversation={onArchiveConversation}
+              onClearAllConversations={onClearAllConversations}
             />
           )}
         </div>

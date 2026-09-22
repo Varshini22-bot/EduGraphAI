@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Conversation } from "@/lib/types";
+import ConfirmDialog from "./ConfirmDialog";
 
 interface HistoryListProps {
   conversations: Conversation[];
@@ -11,6 +12,7 @@ interface HistoryListProps {
   onDeleteConversation: (id: string) => void;
   onPinConversation: (id: string) => void;
   onArchiveConversation: (id: string) => void;
+  onClearAllConversations?: () => void;
 }
 
 function formatRelativeTime(iso: string): string {
@@ -47,11 +49,13 @@ export default function HistoryList({
   onDeleteConversation,
   onPinConversation,
   onArchiveConversation,
+  onClearAllConversations,
 }: HistoryListProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draftTitle, setDraftTitle] = useState("");
   const [search, setSearch] = useState("");
   const [showArchived, setShowArchived] = useState(false);
+  const [confirmClearOpen, setConfirmClearOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const term = search.trim();
@@ -200,6 +204,29 @@ export default function HistoryList({
           )}
         </div>
       )}
+
+      {conversations.length > 0 && onClearAllConversations && (
+        <div className="mt-2 border-t border-border-subtle/50 px-1 pt-2">
+          <button
+            onClick={() => setConfirmClearOpen(true)}
+            className="w-full rounded py-1 text-center text-[11.5px] text-ink-tertiary transition-colors hover:bg-danger-dim/30 hover:text-danger"
+          >
+            Clear all chats
+          </button>
+        </div>
+      )}
+
+      <ConfirmDialog
+        isOpen={confirmClearOpen}
+        title="Clear all conversations?"
+        description="This will permanently delete all your conversation history from this browser. This action cannot be undone."
+        confirmLabel="Clear All"
+        onConfirm={() => {
+          setConfirmClearOpen(false);
+          onClearAllConversations?.();
+        }}
+        onCancel={() => setConfirmClearOpen(false)}
+      />
     </div>
   );
 }
