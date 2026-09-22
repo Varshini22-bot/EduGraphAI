@@ -81,14 +81,9 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
     setConversations(loadedConversations);
     setBookmarks(loadedBookmarks);
 
-    if (loadedConversations.length > 0) {
-      const mostRecent = [...loadedConversations].sort(
-        (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      )[0];
-      setActiveConversationId(mostRecent.id);
-    } else {
-      setActiveConversationId(null);
-    }
+    // Default to a fresh empty chat on initial load or browser refresh,
+    // while keeping past conversations accessible in the sidebar history.
+    setActiveConversationId(null);
 
     setHasHydrated(true);
 
@@ -265,6 +260,15 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
     }
   }
 
+  function isContextualFollowUp(query: string): boolean {
+    return (
+      query.includes("—") ||
+      /\b(it|this|that|its|itself|more\s+simply|in\s+detail|revision\s+notes|viva|quiz|prerequisites|how\s+does\s+it\s+work|give\s+an\s+example|working\s+principle)\b/i.test(
+        query
+      )
+    );
+  }
+
   async function handleSubmitQuery(query: string) {
     // ChatInput already blocks blank sends, but topic chips, bookmarks and
     // quick actions call in here too — so the guard lives here as well.
@@ -296,6 +300,7 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
     const activeTopic = activeConversation
       ? [...activeConversation.messages].reverse().find((m) => m.response?.topic)?.response?.topic ?? null
       : null;
+    const contextTopicToPass = isContextualFollowUp(trimmedQuery) ? activeTopic : null;
 
     if (!conversationId || !activeConversation) {
       const newConversation: Conversation = {
@@ -318,7 +323,7 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
       );
     }
 
-    await runAskStage(conversationId, messageId, trimmedQuery, activeTopic);
+    await runAskStage(conversationId, messageId, trimmedQuery, contextTopicToPass);
   }
 
   async function handleRetryAsk(messageId: string, query: string) {
@@ -329,7 +334,8 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
     const priorMessages = msgIndex > 0 ? activeConversation.messages.slice(0, msgIndex) : [];
     const priorTopic =
       [...priorMessages].reverse().find((m) => m.response?.topic)?.response?.topic ?? null;
-    await runAskStage(activeConversationId, messageId, query, priorTopic);
+    const contextTopicToPass = isContextualFollowUp(query) ? priorTopic : null;
+    await runAskStage(activeConversationId, messageId, query, contextTopicToPass);
   }
 
   async function handleRegenerate(messageId: string, query: string) {
@@ -349,7 +355,8 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
     const priorMessages = msgIndex > 0 ? activeConversation.messages.slice(0, msgIndex) : [];
     const priorTopic =
       [...priorMessages].reverse().find((m) => m.response?.topic)?.response?.topic ?? null;
-    await runAskStage(activeConversationId, messageId, query, priorTopic);
+    const contextTopicToPass = isContextualFollowUp(query) ? priorTopic : null;
+    await runAskStage(activeConversationId, messageId, query, contextTopicToPass);
   }
 
   async function handleRetryGraph(messageId: string, _query: string) {
@@ -402,6 +409,12 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
     setConversations((prev) =>
       prev.map((c) => (c.id === id ? { ...c, archived: !c.archived, updatedAt: nowIso() } : c))
     );
+  }
+
+  function handleClearAllConversations() {
+    setConversations([]);
+    setActiveConversationId(null);
+    saveConversations([], scope);
   }
 
   function handleToggleBookmark(topic: string, answer: string) {
@@ -479,6 +492,7 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
         onPinConversation={handlePinConversation}
         onArchiveConversation={handleArchiveConversation}
         onNewChat={handleNewChat}
+        onClearAllConversations={handleClearAllConversations}
         user={user}
         onSignOut={handleSignOut}
         activeView={activeView}
@@ -492,6 +506,7 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
           title={navbarTitle()}
           subtitle={navbarSubtitle()}
           onOpenSidebar={() => setSidebarOpen(true)}
+          onNewChat={handleNewChat}
           showBookmarkAction={activeView === "chat" && !!lastMessage?.response}
           isBookmarked={isCurrentTopicBookmarked}
           onToggleBookmark={handleToggleBookmarkForLastMessage}

@@ -71,14 +71,22 @@ def _generate_openai_compatible(prompt: str, num_predict: int = None) -> str:
         ],
     }
 
+    # For cloud LLMs, ensure ample token headroom so reasoning tokens (e.g. on Groq)
+    # or detailed exam sections never cause premature finish_reason: length truncation.
     if num_predict is not None:
-        payload["max_tokens"] = num_predict
+        payload["max_tokens"] = max(num_predict, 3200)
+    else:
+        payload["max_tokens"] = 3500
 
     try:
         response = requests.post(endpoint, json=payload, headers=headers, timeout=60)
         response.raise_for_status()
         data = response.json()
-        return data["choices"][0]["message"]["content"]
+        choice = data["choices"][0]
+        finish_reason = choice.get("finish_reason")
+        if finish_reason == "length":
+            print(f"[WARN] LLM answer was truncated by token limit (finish_reason: length)!")
+        return choice["message"]["content"]
     except requests.exceptions.RequestException as e:
         raise RuntimeError(f"Cloud LLM request to '{LLM_PROVIDER}' failed: {e}") from e
 

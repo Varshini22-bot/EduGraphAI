@@ -439,8 +439,15 @@ class RAGService:
                 "query": question,
                 "topic": None,
                 "answer": (
-                    "The requested topic could not be identified "
-                    "in the Knowledge Graph."
+                    f"The requested topic could not be identified in the Knowledge Graph.\n\n"
+                    f"EduGraphAI is grounded in curriculum topics across:\n"
+                    f"- **Data Structures & Algorithms (DSA)** (e.g., Binary Search, Quick Sort, AVL Tree)\n"
+                    f"- **Analysis & Design of Algorithms (ADA)** (e.g., Dynamic Programming, Complexity Analysis, Greedy Method)\n"
+                    f"- **Operating Systems (OS)** (e.g., Deadlock, CPU Scheduling, Paging, Semaphores)\n"
+                    f"- **Computer Networks (CN)** (e.g., OSI Model, TCP/IP, Ethernet, Flow Control)\n"
+                    f"- **Software Engineering (SEPM)** (e.g., Agile Model, Waterfall Model, Alpha Testing, Black Box Testing)\n"
+                    f"- **Machine Learning (ML)** (e.g., Linear Regression, Decision Tree, Neural Network)\n\n"
+                    f"Try asking about any of these topics or concepts!"
                 ),
                 "graph_context": [],
                 "incoming": [],
