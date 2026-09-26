@@ -1,13 +1,31 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { AuthProvider } from "@/context/AuthContext";
 import { SettingsProvider } from "@/context/SettingsContext";
 import { ToastProvider } from "@/context/ToastContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Knowledge Graph Learning Assistant",
+  title: "Knowledge Graph Learning Assistant | EduGraphAI",
   description:
     "An AI-powered learning assistant that explains topics and maps how they connect.",
+  openGraph: {
+    title: "Knowledge Graph Learning Assistant | EduGraphAI",
+    description:
+      "An AI-powered learning assistant that explains topics and maps how they connect.",
+    url: "https://edu-graph-ai.vercel.app",
+    siteName: "EduGraphAI",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Knowledge Graph Learning Assistant | EduGraphAI",
+    description:
+      "An AI-powered learning assistant that explains topics and maps how they connect.",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0a0d13",
 };
 
 // Same three typefaces and weights as before (Space Grotesk 500/600/700,
@@ -32,7 +50,17 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="stylesheet" href={GOOGLE_FONTS_HREF} />
+        <link rel="preload" href={GOOGLE_FONTS_HREF} as="style" />
+        <link
+          rel="stylesheet"
+          href={GOOGLE_FONTS_HREF}
+          media="print"
+          // @ts-ignore
+          onLoad="this.media='all'"
+        />
+        <noscript>
+          <link rel="stylesheet" href={GOOGLE_FONTS_HREF} />
+        </noscript>
       </head>
       <body className="font-body bg-base text-ink-primary antialiased">
         <SettingsProvider>

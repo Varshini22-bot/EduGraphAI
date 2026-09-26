@@ -1,11 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
 import ConversationContainer from "@/components/chat/ConversationContainer";
-import ProgressDashboard from "@/components/ProgressDashboard";
-import BookmarkList from "@/components/BookmarkList";
+
+const ProgressDashboard = dynamic(() => import("@/components/ProgressDashboard"), {
+  ssr: false,
+});
+const BookmarkList = dynamic(() => import("@/components/BookmarkList"), {
+  ssr: false,
+});
 import { ApiError, askQuestion, getGraph } from "@/lib/api";
 import {
   loadBookmarks,
