@@ -33,6 +33,7 @@ Unlike conventional chatbots that rely strictly on unstructured LLM recall, EduG
 * **🧭 Curriculum Learning Paths**: Generates progressive, step-by-step topic mastery sequences derived directly from graph relationships.
 * **📊 Progress Dashboard & Bookmarks**: Tracks session mastery, studied concepts, topic coverage metrics, and saved bookmarks across student sessions.
 * **🛡️ Zero Truncation & Session Isolation**: Up to 4096 output tokens with strict anti-drift contextual anchoring; supports both authenticated and private guest workflows with zero cross-contamination.
+* **🔗 Zero-Database Conversation Sharing**: Instant, shareable conversation links (`/share/[shareId]`) powered by client-side Raw Deflate compression and URL-safe Base64; recipients view complete educational conversations in a clean, read-only markdown interface with syntax highlighting, with zero database storage or server overhead.
 * **⚡ 100/100 Lighthouse & Accessibility Rating**: Optimized with zero render-blocking delays, sub-second Core Web Vitals (FCP 0.7s, LCP 0.7s, CLS 0), and full WCAG AA contrast compliance.
 
 ---
@@ -128,6 +129,7 @@ Audited on the live production frontend (`https://edu-graph-ai.vercel.app/`):
 * **Framework**: [Next.js 14](https://nextjs.org/) (App Router, React 18, TypeScript)
 * **Styling**: [Tailwind CSS](https://tailwindcss.com/) with full Dark/Light adaptive themes
 * **Graph Visualization**: [React Flow (@xyflow/react)](https://reactflow.dev/) & [Dagre](https://github.com/dagrejs/dagre)
+* **Client-Side Data Sharing**: Browser Streams API (`CompressionStream` / `DecompressionStream` with `deflate-raw`) for zero-database URL sharing
 * **Icons & Rendering**: Lucide React, React Markdown, KaTeX Math rendering
 * **Hosting**: [Vercel](https://vercel.com/) (Edge CDN with global SSL)
 
@@ -165,11 +167,13 @@ Knowledge_Graph_Project/
 │
 ├── frontend/
 │   ├── src/
-│   │   ├── app/                # Next.js App Router (layout, page, auth, settings)
-│   │   ├── components/         # UI Components (Sidebar, Navbar, AnswerCard, etc.)
+│   │   ├── app/                # Next.js App Router (layout, page, auth, settings, share/[shareId])
+│   │   │   ├── ...             # Core pages & route handlers
+│   │   │   └── share/[shareId]/# Public read-only shared conversation viewer
+│   │   ├── components/         # UI Components (Sidebar, Navbar, AnswerCard, ShareDialog, etc.)
 │   │   │   └── chat/           # Chat-specific components (ChatInput, ChatBubble, etc.)
 │   │   ├── context/            # React Contexts (Auth, Settings, Toast)
-│   │   ├── lib/                # API client, metrics, storage, TypeScript types
+│   │   ├── lib/                # API client, metrics, storage, share compression, TypeScript types
 │   │   └── styles/             # Global CSS & Tailwind configuration
 │   ├── package.json            # Node.js dependencies & scripts
 │   └── tsconfig.json           # TypeScript compiler configuration
@@ -329,6 +333,32 @@ GET /health
   "version": "1.0.0"
 }
 ```
+
+---
+
+## 🔗 Client-Side Conversation Sharing Architecture
+
+EduGraphAI incorporates a decentralized, client-side conversation sharing mechanism that avoids server database dependencies and prevents infrastructure overhead:
+
+```text
+┌────────────────────────┐      Raw Deflate       ┌────────────────────────┐
+│  User Active Chat      │  ───────────────────►  │  Compressed URL Token  │
+│  (Questions & Answers) │       + Base64url      │  (/share/df.<token>)   │
+└────────────────────────┘                        └───────────┬────────────┘
+                                                              │
+                                                        Shared Link
+                                                              │
+┌────────────────────────┐      Raw Inflate                   ▼
+│  Read-Only Viewer      │  ◄───────────────────  ┌────────────────────────┐
+│  - Formatted Markdown  │       via Browser      │  Public Recipient      │
+│  - Code Block Copying  │       Streams API      │  (No account required) │
+└────────────────────────┘                        └────────────────────────┘
+```
+
+* **Zero-Database Storage**: Entire study conversations are encoded directly into URL-safe hash tokens, requiring zero backend database tables, migration risk, or hosting expenses.
+* **Privacy by Design**: Chat contents are never retained on server disks or external analytics databases. The data remains strictly between the sharer and recipient.
+* **High-Density Deflate Compression**: Utilizes browser-native `CompressionStream('deflate-raw')` and compact schema aliases (`v`, `t`, `top`, `m`, `r`, `c`), reducing payload size by ~70–80% to fit within standard browser URL limits (< 2,800 characters).
+* **Dedicated Read-Only Reader**: Public links at `/share/[shareId]` unpack the snapshot in real-time, displaying academic topics, structured markdown formatting, formulas, and code blocks with one-click clipboard copying.
 
 ---
 

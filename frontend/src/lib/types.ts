@@ -125,3 +125,19 @@ export interface DashboardMetrics {
   recentlyLearned: string[];
   subjects: SubjectProgress[];
 }
+
+// ---------------------------------------------------------------------------
+// Conversation Sharing Types (Frontend-only URL snapshot)
+// ---------------------------------------------------------------------------
+
+export interface SharedMessage {
+  role: "user" | "assistant";
+  content: string;
+  topic?: string | null;
+}
+
+export interface SharedSnapshotData {
+  title: string;
+  topic?: string | null;
+  messages: SharedMessage[];
+}
