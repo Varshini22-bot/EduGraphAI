@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
 import ConversationContainer from "@/components/chat/ConversationContainer";
+import ShareDialog from "@/components/ShareDialog";
 
 const ProgressDashboard = dynamic(() => import("@/components/ProgressDashboard"), {
   ssr: false,
@@ -69,6 +70,7 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
   const epochRef = useRef(0);
   const isMountedRef = useRef(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const { settings } = useSettings();
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [hasHydrated, setHasHydrated] = useState(false);
@@ -512,7 +514,7 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
           title={navbarTitle()}
           subtitle={navbarSubtitle()}
           onOpenSidebar={() => setSidebarOpen(true)}
-          onNewChat={handleNewChat}
+          onShare={() => setShareDialogOpen(true)}
           showBookmarkAction={activeView === "chat" && !!lastMessage?.response}
           isBookmarked={isCurrentTopicBookmarked}
           onToggleBookmark={handleToggleBookmarkForLastMessage}
@@ -543,6 +545,12 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
             onRemove={handleRemoveBookmark}
           />
         )}
+
+        <ShareDialog
+          isOpen={shareDialogOpen}
+          onClose={() => setShareDialogOpen(false)}
+          conversation={activeConversation}
+        />
       </main>
     </div>
   );

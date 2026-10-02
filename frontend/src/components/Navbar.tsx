@@ -4,17 +4,38 @@ interface NavbarProps {
   title: string;
   subtitle?: string;
   onOpenSidebar: () => void;
-  onNewChat?: () => void;
+  onShare?: () => void;
   showBookmarkAction: boolean;
   isBookmarked: boolean;
   onToggleBookmark: () => void;
+}
+
+function ShareIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className={className ?? "flex-shrink-0"}
+    >
+      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+      <polyline points="16 6 12 2 8 6" />
+      <line x1="12" y1="2" x2="12" y2="15" />
+    </svg>
+  );
 }
 
 export default function Navbar({
   title,
   subtitle,
   onOpenSidebar,
-  onNewChat,
+  onShare,
   showBookmarkAction,
   isBookmarked,
   onToggleBookmark,
@@ -40,17 +61,6 @@ export default function Navbar({
       </div>
 
       <div className="flex flex-shrink-0 items-center gap-2">
-        {onNewChat && (
-          <button
-            onClick={onNewChat}
-            aria-label="New Chat"
-            title="Start a new chat"
-            className="flex items-center gap-1.5 rounded-md border border-border-subtle bg-elevated px-2.5 py-1 text-[13px] font-medium text-ink-primary transition-colors hover:border-teal hover:text-teal"
-          >
-            <span aria-hidden="true" className="text-sm font-bold leading-none">+</span>
-            <span className="hidden sm:inline">New Chat</span>
-          </button>
-        )}
         {showBookmarkAction && (
           <button
             onClick={onToggleBookmark}
@@ -66,6 +76,15 @@ export default function Navbar({
             {isBookmarked ? "★" : "☆"}
           </button>
         )}
+        <button
+          onClick={onShare}
+          aria-label="Share conversation"
+          title="Share conversation"
+          className="flex h-[34px] items-center gap-1.5 rounded-md border border-border-subtle bg-elevated px-2.5 text-[13px] font-medium text-ink-primary transition-colors hover:border-border-strong hover:bg-hoverbg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal/50 active:scale-[0.98]"
+        >
+          <ShareIcon />
+          <span className="hidden sm:inline">Share</span>
+        </button>
       </div>
     </header>
   );
