@@ -1,4 +1,5 @@
 import { Conversation, SharedMessage, SharedSnapshotData } from "./types";
+import { createSharedConversation } from "./api";
 
 // Maximum URL length safely supported across all browsers, proxies, and platforms
 export const MAX_SAFE_URL_LENGTH = 2800;
@@ -6,8 +7,8 @@ export const MAX_SAFE_URL_LENGTH = 2800;
 // Maximum message turns to include in a frontend link snapshot
 export const MAX_SNAPSHOT_MESSAGES = 20;
 
-// Maximum character length per individual message content
-export const MAX_MESSAGE_CHAR_LENGTH = 2500;
+// Maximum character length per individual message content (support full university exam answers)
+export const MAX_MESSAGE_CHAR_LENGTH = 50000;
 
 interface SnapshotPayload {
   v: 1;
@@ -334,6 +335,67 @@ export async function encodeConversationSnapshot(
     isOversized: false,
   };
 }
+
+/**
+ * Creates a short, persistent share link for the conversation.
+ * First tries backend API persistence (generates clean short URL like /share/s_a8f9c2d1).
+ * Falls back to client-side compressed snapshot if backend is unreachable.
+ */
+export async function createShareLink(
+  conversation: Conversation | null,
+  originUrl?: string
+): Promise<EncodeSnapshotResult> {
+  const baseUrl =
+    originUrl ||
+    (typeof window !== "undefined"
+      ? window.location.origin
+      : "https://edu-graph-ai.vercel.app");
+
+  const messages = extractSharedMessages(conversation);
+  if (messages.length === 0) {
+    return {
+      url: baseUrl,
+      token: "",
+      isOversized: false,
+    };
+  }
+
+  const firstMsg = conversation?.messages?.[0];
+  const topic =
+    conversation?.messages.find((m) => m.response?.topic)?.response?.topic ||
+    firstMsg?.response?.topic ||
+    undefined;
+
+  const title =
+    conversation?.title && conversation.title !== "New Chat"
+      ? conversation.title.slice(0, 100)
+      : firstMsg?.query
+      ? firstMsg.query.slice(0, 80)
+      : "EduGraphAI Conversation";
+
+  // Try creating a clean short backend link first
+  try {
+    const res = await createSharedConversation({
+      title,
+      topic: topic || null,
+      messages,
+    });
+    if (res && res.id) {
+      const shortUrl = `${baseUrl.replace(/\/+$/, "")}/share/${res.id}`;
+      return {
+        url: shortUrl,
+        token: res.id,
+        isOversized: false,
+      };
+    }
+  } catch (backendErr) {
+    console.warn("Backend share creation failed, falling back to client-side snapshot:", backendErr);
+  }
+
+  // Fallback to client-side compressed snapshot if backend is unreachable
+  return encodeConversationSnapshot(conversation, originUrl);
+}
+
 
 /**
  * Decodes and validates a frontend snapshot token from the URL.

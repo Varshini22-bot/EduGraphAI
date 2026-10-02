@@ -38,3 +38,20 @@ class User(Base):
 
     def __repr__(self) -> str:
         return f"<User id={self.id} email={self.email}>"
+
+
+class SharedConversation(Base):
+    """
+    Stores shared conversation snapshots so links are short (e.g., /share/s_a8f9c2d1)
+    and full messages are preserved without URL truncation.
+    """
+    __tablename__ = "shared_conversations"
+
+    id = Column(String, primary_key=True, index=True)
+    title = Column(String, nullable=False)
+    topic = Column(String, nullable=True)
+    messages_json = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<SharedConversation id={self.id} title={self.title}>"

@@ -1,7 +1,10 @@
-from typing import Optional
-from fastapi import APIRouter, HTTPException
+from typing import Optional, List, Dict, Any
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
 
+from database.database import get_db
+from database.share_service import save_shared_conversation, get_shared_conversation
 from llm.rag_service import RAGService
 
 from utils.stats import get_stats
@@ -123,3 +126,45 @@ def stats():
             "error": "Unable to retrieve graph statistics.",
             "details": str(e)
         }
+
+
+# ============================================================
+# CONVERSATION SHARING ENDPOINTS
+# ============================================================
+
+class CreateShareRequest(BaseModel):
+    title: str
+    topic: Optional[str] = None
+    messages: List[Dict[str, Any]]
+
+
+@router.post("/share")
+def create_share(req: CreateShareRequest, db: Session = Depends(get_db)):
+    if not req.messages:
+        raise HTTPException(
+            status_code=400,
+            detail="Cannot share an empty conversation."
+        )
+
+    share_id = save_shared_conversation(
+        db,
+        title=req.title,
+        topic=req.topic,
+        messages=req.messages,
+    )
+
+    return {
+        "id": share_id,
+        "url": f"/share/{share_id}",
+    }
+
+
+@router.get("/share/{share_id}")
+def read_share(share_id: str, db: Session = Depends(get_db)):
+    shared = get_shared_conversation(db, share_id.strip())
+    if not shared:
+        raise HTTPException(
+            status_code=404,
+            detail="Shared conversation not found or expired."
+        )
+    return shared

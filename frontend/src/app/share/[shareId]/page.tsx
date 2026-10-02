@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { copyShareLink, decodeConversationSnapshot } from "@/lib/share";
+import { fetchSharedConversation } from "@/lib/api";
 import { SharedMessage, SharedSnapshotData } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
@@ -272,19 +273,42 @@ export default function SharedConversationPage() {
     let isMounted = true;
     setLoading(true);
 
-    decodeConversationSnapshot(shareId)
-      .then((data) => {
+    async function loadSharedSnapshot() {
+      // 1. If it's a client-compressed legacy token (starts with df. or b64.)
+      if (shareId.startsWith("df.") || shareId.startsWith("b64.")) {
+        const clientData = await decodeConversationSnapshot(shareId);
         if (isMounted) {
-          setSnapshot(data);
+          setSnapshot(clientData);
           setLoading(false);
         }
-      })
-      .catch(() => {
+        return;
+      }
+
+      // 2. Otherwise fetch the persistent snapshot from backend
+      try {
+        const serverData = await fetchSharedConversation(shareId);
         if (isMounted) {
-          setSnapshot(null);
+          setSnapshot(serverData);
           setLoading(false);
         }
-      });
+      } catch {
+        // Fallback: check if it's a legacy un-prefixed client token
+        try {
+          const fallbackData = await decodeConversationSnapshot(shareId);
+          if (isMounted) {
+            setSnapshot(fallbackData);
+            setLoading(false);
+          }
+        } catch {
+          if (isMounted) {
+            setSnapshot(null);
+            setLoading(false);
+          }
+        }
+      }
+    }
+
+    loadSharedSnapshot();
 
     return () => {
       isMounted = false;

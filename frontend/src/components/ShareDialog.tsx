@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Conversation } from "@/lib/types";
 import {
   copyShareLink,
-  encodeConversationSnapshot,
+  createShareLink,
   isNativeShareSupported,
   prepareShareData,
   triggerNativeShare,
@@ -109,7 +109,7 @@ export default function ShareDialog({
     let isMounted = true;
     setIsEncoding(true);
 
-    encodeConversationSnapshot(conversation)
+    createShareLink(conversation)
       .then((res) => {
         if (!isMounted) return;
         setIsEncoding(false);

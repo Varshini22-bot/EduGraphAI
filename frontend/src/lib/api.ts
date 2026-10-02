@@ -1,4 +1,12 @@
-import { AskResponse, GraphLinkData, GraphNodeData, GraphResponse, StatsResponse } from "./types";
+import {
+  AskResponse,
+  GraphLinkData,
+  GraphNodeData,
+  GraphResponse,
+  SharedMessage,
+  SharedSnapshotData,
+  StatsResponse,
+} from "./types";
 
 // ---------------------------------------------------------------------------
 // LIVE API LAYER
@@ -435,4 +443,29 @@ export async function startProCheckout(): Promise<CheckoutResult> {
     return { status: "unavailable" };
   }
 }
+
+// ---------------------------------------------------------------------------
+// CONVERSATION SHARING
+// ---------------------------------------------------------------------------
+
+export async function createSharedConversation(data: {
+  title: string;
+  topic?: string | null;
+  messages: SharedMessage[];
+}): Promise<{ id: string; url: string }> {
+  return fetchJson<{ id: string; url: string }>("/share", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+}
+
+export async function fetchSharedConversation(
+  shareId: string
+): Promise<SharedSnapshotData> {
+  return fetchJson<SharedSnapshotData>(`/share/${encodeURIComponent(shareId)}`);
+}
+
 
