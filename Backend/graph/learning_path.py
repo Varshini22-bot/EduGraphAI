@@ -16,15 +16,22 @@ def get_learning_path(topic):
     RETURN COALESCE(m.label, m.name) AS concept
     """
 
-    with get_session() as session:
-
-        result = session.run(
-            query,
-            topic=topic
-        )
-
+    try:
+        with get_session() as session:
+            result = session.run(
+                query,
+                topic=topic
+            )
+            return [
+                record["concept"]
+                for record in result
+                if record["concept"] is not None
+            ]
+    except Exception:
+        from graph.static_graph_store import StaticGraphStore
+        outgoing = StaticGraphStore.get_outgoing(topic)
         return [
-            record["concept"]
-            for record in result
-            if record["concept"] is not None
+            item["target"]
+            for item in outgoing
+            if item.get("relationship") == "USES" and item.get("target") is not None
         ]
