@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Conversation } from "@/lib/types";
 import {
   copyShareLink,
+  encodeConversationSnapshot,
   isNativeShareSupported,
   prepareShareData,
   triggerNativeShare,
@@ -82,12 +83,59 @@ export default function ShareDialog({
   conversation,
 }: ShareDialogProps) {
   const [copied, setCopied] = useState(false);
+  const [shareUrl, setShareUrl] = useState<string>("");
+  const [isOversized, setIsOversized] = useState(false);
+  const [oversizedMessage, setOversizedMessage] = useState<string>("");
+  const [isEncoding, setIsEncoding] = useState(false);
+
   const { showToast } = useToast();
   const dialogRef = useRef<HTMLDivElement>(null);
   const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const shareData = useMemo(() => prepareShareData(conversation), [conversation]);
   const hasNativeShare = useMemo(() => isNativeShareSupported(), []);
+
+  // Generate frontend snapshot URL when dialog opens or conversation changes
+  useEffect(() => {
+    if (!isOpen) return;
+
+    if (!shareData.preview.hasContent) {
+      setShareUrl(shareData.url);
+      setIsOversized(false);
+      setOversizedMessage("");
+      return;
+    }
+
+    let isMounted = true;
+    setIsEncoding(true);
+
+    encodeConversationSnapshot(conversation)
+      .then((res) => {
+        if (!isMounted) return;
+        setIsEncoding(false);
+        if (res.isOversized) {
+          setIsOversized(true);
+          setOversizedMessage(
+            res.errorMessage ||
+              "This conversation is too large to share as a link. Start a shorter conversation or copy the important part manually."
+          );
+          setShareUrl("");
+        } else {
+          setIsOversized(false);
+          setOversizedMessage("");
+          setShareUrl(res.url);
+        }
+      })
+      .catch(() => {
+        if (!isMounted) return;
+        setIsEncoding(false);
+        setShareUrl(shareData.url);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isOpen, conversation, shareData]);
 
   // Keyboard accessibility: ESC closes modal
   useEffect(() => {
@@ -126,7 +174,13 @@ export default function ShareDialog({
   if (!isOpen) return null;
 
   async function handleCopy() {
-    const success = await copyShareLink(shareData.url);
+    if (isOversized) {
+      showToast(oversizedMessage, "danger");
+      return;
+    }
+
+    const targetUrl = shareUrl || shareData.url;
+    const success = await copyShareLink(targetUrl);
     if (success) {
       setCopied(true);
       showToast("Link copied to clipboard!");
@@ -140,10 +194,16 @@ export default function ShareDialog({
   }
 
   async function handleNativeShare() {
+    if (isOversized) {
+      showToast(oversizedMessage, "danger");
+      return;
+    }
+
+    const targetUrl = shareUrl || shareData.url;
     const result = await triggerNativeShare({
       title: shareData.title,
       text: shareData.text,
-      url: shareData.url,
+      url: targetUrl,
     });
 
     if (result === "shared") {
@@ -184,7 +244,7 @@ export default function ShareDialog({
               id="share-dialog-desc"
               className="mt-0.5 text-[13px] text-ink-secondary"
             >
-              Share this conversation with others.
+              Share a snapshot of this conversation with others.
             </p>
           </div>
           <button
@@ -262,6 +322,16 @@ export default function ShareDialog({
           </div>
         )}
 
+        {/* Oversized Warning */}
+        {isOversized && (
+          <div className="mb-3.5 flex items-start gap-2.5 rounded-lg border border-amber/40 bg-amber-dim/50 p-3 text-[12.5px] text-ink-primary">
+            <span className="flex-shrink-0 text-amber" aria-hidden="true">
+              ⚠
+            </span>
+            <span className="leading-snug">{oversizedMessage}</span>
+          </div>
+        )}
+
         {/* Link field + Copy button */}
         <div className="space-y-1.5">
           <label className="text-[11.5px] font-semibold uppercase tracking-wider text-ink-tertiary">
@@ -271,13 +341,22 @@ export default function ShareDialog({
             <input
               type="text"
               readOnly
-              value={shareData.url}
+              value={
+                isEncoding
+                  ? "Generating link…"
+                  : isOversized
+                  ? "Conversation too large for link sharing"
+                  : shareUrl || shareData.url
+              }
               aria-label="Share link URL"
-              className="flex-1 min-w-0 truncate rounded-md border border-border-subtle bg-inputbg px-3 py-2 text-[12.5px] text-ink-primary outline-none select-all focus:border-teal"
+              className={`flex-1 min-w-0 truncate rounded-md border border-border-subtle bg-inputbg px-3 py-2 text-[12.5px] outline-none select-all focus:border-teal ${
+                isOversized ? "text-ink-tertiary italic" : "text-ink-primary"
+              }`}
             />
             <button
               onClick={handleCopy}
-              className={`btn-primary !px-3.5 !py-2 text-[13px] flex-shrink-0 gap-1.5 transition-all ${
+              disabled={isEncoding || isOversized || !preview.hasContent}
+              className={`btn-primary !px-3.5 !py-2 text-[13px] flex-shrink-0 gap-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                 copied ? "!bg-teal !text-surface font-semibold" : ""
               }`}
             >
@@ -298,9 +377,10 @@ export default function ShareDialog({
 
         {/* Footer */}
         <div className="mt-5 flex items-center justify-between border-t border-border-subtle pt-3.5">
-          {hasNativeShare ? (
+          {hasNativeShare && !isOversized && preview.hasContent ? (
             <button
               onClick={handleNativeShare}
+              disabled={isEncoding}
               className="btn-ghost !px-3 !py-1.5 text-[12.5px] gap-1.5 text-ink-secondary hover:text-ink-primary"
               title="Open native share sheet"
             >
