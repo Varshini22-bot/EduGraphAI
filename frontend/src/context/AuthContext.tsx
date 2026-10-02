@@ -15,6 +15,7 @@ import {
   hasToken,
   clearToken,
 } from "@/lib/auth/authClient";
+import { clearGuestStorage } from "@/lib/storage";
 
 interface AuthContextValue {
   user: User | null;
@@ -44,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const requestId = ++authRequestRef.current;
 
     if (!hasToken()) {
+      clearGuestStorage();
       setUser(null);
       setLoading(false);
       return;
@@ -69,6 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // session after sign-out.
     authRequestRef.current++;
     clearToken();
+    clearGuestStorage();
     setUser(null);
     setLoading(false);
   }, []);

@@ -76,25 +76,52 @@ function writeArray<T>(key: string, value: T[]): void {
   }
 }
 
+export function clearGuestStorage(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem("kg-learning-assistant:conversations:guest");
+    window.localStorage.removeItem("kg-learning-assistant:conversations");
+    window.localStorage.removeItem("kg-learning-assistant:bookmarks:guest");
+    window.localStorage.removeItem("kg-learning-assistant:bookmarks");
+  } catch {
+    // Ignore storage errors in private browsing/restricted modes
+  }
+}
+
 /**
- * @param scope Pass the signed-in user's id, or `null`/omit for the
- * signed-out "guest" namespace.
+ * @param scope Pass the signed-in user's id, or `null`/omit when signed out.
+ * When not signed in, conversations are never persisted across sessions.
  */
 export function loadConversations(scope?: string | null): Conversation[] {
-  return readArray(conversationsKey(scope ?? null), isConversation);
+  if (!scope || typeof scope !== "string" || !scope.trim()) {
+    clearGuestStorage();
+    return [];
+  }
+  return readArray(conversationsKey(scope), isConversation);
 }
 
 export function saveConversations(
   conversations: Conversation[],
   scope?: string | null
 ): void {
-  writeArray(conversationsKey(scope ?? null), conversations);
+  if (!scope || typeof scope !== "string" || !scope.trim()) {
+    clearGuestStorage();
+    return;
+  }
+  writeArray(conversationsKey(scope), conversations);
 }
 
 export function loadBookmarks(scope?: string | null): Bookmark[] {
-  return readArray(bookmarksKey(scope ?? null), isBookmark);
+  if (!scope || typeof scope !== "string" || !scope.trim()) {
+    clearGuestStorage();
+    return [];
+  }
+  return readArray(bookmarksKey(scope), isBookmark);
 }
 
 export function saveBookmarks(bookmarks: Bookmark[], scope?: string | null): void {
-  writeArray(bookmarksKey(scope ?? null), bookmarks);
+  if (!scope || typeof scope !== "string" || !scope.trim()) {
+    return;
+  }
+  writeArray(bookmarksKey(scope), bookmarks);
 }

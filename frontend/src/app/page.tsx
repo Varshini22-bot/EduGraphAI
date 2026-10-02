@@ -15,6 +15,7 @@ const BookmarkList = dynamic(() => import("@/components/BookmarkList"), {
 });
 import { ApiError, askQuestion, getGraph } from "@/lib/api";
 import {
+  clearGuestStorage,
   loadBookmarks,
   loadConversations,
   saveBookmarks,
@@ -83,6 +84,18 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
     isMountedRef.current = true;
     scopeRef.current = scope;
     epochRef.current++;
+
+    if (!scope) {
+      clearGuestStorage();
+      setConversations([]);
+      setBookmarks([]);
+      setActiveConversationId(null);
+      setHasHydrated(true);
+      return () => {
+        isMountedRef.current = false;
+        pendingRef.current = null;
+      };
+    }
 
     const loadedConversations = loadConversations(scope);
     const loadedBookmarks = loadBookmarks(scope);
@@ -388,7 +401,12 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
       updatedAt: timestamp,
       messages: [],
     };
-    setConversations((prev) => [newConversation, ...prev]);
+    if (!scope) {
+      clearGuestStorage();
+      setConversations([newConversation]);
+    } else {
+      setConversations((prev) => [newConversation, ...prev]);
+    }
     setActiveConversationId(newConversation.id);
     setActiveView("chat");
     setSidebarOpen(false);
@@ -463,6 +481,7 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
     scopeRef.current = null;
     pendingRef.current = null;
     epochRef.current++;
+    clearGuestStorage();
     setConversations([]);
     setBookmarks([]);
     setActiveConversationId(null);
