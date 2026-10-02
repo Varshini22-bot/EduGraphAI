@@ -175,6 +175,7 @@ class Neo4jClient:
             "database": target_db,
             "latency_ms": None,
             "paused": is_cloud,
+            "static_fallback_active": True,
             "error": primary_err,
             "guidance": (
                 "AuraDB instance may be paused. Visit console.neo4j.io and click 'Resume' (~60s), "

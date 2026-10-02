@@ -12,6 +12,7 @@ This service is used by:
 """
 
 from graph.neo4j_client import get_session
+from graph.static_graph_store import StaticGraphStore
 
 
 class GraphService:
@@ -61,7 +62,7 @@ class GraphService:
                 ]
         except Exception as e:
             print(f"[GRAPH SERVICE] search failed: {e}")
-            return []
+            return StaticGraphStore.search(keyword)
 
 
     # ==========================================================
@@ -102,11 +103,21 @@ class GraphService:
                     for record in result
                     if record["label"] is not None
                 ]
-            GraphService._cached_topic_labels = labels
-            return labels
+            if labels:
+                GraphService._cached_topic_labels = labels
+                return labels
         except Exception as e:
             print(f"[GRAPH SERVICE] get_all_topic_labels failed: {e}")
-            return GraphService._cached_topic_labels or []
+
+        if GraphService._cached_topic_labels:
+            return GraphService._cached_topic_labels
+
+        static_labels = StaticGraphStore.get_all_topic_labels()
+        if static_labels:
+            GraphService._cached_topic_labels = static_labels
+            return static_labels
+
+        return []
 
 
     # ==========================================================
@@ -134,13 +145,13 @@ class GraphService:
                     topic=topic
                 )
                 record = result.single()
-                if record is None:
-                    return None
-                node = record["n"]
-                return dict(node)
+                if record is not None:
+                    node = record["n"]
+                    return dict(node)
         except Exception as e:
             print(f"[GRAPH SERVICE] get_topic failed for '{topic}': {e}")
-            return None
+
+        return StaticGraphStore.get_topic(topic)
 
 
     # ==========================================================
@@ -201,7 +212,7 @@ class GraphService:
                 ]
         except Exception as e:
             print(f"[GRAPH SERVICE] get_outgoing failed for '{topic}': {e}")
-            return []
+            return StaticGraphStore.get_outgoing(topic)
 
 
     # ==========================================================
@@ -247,7 +258,7 @@ class GraphService:
                 ]
         except Exception as e:
             print(f"[GRAPH SERVICE] get_incoming failed for '{topic}': {e}")
-            return []
+            return StaticGraphStore.get_incoming(topic)
 
 
     # ==========================================================
@@ -294,7 +305,7 @@ class GraphService:
                 ]
         except Exception as e:
             print(f"[GRAPH SERVICE] get_neighbors failed for '{topic}': {e}")
-            return []
+            return StaticGraphStore.get_neighbors(topic)
 
 
     # ==========================================================
@@ -357,6 +368,9 @@ class GraphService:
                 record = result.single()
         except Exception as e:
             print(f"[GRAPH SERVICE] Error fetching complete response for topic '{topic}': {e}")
+            fallback_res = StaticGraphStore.get_complete_response(topic)
+            if fallback_res.get("status"):
+                return fallback_res
             return {
                 "status": False,
                 "message": "Database connection unavailable or paused",
@@ -367,21 +381,17 @@ class GraphService:
             }
 
         if record is None:
+            fallback_res = StaticGraphStore.get_complete_response(topic)
+            if fallback_res.get("status"):
+                return fallback_res
 
             return {
-
                 "status": False,
-
                 "message": "Topic not found",
-
                 "is_connection_error": False,
-
                 "node": None,
-
                 "outgoing": [],
-
                 "incoming": []
-
             }
 
         # A node with no relationships still produces one all-null

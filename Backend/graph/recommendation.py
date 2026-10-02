@@ -35,15 +35,23 @@ def get_recommendations(topic):
     LIMIT 10
     """
 
-    with get_session() as session:
-
-        result = session.run(
-            query,
-            topic=topic
-        )
-
-        return [
-            record["rec"]
-            for record in result
-            if record["rec"] is not None
-        ]
+    try:
+        with get_session() as session:
+            result = session.run(
+                query,
+                topic=topic
+            )
+            return [
+                record["rec"]
+                for record in result
+                if record["rec"] is not None
+            ]
+    except Exception:
+        from graph.static_graph_store import StaticGraphStore
+        neighbors = StaticGraphStore.get_neighbors(topic)
+        recs = []
+        for n in neighbors:
+            tgt = n.get("target") or n.get("source")
+            if tgt and tgt.lower() != str(topic).lower() and tgt not in recs:
+                recs.append(tgt)
+        return recs[:10]
