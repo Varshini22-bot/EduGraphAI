@@ -1,0 +1,1660 @@
+[
+  {
+    "question_id": "DSA_001",
+    "subject": "DSA",
+    "category": "factual",
+    "marks": 2,
+    "question": "What is the worst-case time complexity of searching an element in an AVL Tree?",
+    "canonical_topic": "AVL Tree",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "An AVL Tree maintains a height balanced within O(log n).",
+      "The worst-case search time complexity is O(log n)."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_002",
+    "subject": "DSA",
+    "category": "factual",
+    "marks": 2,
+    "question": "Define the balance factor of a node in an AVL Tree.",
+    "canonical_topic": "AVL Tree",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The balance factor is defined as Height(Left Subtree) - Height(Right Subtree).",
+      "In an AVL tree, the balance factor of any node must strictly be -1, 0, or +1."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_003",
+    "subject": "DSA",
+    "category": "factual",
+    "marks": 2,
+    "question": "What principle governs the order of insertion and deletion in a Stack?",
+    "canonical_topic": "Stack",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "A Stack operates strictly on the Last In First Out (LIFO) principle.",
+      "Elements are added via Push and removed via Pop from the same end called top."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_004",
+    "subject": "DSA",
+    "category": "factual",
+    "marks": 2,
+    "question": "Which pointer structure allows a Doubly Linked List to be traversed bidirectionally?",
+    "canonical_topic": "Doubly Linked List",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Each node in a Doubly Linked List contains two pointers: 'next' and 'prev'.",
+      "The presence of both pointers enables bidirectional traversal from both head and tail."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_005",
+    "subject": "DSA",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "How does a Circular Queue solve the memory utilization problem of a simple linear Queue?",
+    "canonical_topic": "Circular Queue",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "In a linear queue, once rear reaches maximum size, empty spaces left by dequeued elements cannot be reused.",
+      "A Circular Queue connects the last position back to the first using modulo arithmetic: rear = (rear + 1) % MAX.",
+      "Prevents memory wastage without needing to shift elements."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_006",
+    "subject": "DSA",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Explain how collision resolution works in Hashing using Chaining technique.",
+    "canonical_topic": "Chaining technique",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Each slot of the hash table points to a linked list of records that map to the same hash index.",
+      "Colliding keys are appended to the linked list corresponding to that hash value.",
+      "Avoids table overflow and handles high load factors gracefully."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_007",
+    "subject": "DSA",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Describe the structural property and heap-order property of a Max Heap.",
+    "canonical_topic": "Max Heap",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "A Max Heap is a complete binary tree where all levels except possibly the last are completely filled.",
+      "The value of every parent node is greater than or equal to the values of its child nodes.",
+      "The maximum element in the dataset is always stored at the root."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_008",
+    "subject": "DSA",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "How does Depth First Search (DFS) systematically traverse a graph using recursion or a stack?",
+    "canonical_topic": "Depth First Search (DFS)",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "DFS starts at a source vertex and explores as deep as possible along each branch before backtracking.",
+      "Maintains a visited array or set to avoid infinite loops in cyclic graphs.",
+      "Implemented naturally using system recursion or an explicit LIFO Stack data structure."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_009",
+    "subject": "DSA",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Compare Adjacency Matrix representation and Adjacency List representation for graph storage.",
+    "canonical_topic": "Adjacency Matrix representation",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Adjacency Matrix uses an O(V^2) 2D array and allows O(1) edge lookup, making it optimal for dense graphs.",
+      "Adjacency List uses O(V + E) space and represents neighbors as linked lists, making it memory-efficient for sparse graphs."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_010",
+    "subject": "DSA",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Differentiate between Singly Linked List and Doubly Linked List in terms of memory overhead and traversal efficiency.",
+    "canonical_topic": "Singly Linked List",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Singly Linked List nodes store only one pointer (next), requiring less memory per node but allowing only unidirectional traversal.",
+      "Doubly Linked List nodes store two pointers (next and prev), using more memory but allowing bidirectional traversal and O(1) predecessor deletion."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_011",
+    "subject": "DSA",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Compare Linear Probing and Quadratic Probing collision resolution strategies in open addressing Hashing.",
+    "canonical_topic": "Linear Probing",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Linear Probing probes sequential slots (hash + i) % m, which is cache-friendly but causes primary clustering.",
+      "Quadratic Probing probes slots using quadratic intervals (hash + c1*i + c2*i^2) % m, eliminating primary clustering."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_012",
+    "subject": "DSA",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Contrast Breadth First Search (BFS) and Depth First Search (DFS) regarding frontier data structures and search traversal order.",
+    "canonical_topic": "Breadth First Search (BFS)",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "BFS explores nodes level-by-level using a FIFO Queue, finding the shortest path on unweighted graphs.",
+      "DFS explores branch paths to maximum depth before backtracking using a LIFO Stack or recursion, suitable for topological sorting."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_013",
+    "subject": "DSA",
+    "category": "relationship",
+    "marks": 8,
+    "question": "What is the relationship between Breadth First Search (BFS) and the Queue data structure during vertex traversal?",
+    "canonical_topic": "Breadth First Search (BFS)",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "BFS relies on a FIFO Queue to manage the frontier of discovered vertices.",
+      "Vertices are enqueued when first discovered and dequeued when their adjacent neighbors are examined.",
+      "The FIFO property of the Queue ensures vertices are visited in non-decreasing order of their distance from the source."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_014",
+    "subject": "DSA",
+    "category": "relationship",
+    "marks": 8,
+    "question": "How does the Stack data structure enable Parenthesis Matching in expression validation?",
+    "canonical_topic": "Parenthesis Matching",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Parenthesis Matching uses a Stack to track opened grouping delimiters.",
+      "Opening brackets are pushed onto the Stack as they are encountered in the input string.",
+      "Encountering a closing bracket triggers a Pop, checking whether the popped opening bracket matches; an empty stack at end confirms balanced delimiters."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_015",
+    "subject": "DSA",
+    "category": "relationship",
+    "marks": 8,
+    "question": "Explain how the Tower of Hanoi problem utilizes Recursion / Recursive Algorithm to solve subproblems.",
+    "canonical_topic": "Tower of Hanoi problem",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Tower of Hanoi decomposes moving n disks into three recursive subproblems: move n-1 disks to auxiliary, move nth disk to destination, move n-1 disks to destination.",
+      "Relies on Recursion / Recursive Algorithm with the base case of n=1 disk.",
+      "The recurrence relation T(n) = 2T(n-1) + 1 yields an exponential time complexity of O(2^n)."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_016",
+    "subject": "DSA",
+    "category": "relationship",
+    "marks": 8,
+    "question": "What is the relationship between Inorder Traversal and a Binary Tree in producing sorted keys?",
+    "canonical_topic": "Inorder Traversal",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Inorder Traversal recursively visits the left subtree, the root node, and then the right subtree (Left-Root-Right).",
+      "When applied to a Binary Search Tree (a specialization of Binary Tree), Inorder Traversal outputs elements in strictly non-decreasing sorted order.",
+      "The traversal runs in O(n) linear time visiting every node exactly once."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "DSA_017",
+    "subject": "DSA",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "What is the balancing mechanism of a Red-Black Tree during node insertion?",
+    "canonical_topic": "Red-Black Tree",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "DSA_018",
+    "subject": "DSA",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "How does a Skip List achieve logarithmic search time using probabilistic forward pointers?",
+    "canonical_topic": "Skip List",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "DSA_019",
+    "subject": "DSA",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "Explain the self-adjusting splaying operation in a Splay Tree upon accessing a node.",
+    "canonical_topic": "Splay Tree",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "DSA_020",
+    "subject": "DSA",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "How does a Fenwick Tree (Binary Indexed Tree) efficiently compute prefix sums and update elements?",
+    "canonical_topic": "Fenwick Tree",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "ADA_001",
+    "subject": "ADA",
+    "category": "factual",
+    "marks": 2,
+    "question": "What is the formal definition of O-notation in asymptotic complexity analysis?",
+    "canonical_topic": "O-notation",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "O-notation defines an asymptotic upper bound on the growth rate of an algorithm's running time.",
+      "f(n) = O(g(n)) if there exist positive constants c and n0 such that 0 <= f(n) <= c*g(n) for all n >= n0."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_002",
+    "subject": "ADA",
+    "category": "factual",
+    "marks": 2,
+    "question": "What is the worst-case time complexity of Strassen's Algorithm for matrix multiplication?",
+    "canonical_topic": "Strassen's Algorithm",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Strassen's Algorithm multiplies two n x n matrices using 7 recursive multiplications instead of 8 standard multiplications.",
+      "Its asymptotic time complexity is approximately O(n^2.807) or O(n^log2(7))."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_003",
+    "subject": "ADA",
+    "category": "factual",
+    "marks": 2,
+    "question": "What mathematical recurrence property does Euclid's Algorithm exploit to find the greatest common divisor?",
+    "canonical_topic": "Euclid's Algorithm",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Euclid's Algorithm exploits the identity gcd(a, b) = gcd(b, a mod b) where b != 0.",
+      "Terminates with gcd(a, 0) = a when the remainder becomes 0."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_004",
+    "subject": "ADA",
+    "category": "factual",
+    "marks": 2,
+    "question": "What asymptotic bound does Omega-notation represent in algorithmic efficiency?",
+    "canonical_topic": "Omega-notation",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Omega-notation provides an asymptotic lower bound on the growth rate of a function.",
+      "f(n) = Omega(g(n)) if there exist positive constants c and n0 such that 0 <= c*g(n) <= f(n) for all n >= n0."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_005",
+    "subject": "ADA",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Explain the fundamental principle of Dynamic Programming in solving optimization problems.",
+    "canonical_topic": "Dynamic Programming",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Dynamic Programming solves optimization problems by breaking them into overlapping subproblems.",
+      "Stores subproblem solutions in a lookup table (memoization or tabulation) to prevent redundant re-computation.",
+      "Requires problems to satisfy optimal substructure and overlapping subproblems properties."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_006",
+    "subject": "ADA",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Describe how the Greedy Method makes local choices to find a global optimum.",
+    "canonical_topic": "Greedy Method",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The Greedy Method builds solutions incrementally, always picking the immediately best (locally optimal) choice.",
+      "Relies on the greedy-choice property and optimal substructure.",
+      "Never reconsiders previous choices; does not backtrack."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_007",
+    "subject": "ADA",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "How does the Sieve of Eratosthenes systematically identify all prime numbers up to a given limit n?",
+    "canonical_topic": "Sieve of Eratosthenes",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Initializes a boolean array of size n+1 representing primality of numbers starting from 2.",
+      "Iteratively marks multiples of each prime starting from p^2 up to n as composite.",
+      "Terminates when p exceeds sqrt(n), leaving all remaining unmarked numbers as primes in O(n log log n) time."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_008",
+    "subject": "ADA",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Explain the backtracking paradigm using a State-Space Tree to search for solutions.",
+    "canonical_topic": "Backtracking",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Backtracking searches for solutions by constructing candidate solutions incrementally along branches of a State-Space Tree.",
+      "Evaluates bounding/pruning conditions to abandon partial candidates as soon as they violate problem constraints.",
+      "Backtracks to the immediate parent node to explore alternative search branches."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_009",
+    "subject": "ADA",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Compare Prim's Algorithm and Kruskal's Algorithm for constructing a Minimum Spanning Tree.",
+    "canonical_topic": "Prim's Algorithm",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Prim's Algorithm grows a single connected tree vertex-by-vertex using a priority queue, operating in O(E log V) time, best for dense graphs.",
+      "Kruskal's Algorithm sorts all edges and adds minimum-weight edges that do not create cycles using Disjoint Set Union, operating in O(E log E) time, best for sparse graphs."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_010",
+    "subject": "ADA",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Contrast Divide and Conquer with Dynamic Programming in how they handle subproblems.",
+    "canonical_topic": "Divide and Conquer",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Divide and Conquer splits a problem into independent subproblems, solves them recursively, and combines results (e.g. Merge Sort).",
+      "Dynamic Programming applies when subproblems overlap, caching intermediate results in a table to prevent redundant re-computation."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_011",
+    "subject": "ADA",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Compare Dijkstra's Algorithm and Floyd-Warshall Algorithm in terms of problem scope and time complexity.",
+    "canonical_topic": "Dijkstra's Algorithm",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Dijkstra's Algorithm solves the Single-Source Shortest Path problem on non-negative weighted graphs in O((V + E) log V) time.",
+      "Floyd-Warshall Algorithm solves the All-Pairs Shortest Path problem using dynamic programming in O(V^3) time and accommodates negative edge weights without negative cycles."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_012",
+    "subject": "ADA",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Differentiate between Backtracking and Branch and Bound algorithm design techniques.",
+    "canonical_topic": "Branch and Bound",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Backtracking uses Depth-First Search on a state-space tree and is typically applied to decision or constraint satisfaction problems.",
+      "Branch and Bound uses Breadth-First or Best-First Search with cost estimation bounds, tailored specifically for combinatorial optimization problems."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_013",
+    "subject": "ADA",
+    "category": "relationship",
+    "marks": 8,
+    "question": "What is the relationship between Quick Sort and the Divide and Conquer algorithm design paradigm?",
+    "canonical_topic": "Quick Sort",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Quick Sort implements the Divide and Conquer algorithm design paradigm.",
+      "Divide: Partitions the array around a pivot such that elements smaller than the pivot are placed left and larger elements right.",
+      "Conquer: Recursively applies Quick Sort to the two subarrays on either side of the pivot.",
+      "Combine: Trivial because partitioning is done in-place, requiring O(1) combination overhead."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_014",
+    "subject": "ADA",
+    "category": "relationship",
+    "marks": 8,
+    "question": "How does the N-Queens Problem utilize Backtracking and a State-Space Tree to place queens safely?",
+    "canonical_topic": "N-Queens Problem",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "N-Queens Problem formulates queen placement as exploring paths in a State-Space Tree.",
+      "Employs Backtracking to place queens row by row.",
+      "Checks column and diagonal conflicts at each placement; if conflicts occur, the subtree is pruned and the search backtracks to reposition earlier queens."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_015",
+    "subject": "ADA",
+    "category": "relationship",
+    "marks": 8,
+    "question": "Explain how Kruskal's Algorithm uses the Greedy Method to construct a Minimum Spanning Tree.",
+    "canonical_topic": "Kruskal's Algorithm",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Kruskal's Algorithm applies the Greedy Method to select minimum-weight edges.",
+      "Edges are sorted in non-decreasing order of weight and examined greedily one by one.",
+      "An edge is added to the spanning forest if and only if it connects two disconnected components without forming a cycle."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_016",
+    "subject": "ADA",
+    "category": "relationship",
+    "marks": 8,
+    "question": "What is the relationship between the Traveling Salesman Problem and the Branch and Bound technique?",
+    "canonical_topic": "Traveling Salesman Problem",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Traveling Salesman Problem (TSP) is an NP-hard optimization problem seeking the minimum cost tour visiting every vertex once.",
+      "Branch and Bound structures the search space into subproblems by fixing path edges in a search tree.",
+      "Calculates lower bounds at each node; if a subproblem lower bound exceeds the current known best tour cost, the entire branch is pruned."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ADA_017",
+    "subject": "ADA",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "How does the Simplex Algorithm pivot across vertices to optimize a Linear Program?",
+    "canonical_topic": "Simplex Algorithm",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "ADA_018",
+    "subject": "ADA",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "Explain the cooling schedule and acceptance probability function in Simulated Annealing optimization.",
+    "canonical_topic": "Simulated Annealing",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "ADA_019",
+    "subject": "ADA",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "How does the A* Search algorithm utilize heuristic functions h(n) alongside path cost g(n) to guarantee optimal pathfinding?",
+    "canonical_topic": "A* Search Algorithm",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "ADA_020",
+    "subject": "ADA",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "Describe the crossover and mutation genetic operators utilized in Genetic Algorithms for search optimization.",
+    "canonical_topic": "Genetic Algorithm",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "CN_001",
+    "subject": "CN",
+    "category": "factual",
+    "marks": 2,
+    "question": "What are the seven layers of the ISO/OSI Model in bottom-up order?",
+    "canonical_topic": "OSI Model",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The seven layers in bottom-up order are: Physical, Data Link, Network, Transport, Session, Presentation, Application.",
+      "Each layer provides services to the layer immediately above it."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_002",
+    "subject": "CN",
+    "category": "factual",
+    "marks": 2,
+    "question": "What is the primary function of the Address Resolution Protocol (ARP) in local networks?",
+    "canonical_topic": "ARP",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "ARP resolves a known logical IP Address into a physical MAC hardware address.",
+      "Operates on a local network segment between the Network Layer and Data Link Layer."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_003",
+    "subject": "CN",
+    "category": "factual",
+    "marks": 2,
+    "question": "What address length difference exists between IPv4 and IPv6 protocols?",
+    "canonical_topic": "IPv4",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "IPv4 addresses are 32 bits long, represented as four decimal octets (e.g. 192.168.1.1).",
+      "IPv6 addresses are 128 bits long, represented as eight hexadecimal quartets separated by colons."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_004",
+    "subject": "CN",
+    "category": "factual",
+    "marks": 2,
+    "question": "Which port and underlying transport protocol does Domain Name System (DNS) use by default for standard queries?",
+    "canonical_topic": "Domain Name System (DNS)",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "DNS uses port number 53.",
+      "Standard name resolution queries use the UDP transport protocol for low latency, switching to TCP for zone transfers or large responses."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_005",
+    "subject": "CN",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Explain how TCP achieves reliable data transfer through connection establishment and sequence acknowledgment.",
+    "canonical_topic": "TCP",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "TCP establishes a connection using a 3-way handshake (SYN, SYN-ACK, ACK).",
+      "Assigns sequence numbers to bytes to reassemble segments in order and detect loss.",
+      "Uses cumulative acknowledgments, retransmission timers, and sliding windows to provide reliability."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_006",
+    "subject": "CN",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Describe how a Router operates to forward packets across different computer networks.",
+    "canonical_topic": "Router",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "A Router operates at the Network Layer (Layer 3) of the OSI model.",
+      "Inspects destination IP addresses in incoming packet headers and consults routing tables to determine the next hop.",
+      "Decapsulates and re-encapsulates link-layer frames across distinct network technologies."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_007",
+    "subject": "CN",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "How does a Circuit-Switched Network differ fundamentally from a Packet-Switched Network during communication?",
+    "canonical_topic": "Circuit-Switched Network",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Circuit-Switched Networks establish a dedicated physical end-to-end communication channel for the entire session.",
+      "Guarantees bandwidth and constant delay but exhibits poor resource utilization when idle.",
+      "Packet-Switched Networks break data into packets that share transmission channels dynamically with other traffic."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_008",
+    "subject": "CN",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Explain the role and security enhancement provided by TLS in securing web traffic over HTTPS.",
+    "canonical_topic": "TLS",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "TLS (Transport Layer Security) operates between Transport and Application layers to secure protocols like HTTP.",
+      "Uses asymmetric public-key cryptography for server authentication and symmetric session key exchange.",
+      "Ensures data privacy via symmetric encryption and data integrity using hash message authentication codes."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_009",
+    "subject": "CN",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Compare TCP and UDP transport protocols regarding connection state, reliability, and overhead.",
+    "canonical_topic": "TCP",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "TCP is connection-oriented, guarantees ordered and reliable delivery with error checking and flow control, but incurs higher latency and header overhead (20 bytes).",
+      "UDP is connectionless, unreliable, offers no delivery guarantees or sequencing, but has minimal overhead (8 bytes) and is optimal for real-time traffic."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_010",
+    "subject": "CN",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Differentiate between Distance Vector Routing and Link State Routing protocols.",
+    "canonical_topic": "Distance Vector Routing",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Distance Vector Routing (e.g. RIP) shares routing tables periodically only with immediate neighbors based on hop count, suffering from slow convergence.",
+      "Link State Routing (e.g. OSPF) floods link state information across the entire network and independently calculates shortest paths using Dijkstra's algorithm, converging rapidly."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_011",
+    "subject": "CN",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Contrast Star Topology and Mesh Topology in terms of cabling cost, fault tolerance, and scalability.",
+    "canonical_topic": "Star Topology",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Star Topology connects all devices to a central Switch or Hub with O(N) cables and easy scalability, but fails entirely if the central hub fails.",
+      "Mesh Topology provides point-to-point links between every pair of nodes with O(N^2) cables, offering high redundancy and fault tolerance, but expensive."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_012",
+    "subject": "CN",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Compare Half-Duplex Mode and Full-Duplex Mode communication in transmission channels.",
+    "canonical_topic": "Full-Duplex Mode",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Half-Duplex Mode allows communication in both directions, but only one direction at a time (e.g. walkie-talkie).",
+      "Full-Duplex Mode allows simultaneous bidirectional data transmission on the same channel (e.g. telephone conversation, modern switched Ethernet)."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_013",
+    "subject": "CN",
+    "category": "relationship",
+    "marks": 8,
+    "question": "What is the relationship between the Transport Layer and the TCP protocol in the OSI Model?",
+    "canonical_topic": "Transport Layer",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The Transport Layer is Layer 4 of the OSI Model responsible for process-to-process delivery.",
+      "TCP is the primary connection-oriented protocol that implements Transport Layer services.",
+      "TCP provides segmentation, port addressing, flow control, and error recovery on top of the underlying best-effort Network Layer."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_014",
+    "subject": "CN",
+    "category": "relationship",
+    "marks": 8,
+    "question": "How does the Application Layer protocol HTTP rely on TCP to deliver web documents?",
+    "canonical_topic": "HTTP",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "HTTP operates at the Application Layer to exchange web resources between client and server.",
+      "HTTP relies directly on TCP at the Transport layer for reliable byte stream transport.",
+      "An underlying TCP connection must be established via a 3-way handshake before any HTTP request or response can be transferred."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_015",
+    "subject": "CN",
+    "category": "relationship",
+    "marks": 8,
+    "question": "What is the relationship between IP Address, Subnet Mask, and CIDR in network routing?",
+    "canonical_topic": "CIDR",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "An IP Address identifies the host and network on the Network Layer.",
+      "A Subnet Mask divides an IP address into network prefix and host ID.",
+      "CIDR (Classless Inter-Domain Routing) replaces classful boundaries with variable prefix lengths (/24), aggregating routes and conserving IPv4 address space."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_016",
+    "subject": "CN",
+    "category": "relationship",
+    "marks": 8,
+    "question": "Explain the relationship between the Network Layer and the Router in packet delivery.",
+    "canonical_topic": "Network Layer",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The Network Layer (Layer 3) is responsible for host-to-host delivery and logical addressing across multiple networks.",
+      "Routers are the primary network devices operating at Layer 3.",
+      "Routers inspect the destination IP address in the Network Layer header and use routing algorithms to forward packets along optimal internetwork paths."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "CN_017",
+    "subject": "CN",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "How does the Border Gateway Protocol (BGP) use autonomous system path vectors to maintain global internet routing?",
+    "canonical_topic": "Border Gateway Protocol (BGP)",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "CN_018",
+    "subject": "CN",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "What role does Multiprotocol Label Switching (MPLS) play in speeding up traffic forwarding using short path labels?",
+    "canonical_topic": "Multiprotocol Label Switching (MPLS)",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "CN_019",
+    "subject": "CN",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "Explain how WebRTC enables peer-to-peer audio and video communication directly between web browsers without plugins.",
+    "canonical_topic": "WebRTC",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "CN_020",
+    "subject": "CN",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "How does the QUIC transport protocol reduce connection handshake latency compared to traditional TCP over TLS?",
+    "canonical_topic": "QUIC Protocol",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "ML_001",
+    "subject": "ML",
+    "category": "factual",
+    "marks": 2,
+    "question": "What mathematical formula defines the Accuracy metric in classification evaluation?",
+    "canonical_topic": "Accuracy",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Accuracy is defined as (True Positives + True Negatives) / Total Samples.",
+      "Represents the ratio of correctly predicted instances to the total number of evaluated observations."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_002",
+    "subject": "ML",
+    "category": "factual",
+    "marks": 2,
+    "question": "What is the activation function equation and output range for the Sigmoid function?",
+    "canonical_topic": "Sigmoid",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The Sigmoid function formula is f(x) = 1 / (1 + e^(-x)).",
+      "Maps any real-valued input number into an output range strictly between 0 and 1."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_003",
+    "subject": "ML",
+    "category": "factual",
+    "marks": 2,
+    "question": "What is the mathematical definition of Recall in model evaluation?",
+    "canonical_topic": "Recall",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Recall (also called sensitivity) is defined as True Positives / (True Positives + False Negatives).",
+      "Measures the proportion of actual positive instances correctly identified by the classifier."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_004",
+    "subject": "ML",
+    "category": "factual",
+    "marks": 2,
+    "question": "Which activation function computes f(x) = max(0, x) in deep neural networks?",
+    "canonical_topic": "ReLU",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The Rectified Linear Unit (ReLU) computes f(x) = max(0, x).",
+      "Outputs 0 for negative values and acts as a linear function for positive values, alleviating vanishing gradients."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_005",
+    "subject": "ML",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Explain the Bias-Variance Tradeoff and how it influences model generalization.",
+    "canonical_topic": "Bias-Variance Tradeoff",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "High bias results from erroneous oversimplified assumptions, leading to Underfitting on training data.",
+      "High variance results from excessive sensitivity to small fluctuations in training data, causing Overfitting to noise.",
+      "Optimal model generalization minimizes total expected prediction error by balancing bias and variance."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_006",
+    "subject": "ML",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Describe how K-Means Clustering partitions unlabelled data into k clusters iteratively.",
+    "canonical_topic": "K-Means Clustering",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "K-Means initializes k cluster centroids randomly across the feature space.",
+      "Iteratively assigns each data point to its nearest centroid based on Euclidean distance.",
+      "Recomputes centroids as the geometric mean of assigned points until cluster memberships stabilize."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_007",
+    "subject": "ML",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "How does Gradient Descent iteratively update model weights to minimize an objective loss function?",
+    "canonical_topic": "Gradient Descent",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Calculates the gradient (vector of partial derivatives) of the loss function with respect to model parameters.",
+      "Updates weights in the direction opposite to the gradient scaled by learning rate alpha: w = w - alpha * grad.",
+      "Repeats updates until the loss converges to a local or global minimum."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_008",
+    "subject": "ML",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Explain the purpose and operation of Principal Component Analysis (PCA) in data science.",
+    "canonical_topic": "Principal Component Analysis (PCA)",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "PCA is an unsupervised linear dimensionality reduction technique.",
+      "Computes the covariance matrix of feature variables and extracts its eigenvectors and eigenvalues.",
+      "Projects original high-dimensional data onto orthogonal principal axes that preserve maximum data variance."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_009",
+    "subject": "ML",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Compare Supervised Learning and Unsupervised Learning paradigms in terms of target labels and problem types.",
+    "canonical_topic": "Supervised Learning",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Supervised Learning trains models using labeled input-output pairs to solve Classification and Regression problems.",
+      "Unsupervised Learning discovers latent patterns, groupings, or representations in unlabelled data (e.g. Clustering and Dimensionality Reduction)."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_010",
+    "subject": "ML",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Differentiate between Overfitting and Underfitting in Machine Learning model training.",
+    "canonical_topic": "Overfitting",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Overfitting occurs when a complex model memorizes training noise, achieving very low training error but failing to generalize to unseen test data.",
+      "Underfitting occurs when a model is overly simplistic to capture underlying patterns, resulting in poor performance on both training and test sets."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_011",
+    "subject": "ML",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Contrast Linear Regression and Logistic Regression regarding output types and objective tasks.",
+    "canonical_topic": "Linear Regression",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Linear Regression predicts a continuous numerical target value by fitting a linear hyperplane y = w*x + b.",
+      "Logistic Regression predicts categorical class probabilities by passing a linear combination through a Sigmoid link function for binary classification."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_012",
+    "subject": "ML",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Compare Precision and Recall metrics using the Confusion Matrix.",
+    "canonical_topic": "Precision",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Precision is TP / (TP + FP), measuring the proportion of positive predictions that were truly accurate.",
+      "Recall is TP / (TP + FN), measuring the proportion of actual positive cases successfully captured by the classifier."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_013",
+    "subject": "ML",
+    "category": "relationship",
+    "marks": 8,
+    "question": "What is the relationship between Supervised Learning and Classification algorithms like Decision Tree?",
+    "canonical_topic": "Supervised Learning",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Supervised Learning includes Classification as one of its primary problem categories.",
+      "Classification algorithms learn boundaries mapping features to discrete categorical target classes.",
+      "Decision Tree implements supervised classification by recursively partitioning feature space using criteria like Information Gain or Gini Impurity."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_014",
+    "subject": "ML",
+    "category": "relationship",
+    "marks": 8,
+    "question": "How does the Convolutional Neural Network (CNN) utilize Hidden Layer components for feature extraction?",
+    "canonical_topic": "Convolutional Neural Network (CNN)",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "CNN is a specialized deep learning architecture designed for multidimensional inputs like images.",
+      "Employs hidden layers consisting of convolutional layers, pooling layers, and fully connected layers.",
+      "Early hidden layers extract low-level edges and textures, while deeper hidden layers synthesize complex semantic object patterns."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_015",
+    "subject": "ML",
+    "category": "relationship",
+    "marks": 8,
+    "question": "What is the relationship between Gradient Descent and training a Neural Network?",
+    "canonical_topic": "Gradient Descent",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Neural Network parameter optimization relies directly on Gradient Descent.",
+      "The Backpropagation algorithm calculates error gradients across layers using the chain rule of calculus.",
+      "Gradient Descent utilizes these calculated gradients to update weights and biases, minimizing empirical loss."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_016",
+    "subject": "ML",
+    "category": "relationship",
+    "marks": 8,
+    "question": "Explain how Overfitting relates to the Bias-Variance Tradeoff in complex machine learning models.",
+    "canonical_topic": "Overfitting",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Overfitting is the direct consequence of excessive model variance in the Bias-Variance Tradeoff.",
+      "When a model possesses high hypothesis capacity without sufficient regularization, variance dominates test error.",
+      "Regularization techniques, feature selection, and cross-validation reduce variance to suppress overfitting."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "ML_017",
+    "subject": "ML",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "How does the generator and discriminator adversarial minimax game work in a Generative Adversarial Network (GAN)?",
+    "canonical_topic": "Generative Adversarial Network (GAN)",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "ML_018",
+    "subject": "ML",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "Explain the Multi-Head Self-Attention mechanism in the Transformer neural network architecture.",
+    "canonical_topic": "Transformer Architecture",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "ML_019",
+    "subject": "ML",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "How do Denoising Diffusion Probabilistic Models generate high-fidelity images through reverse Markov steps?",
+    "canonical_topic": "Diffusion Models",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "ML_020",
+    "subject": "ML",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "Describe how Contrastive Learning aligns multimodal text and image embeddings in vision-language models.",
+    "canonical_topic": "Contrastive Learning",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "OS_001",
+    "subject": "OS",
+    "category": "factual",
+    "marks": 2,
+    "question": "What are the four necessary conditions that must hold simultaneously for a Deadlock to occur?",
+    "canonical_topic": "Deadlock",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The four Coffman conditions are: Mutual Exclusion, Hold and Wait, No Preemption, and Circular Wait.",
+      "All four conditions must hold concurrently for a deadlock to materialize."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_002",
+    "subject": "OS",
+    "category": "factual",
+    "marks": 2,
+    "question": "What is a Process Control Block (PCB) and what essential information does it store?",
+    "canonical_topic": "Process Control Block (PCB)",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "A PCB is an operating system data structure representing a process in execution.",
+      "Stores process state, Program Counter, CPU registers, scheduling priority, and memory management limits."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_003",
+    "subject": "OS",
+    "category": "factual",
+    "marks": 2,
+    "question": "What dual hardware execution modes exist in modern CPUs to safeguard the Operating System?",
+    "canonical_topic": "Operating System",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Modern processors support User Mode (restricted instructions) and Kernel Mode (privileged supervisor instructions).",
+      "System calls trigger mode transitions through hardware software interrupts/traps."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_004",
+    "subject": "OS",
+    "category": "factual",
+    "marks": 2,
+    "question": "What occurs during a Page Fault in a virtual memory system?",
+    "canonical_topic": "Page Fault",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "A Page Fault occurs when a running process accesses a virtual memory page not currently mapped in physical RAM.",
+      "The operating system traps to the kernel, locates the page on secondary storage, and loads it into a physical frame."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_005",
+    "subject": "OS",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Explain how Paging manages memory and eliminates external fragmentation.",
+    "canonical_topic": "Paging",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Paging partitions physical memory into fixed-size frames and logical address space into equal-sized pages.",
+      "A Page Table maps logical page numbers to corresponding physical frame numbers.",
+      "Completely eliminates external fragmentation, although internal fragmentation may occur in the last allocated page."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_006",
+    "subject": "OS",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Describe how Context Switching preserves and restores processor state during process scheduling.",
+    "canonical_topic": "Context Switching",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Context Switching saves the CPU state (registers, program counter) of a running process into its PCB.",
+      "Restores the saved execution state of the next ready process selected by the scheduler from its PCB.",
+      "Represents pure computational overhead during which the CPU performs no user application work."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_007",
+    "subject": "OS",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Explain how the Banker's Algorithm prevents deadlock through safe state evaluation.",
+    "canonical_topic": "Banker's Algorithm",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Banker's Algorithm is a deadlock avoidance algorithm for multiple resource instances.",
+      "Tests whether allocating requested resources leaves the system in a Safe State where all processes can finish.",
+      "Delays or denies resource requests if granting them would transition the system into an unsafe state."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_008",
+    "subject": "OS",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "How does a Semaphore coordinate Process Synchronization and prevent race conditions in a Critical Section?",
+    "canonical_topic": "Semaphore",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "A Semaphore is a protected integer variable accessed exclusively through atomic wait() (P) and signal() (V) operations.",
+      "A binary semaphore acts as a mutex to enforce mutual exclusion inside the critical section.",
+      "Prevents race conditions by ensuring only one process can execute the critical section at any given time."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_009",
+    "subject": "OS",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Compare Paging and Segmentation memory management schemes in terms of division units and programmer visibility.",
+    "canonical_topic": "Paging",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Paging divides memory into fixed-sized blocks (pages) transparently to the programmer, eliminating external fragmentation.",
+      "Segmentation divides memory into variable-sized logical segments (code, stack, data) defined by the programmer, but suffers from external fragmentation."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_010",
+    "subject": "OS",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Differentiate between Preemptive Scheduling and Non-Preemptive Scheduling algorithms.",
+    "canonical_topic": "Process Scheduling",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Preemptive scheduling allows the OS kernel to interrupt a running process and reallocate CPU to a higher priority process (e.g. Round Robin, SRTF).",
+      "Non-preemptive scheduling allows a process to retain the CPU until it voluntarily terminates or initiates I/O (e.g. FCFS)."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_011",
+    "subject": "OS",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Contrast Monolithic Kernel and Microkernel architectures regarding security and privilege separation.",
+    "canonical_topic": "Kernel",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "A Monolithic Kernel executes all core OS subsystems (file system, memory, drivers, IPC) in a single kernel address space, maximizing speed but vulnerable to system-wide crashes.",
+      "A Microkernel keeps only minimal services (IPC, basic scheduling) in kernel space, running drivers and file systems as isolated user-space servers."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_012",
+    "subject": "OS",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Compare Deadlock Prevention and Deadlock Avoidance strategies.",
+    "canonical_topic": "Deadlock Prevention",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Deadlock Prevention eliminates deadlock by designing static resource request protocols that invalidate at least one of the four Coffman conditions.",
+      "Deadlock Avoidance dynamically analyzes real-time resource allocation requests (e.g. Banker's Algorithm) to ensure the system never enters an unsafe state."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_013",
+    "subject": "OS",
+    "category": "relationship",
+    "marks": 8,
+    "question": "What is the relationship between the Banker's Algorithm and Deadlock Avoidance in Operating Systems?",
+    "canonical_topic": "Banker's Algorithm",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Banker's Algorithm is the classic algorithmic realization of Deadlock Avoidance for multi-instance resource systems.",
+      "Simulates resource allocations using Max, Allocation, Need, and Available matrices.",
+      "Ensures the system never departs a safe state, thereby avoiding states that could lead to deadlocks."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_014",
+    "subject": "OS",
+    "category": "relationship",
+    "marks": 8,
+    "question": "How does the Process Control Block (PCB) support Context Switching during Process Scheduling?",
+    "canonical_topic": "Process Control Block (PCB)",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "PCB is the operating system's internal data structure maintaining process execution context.",
+      "During context switching, the scheduler stores CPU registers and program counter into the active process's PCB.",
+      "The scheduler then loads the saved hardware state from the selected next ready process's PCB, enabling seamless multitasking."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_015",
+    "subject": "OS",
+    "category": "relationship",
+    "marks": 8,
+    "question": "Explain the relationship between Virtual Memory, Demand Paging, and Page Fault handling.",
+    "canonical_topic": "Demand Paging",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Virtual Memory enables processes to execute without requiring their entire address space to reside concurrently in physical memory.",
+      "Demand Paging loads pages into physical RAM lazily only when referenced by execution.",
+      "A memory reference to an unmapped page triggers a Page Fault interrupt, prompting the OS pager to bring the page from disk into RAM."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_016",
+    "subject": "OS",
+    "category": "relationship",
+    "marks": 8,
+    "question": "What is the relationship between a Semaphore and protecting the Critical Section during Process Synchronization?",
+    "canonical_topic": "Semaphore",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The Critical Section is a shared code region where shared variables or memory are updated.",
+      "A Semaphore provides atomic wait() and signal() operations guarding entry and exit to this critical region.",
+      "Enforces mutual exclusion, preventing concurrent execution and eliminating race conditions among threads."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "OS_017",
+    "subject": "OS",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "How do Linux cgroups (Control Groups) regulate CPU and memory consumption for containerized processes?",
+    "canonical_topic": "Linux cgroups",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "OS_018",
+    "subject": "OS",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "Explain how eBPF (Extended Berkeley Packet Filter) runs sandboxed bytecode safely inside the Linux kernel.",
+    "canonical_topic": "eBPF",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "OS_019",
+    "subject": "OS",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "How does the epoll I/O event notification facility provide O(1) scalability compared to select and poll?",
+    "canonical_topic": "epoll System Call",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "OS_020",
+    "subject": "OS",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "Describe how Non-Uniform Memory Access (NUMA) architecture affects CPU scheduling and thread memory locality.",
+    "canonical_topic": "NUMA Architecture",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "SEPM_001",
+    "subject": "SEPM",
+    "category": "factual",
+    "marks": 2,
+    "question": "What are the core stages of the Software Development Life Cycle (SDLC)?",
+    "canonical_topic": "Software Development Life Cycle (SDLC)",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The SDLC stages are: Requirement Engineering, Software Design, Implementation (Coding), Software Testing, Deployment, and Software Maintenance.",
+      "Provides a structured framework for managing the complete lifecycle of software products."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_002",
+    "subject": "SEPM",
+    "category": "factual",
+    "marks": 2,
+    "question": "What is the mathematical equation for Basic COCOMO effort estimation in person-months?",
+    "canonical_topic": "Basic COCOMO",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Basic COCOMO estimates development effort as: Effort = a * (KLOC)^b person-months.",
+      "The constants a and b depend on the development mode: Organic, Semidetached, or Embedded."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_003",
+    "subject": "SEPM",
+    "category": "factual",
+    "marks": 2,
+    "question": "Define Cohesion and Coupling in modular software architecture design.",
+    "canonical_topic": "Cohesion",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Cohesion measures the functional relatedness and focus of responsibilities within a single module (high cohesion is preferred).",
+      "Coupling measures the degree of direct interdependence between distinct modules (loose coupling is preferred)."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_004",
+    "subject": "SEPM",
+    "category": "factual",
+    "marks": 2,
+    "question": "What is the primary role of the Scrum Master in an Agile Scrum framework?",
+    "canonical_topic": "Scrum",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The Scrum Master is a servant-leader who coaches the team in Scrum practices.",
+      "Responsible for facilitating Scrum ceremonies (Sprint Planning, Daily Scrum, Retrospectives) and removing blockers."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_005",
+    "subject": "SEPM",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Explain how the Waterfall Model organizes software development sequentially.",
+    "canonical_topic": "Waterfall Model",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The Waterfall Model is a linear-sequential process model where each phase must be fully completed before the next begins.",
+      "Phases cascade downward: Requirements -> Design -> Implementation -> Testing -> Deployment -> Maintenance.",
+      "Does not accommodate evolving requirement changes easily once subsequent phases commence."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_006",
+    "subject": "SEPM",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Describe how the Agile Model delivers working software iteratively through Sprints.",
+    "canonical_topic": "Agile Model",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "The Agile Model partitions software development into short, time-boxed iterations called Sprints (1 to 4 weeks).",
+      "Emphasizes cross-functional teamwork, frequent customer feedback, and continuous delivery of working increments.",
+      "Welcomes shifting requirements even late in development."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_007",
+    "subject": "SEPM",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "Explain the four core dimensions of a Feasibility Study in software project planning.",
+    "canonical_topic": "Feasibility Study",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Technical Feasibility evaluates whether the required technical infrastructure and skills exist to build the software.",
+      "Economic Feasibility assesses cost-benefit viability and financial return on investment.",
+      "Operational Feasibility evaluates how effectively the system fits organizational workflows.",
+      "Schedule Feasibility determines whether the project can meet required milestone deadlines."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_008",
+    "subject": "SEPM",
+    "category": "conceptual",
+    "marks": 5,
+    "question": "How does Black Box Testing validate software functionality without knowledge of internal code structure?",
+    "canonical_topic": "Black Box Testing",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Black Box Testing examines software behavior against functional specifications without inspecting source code.",
+      "Test cases are derived from requirements using techniques like Equivalence Partitioning and Boundary Value Analysis.",
+      "Validates user inputs, expected outputs, interface behaviors, and database state changes."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_009",
+    "subject": "SEPM",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Compare Black Box Testing and White Box Testing in terms of internal visibility and test design techniques.",
+    "canonical_topic": "Black Box Testing",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Black Box Testing focuses on external functionality without viewing internal code, using equivalence partitioning and boundary value analysis.",
+      "White Box Testing examines internal code structure and control flows, using statement coverage, branch coverage, and path analysis."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_010",
+    "subject": "SEPM",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Contrast the Waterfall Model and the Agile Model regarding requirement flexibility and delivery frequency.",
+    "canonical_topic": "Waterfall Model",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Waterfall Model fixes requirements upfront, follows a rigid sequential phase gate, and delivers working software only at project completion.",
+      "Agile Model welcomes dynamic requirements, works in short iterative Sprints, and delivers working increments continuously."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_011",
+    "subject": "SEPM",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Compare Verification and Validation in Software Quality Assurance.",
+    "canonical_topic": "Verification",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Verification checks whether software artifacts conform to specification ('Are we building the product right?'), using reviews, walkthroughs, and inspections.",
+      "Validation checks whether the final software fulfills customer needs and expectations ('Are we building the right product?'), using dynamic testing."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_012",
+    "subject": "SEPM",
+    "category": "comparison",
+    "marks": 5,
+    "question": "Contrast Functional Requirements and Non-Functional Requirements in software engineering specifications.",
+    "canonical_topic": "Functional Requirements",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Functional Requirements define what the system must do, specifying concrete system behaviors, functions, and inputs/outputs (e.g. user authentication, billing calculation).",
+      "Non-Functional Requirements define how the system should perform, specifying quality attributes such as performance, reliability, scalability, and security."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_013",
+    "subject": "SEPM",
+    "category": "relationship",
+    "marks": 8,
+    "question": "What is the relationship between Scrum and the Agile Model in software development?",
+    "canonical_topic": "Scrum",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Scrum is the most widely adopted lightweight process framework that implements the values and principles of the Agile Model.",
+      "Organizes work in time-boxed Sprints guided by defined roles (Product Owner, Scrum Master, Developers).",
+      "Uses artifacts like Product Backlog and Sprint Backlog and ceremonies like Daily Scrum to ensure iterative transparency and rapid delivery."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_014",
+    "subject": "SEPM",
+    "category": "relationship",
+    "marks": 8,
+    "question": "How does Sprint Planning utilize the Product Backlog to establish a Sprint Backlog in Scrum?",
+    "canonical_topic": "Sprint Planning",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Sprint Planning is the initial ceremony of a Sprint where the Scrum team defines what can be delivered and how.",
+      "The team inspects high-priority user stories from the Product Backlog owned by the Product Owner.",
+      "Selected items and the tactical plan to achieve the Sprint Goal form the Sprint Backlog."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_015",
+    "subject": "SEPM",
+    "category": "relationship",
+    "marks": 8,
+    "question": "What is the relationship between Requirement Elicitation and the Software Requirement Specification (SRS) document?",
+    "canonical_topic": "Requirement Elicitation",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Requirement Elicitation is the initial activity in Requirement Engineering that discovers needs through interviews, surveys, and observations.",
+      "The gathered requirements are analyzed, modeled, and formalized into the official Software Requirement Specification (SRS) document.",
+      "The SRS serves as the authoritative legal and technical baseline for design, coding, and acceptance testing."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_016",
+    "subject": "SEPM",
+    "category": "relationship",
+    "marks": 8,
+    "question": "Explain the relationship between Risk Identification and Risk Management in software project governance.",
+    "canonical_topic": "Risk Management",
+    "is_supported": true,
+    "ground_truth_facts": [
+      "Risk Management is the holistic project management discipline that identifies, assesses, mitigates, and monitors potential threats to project success.",
+      "Risk Identification is the crucial first phase that catalogs potential project, technical, and business risks.",
+      "Subsequent risk analysis and mitigation strategies directly depend on the accuracy of initial risk identification."
+    ],
+    "expected_behavior": "answer"
+  },
+  {
+    "question_id": "SEPM_017",
+    "subject": "SEPM",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "How does the Saga Pattern maintain data consistency across distributed Microservices without two-phase commit?",
+    "canonical_topic": "Saga Pattern",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "SEPM_018",
+    "subject": "SEPM",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "Explain how Infrastructure as Code (IaC) tools like Terraform prevent configuration drift in cloud deployments.",
+    "canonical_topic": "Infrastructure as Code (IaC)",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "SEPM_019",
+    "subject": "SEPM",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "How does a Canary Deployment strategy minimize release risk in continuous delivery pipelines?",
+    "canonical_topic": "Canary Deployment",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  },
+  {
+    "question_id": "SEPM_020",
+    "subject": "SEPM",
+    "category": "unsupported",
+    "marks": 5,
+    "question": "Describe the event-sourcing and CQRS architecture patterns in decoupled distributed software systems.",
+    "canonical_topic": "CQRS Pattern",
+    "is_supported": false,
+    "ground_truth_facts": [],
+    "expected_behavior": "refuse"
+  }
+]

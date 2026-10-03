@@ -1,0 +1,7 @@
+subject,question_count,supported_count,unsupported_count,llm_only_mean_latency,kg_rag_mean_latency,llm_only_median_latency,kg_rag_median_latency,kg_rag_supported_retrieval_hits
+DSA,20,16,4,28.465,70.825,27.414,69.277,16
+ADA,20,16,4,16.153,37.879,15.906,38.791,16
+CN,20,16,4,13.958,34.098,15.031,33.853,16
+ML,20,16,4,18.512,49.974,19.31,37.249,16
+OS,20,16,4,29.367,62.104,27.293,60.767,16
+SEPM,20,16,4,14.683,28.886,14.268,35.757,16

@@ -1,0 +1,57 @@
+{
+  "rubric_metadata": {
+    "title": "EduGraphAI Answer-Quality Evaluation Rubric",
+    "description": "Standardized criteria for double-blind human evaluation comparing LLM-only baseline and EduGraphAI KG-RAG across 120 computer science questions.",
+    "scale_range": "0 to 3",
+    "version": "1.0.0"
+  },
+  "dimensions": {
+    "correctness": {
+      "definition": "Measures the academic accuracy, conceptual truth, and correctness of computer science definitions, algorithms, and complexity claims.",
+      "scale": {
+        "0": "Incorrect or substantially misleading; contains fundamental conceptual falsehoods.",
+        "1": "Contains major factual errors or only limited correct content surrounded by inaccuracies.",
+        "2": "Mostly correct with minor omissions, non-critical technical inaccuracies, or slight imprecision.",
+        "3": "Fully or almost fully correct; rigorous, conceptually accurate, and free of technical errors."
+      }
+    },
+    "educational_relevance": {
+      "definition": "Measures how directly, clearly, and thoroughly the response addresses the prompt in the context of university undergraduate examinations.",
+      "scale": {
+        "0": "Does not answer the question; entirely off-topic or completely irrelevant.",
+        "1": "Weakly related; contains substantial irrelevant tangent content or fails to address core aspects.",
+        "2": "Relevant and mostly answers the question; covers core aspects with minor extraneous details.",
+        "3": "Directly, thoroughly, and appropriately answers the educational question with clear pedagogical structure."
+      }
+    },
+    "factual_grounding": {
+      "definition": "Measures the extent to which factual assertions are backed by verifiable curriculum knowledge and free from hallucinated or fabricated statements.",
+      "protocol_note": "In a blinded evaluation, evaluators assess whether factual assertions reflect established academic curriculum facts. For KG-grounded systems, claims correspond to retrieved Knowledge Graph triples. For ungrounded LLM baselines, claims are evaluated against objective computer science curriculum standards. Evaluators must NOT automatically award a 0 to an answer simply because it did not cite a graph node.",
+      "scale": {
+        "0": "Unsupported or contradictory; introduces fabricated algorithms, invented equations, or false attributes.",
+        "1": "Little grounding; contains occasional verifiable statements alongside unverified or dubious assertions.",
+        "2": "Most important claims are grounded and factually substantiated against syllabus standards.",
+        "3": "Essentially all important claims are rigorously grounded, verifiable, and free from hallucination."
+      }
+    },
+    "gold_fact_coverage": {
+      "definition": "Measures the proportion of predefined gold-standard facts (curriculum reference facts) successfully and accurately represented in the answer.",
+      "metrics_recorded": [
+        "gold_fact_total: Total number of required reference facts specified for the question.",
+        "gold_fact_covered: Number of required reference facts accurately represented in the response.",
+        "gold_fact_coverage: Ratio calculated as gold_fact_covered / gold_fact_total (0.0 to 1.0)."
+      ],
+      "evaluation_guidelines": "Evaluate semantic equivalence of underlying propositions rather than lexical or substring matching. A fact is covered if the core technical proposition is clearly stated."
+    },
+    "unsupported_handling": {
+      "definition": "Evaluates system behavior when asked questions that fall outside the defined curriculum syllabus boundaries (e.g., advanced topics not in the 6 supported courses).",
+      "applicable_subset": "24 unsupported questions (where is_supported is false).",
+      "scale": {
+        "0": "Confidently provides unsupported information as though it belongs to the curriculum without boundary awareness.",
+        "1": "Partially recognizes uncertainty or out-of-scope nature, but still substantially attempts an ungrounded full answer.",
+        "2": "Mostly avoids unsupported claims and indicates curriculum scope limits, but exhibits minor ambiguity.",
+        "3": "Correctly recognizes the question as outside the supported curriculum syllabus and provides an explicit, courteous boundary refusal."
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+category,question_count,llm_only_mean_latency,kg_rag_mean_latency,kg_rag_retrieval_hits
+factual,24,11.645,40.845,24
+conceptual,24,22.461,51.306,24
+comparison,24,25.083,58.583,24
+relationship,24,21.955,54.303,24
+unsupported,24,19.805,31.433,17

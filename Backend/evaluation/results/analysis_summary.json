@@ -1,0 +1,207 @@
+{
+  "experiment": {
+    "dataset_questions": 120,
+    "supported_questions": 96,
+    "unsupported_questions": 24,
+    "systems": [
+      "llm_only",
+      "kg_rag"
+    ],
+    "provider": "ollama",
+    "model": "llama3.2:latest",
+    "experiment_model": "ollama / llama3.2:latest",
+    "production_model_difference_note": "The benchmark was executed using the local Ollama model recorded in benchmark metadata. This should not be presented as a direct production-model evaluation."
+  },
+  "raw_validation": {
+    "record_count": 120,
+    "unique_question_ids": 120,
+    "supported_count": 96,
+    "unsupported_count": 24,
+    "llm_success_count": 120,
+    "kg_success_count": 120,
+    "validation_passed": true
+  },
+  "direct_metrics": {
+    "total_questions": 120,
+    "llm_only_successful_answers": 120,
+    "kg_rag_successful_answers": 120,
+    "kg_rag_retrieval": {
+      "supported_questions_total": 96,
+      "supported_retrieval_hits": 96,
+      "supported_retrieval_hit_rate_pct": 100.0,
+      "supported_retrieval_misses": 0
+    },
+    "kg_rag_unsupported_handling": {
+      "unsupported_questions_total": 24,
+      "explicit_curriculum_boundary_refusals": 7,
+      "explicit_refusal_rate_pct": 29.17,
+      "generic_concept_matches": 17,
+      "generic_concept_match_note": "In 17 out of 24 unsupported questions, broad concept terms (e.g., 'Algorithm', 'Tree', 'Pointer', 'Protocol') present in the prompt matched existing generic nodes in the Knowledge Graph, resulting in graph retrieval for the substrate concept rather than an out-of-scope refusal."
+    }
+  },
+  "latency": {
+    "llm_only": {
+      "mean": 20.19,
+      "median": 17.178,
+      "min": 1.38,
+      "max": 67.26,
+      "std": 11.15
+    },
+    "kg_rag": {
+      "mean": 47.294,
+      "median": 38.962,
+      "min": 0.003,
+      "max": 207.773,
+      "std": 28.678
+    },
+    "paired_difference_kg_minus_llm": {
+      "mean": 27.104,
+      "median": 24.859,
+      "min": -23.76,
+      "max": 176.843,
+      "std": 22.617
+    },
+    "subject_breakdown": {
+      "DSA": {
+        "subject": "DSA",
+        "question_count": 20,
+        "supported_count": 16,
+        "unsupported_count": 4,
+        "llm_only_mean_latency": 28.465,
+        "kg_rag_mean_latency": 70.825,
+        "llm_only_median_latency": 27.414,
+        "kg_rag_median_latency": 69.277,
+        "kg_rag_supported_retrieval_hits": 16
+      },
+      "ADA": {
+        "subject": "ADA",
+        "question_count": 20,
+        "supported_count": 16,
+        "unsupported_count": 4,
+        "llm_only_mean_latency": 16.153,
+        "kg_rag_mean_latency": 37.879,
+        "llm_only_median_latency": 15.906,
+        "kg_rag_median_latency": 38.791,
+        "kg_rag_supported_retrieval_hits": 16
+      },
+      "CN": {
+        "subject": "CN",
+        "question_count": 20,
+        "supported_count": 16,
+        "unsupported_count": 4,
+        "llm_only_mean_latency": 13.958,
+        "kg_rag_mean_latency": 34.098,
+        "llm_only_median_latency": 15.031,
+        "kg_rag_median_latency": 33.853,
+        "kg_rag_supported_retrieval_hits": 16
+      },
+      "ML": {
+        "subject": "ML",
+        "question_count": 20,
+        "supported_count": 16,
+        "unsupported_count": 4,
+        "llm_only_mean_latency": 18.512,
+        "kg_rag_mean_latency": 49.974,
+        "llm_only_median_latency": 19.31,
+        "kg_rag_median_latency": 37.249,
+        "kg_rag_supported_retrieval_hits": 16
+      },
+      "OS": {
+        "subject": "OS",
+        "question_count": 20,
+        "supported_count": 16,
+        "unsupported_count": 4,
+        "llm_only_mean_latency": 29.367,
+        "kg_rag_mean_latency": 62.104,
+        "llm_only_median_latency": 27.293,
+        "kg_rag_median_latency": 60.767,
+        "kg_rag_supported_retrieval_hits": 16
+      },
+      "SEPM": {
+        "subject": "SEPM",
+        "question_count": 20,
+        "supported_count": 16,
+        "unsupported_count": 4,
+        "llm_only_mean_latency": 14.683,
+        "kg_rag_mean_latency": 28.886,
+        "llm_only_median_latency": 14.268,
+        "kg_rag_median_latency": 35.757,
+        "kg_rag_supported_retrieval_hits": 16
+      }
+    },
+    "category_breakdown": {
+      "factual": {
+        "category": "factual",
+        "question_count": 24,
+        "llm_only_mean_latency": 11.645,
+        "kg_rag_mean_latency": 40.845,
+        "kg_rag_retrieval_hits": 24
+      },
+      "conceptual": {
+        "category": "conceptual",
+        "question_count": 24,
+        "llm_only_mean_latency": 22.461,
+        "kg_rag_mean_latency": 51.306,
+        "kg_rag_retrieval_hits": 24
+      },
+      "comparison": {
+        "category": "comparison",
+        "question_count": 24,
+        "llm_only_mean_latency": 25.083,
+        "kg_rag_mean_latency": 58.583,
+        "kg_rag_retrieval_hits": 24
+      },
+      "relationship": {
+        "category": "relationship",
+        "question_count": 24,
+        "llm_only_mean_latency": 21.955,
+        "kg_rag_mean_latency": 54.303,
+        "kg_rag_retrieval_hits": 24
+      },
+      "unsupported": {
+        "category": "unsupported",
+        "question_count": 24,
+        "llm_only_mean_latency": 19.805,
+        "kg_rag_mean_latency": 31.433,
+        "kg_rag_retrieval_hits": 17
+      }
+    }
+  },
+  "statistical_test": {
+    "sample_size": 120,
+    "scope": "LATENCY ONLY (Does not evaluate or indicate quality differences)",
+    "wilcoxon_signed_rank_test": {
+      "test_name": "Wilcoxon signed-rank test (two-tailed, normal approximation)",
+      "statistic_W": 185.0,
+      "W_positive_ranks": 7075.0,
+      "W_negative_ranks": 185.0,
+      "z_statistic": -9.022,
+      "p_value": 0.0,
+      "p_value_formatted": "< 0.0001",
+      "interpretation": "Statistically significant difference in paired latency between KG-RAG and LLM-only."
+    },
+    "paired_t_test": {
+      "test_name": "Paired Student's t-test",
+      "t_statistic": 13.128,
+      "degrees_of_freedom": 119,
+      "mean_difference_sec": 27.104,
+      "std_difference_sec": 22.617
+    }
+  },
+  "quality_metrics": {
+    "correctness": "not_evaluated",
+    "educational_relevance": "not_evaluated",
+    "grounding": "not_evaluated",
+    "gold_fact_semantic_coverage": "not_evaluated",
+    "evaluation_note": "Quality, correctness, educational relevance, and factual grounding were not evaluated in this run. No human or automated LLM-judge scores were computed to avoid speculative or unvalidated metrics."
+  },
+  "subject_breakdown_file": "Backend/evaluation/results/subject_breakdown.csv",
+  "category_breakdown_file": "Backend/evaluation/results/category_breakdown.csv",
+  "limitations": [
+    "Hardware environment: Executed on a local runtime using Ollama with llama3.2:latest rather than cloud Groq llama-3.3-70b-versatile.",
+    "Local Graph Store: Evaluated using the verified static graph store export (469 concepts, 972 relationships) due to local Neo4j service port absence.",
+    "Latency vs. Generation Length: KG-RAG prompts included multi-hop graph context and exam structure formatting resulting in longer output lengths, contributing to increased latency.",
+    "Unsupported Entity Resolution: Fuzzy entity extraction matched general ancestor terms for certain out-of-scope queries rather than triggering deterministic refusals.",
+    "Absence of Semantic Judge: Gold-fact alignment and answer correctness require an external standardized judging protocol (e.g. human grading or calibrated LLM judge) and are intentionally left unmeasured."
+  ]
+}

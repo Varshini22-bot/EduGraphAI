@@ -1,0 +1,722 @@
+[
+  {
+    "evaluation_id": "EVAL_001",
+    "original_question_id": "DSA_001",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_002",
+    "original_question_id": "DSA_002",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_003",
+    "original_question_id": "DSA_003",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_004",
+    "original_question_id": "DSA_004",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_005",
+    "original_question_id": "DSA_005",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_006",
+    "original_question_id": "DSA_006",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_007",
+    "original_question_id": "DSA_007",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_008",
+    "original_question_id": "DSA_008",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_009",
+    "original_question_id": "DSA_009",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_010",
+    "original_question_id": "DSA_010",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_011",
+    "original_question_id": "DSA_011",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_012",
+    "original_question_id": "DSA_012",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_013",
+    "original_question_id": "DSA_013",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_014",
+    "original_question_id": "DSA_014",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_015",
+    "original_question_id": "DSA_015",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_016",
+    "original_question_id": "DSA_016",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_017",
+    "original_question_id": "DSA_017",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_018",
+    "original_question_id": "DSA_018",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_019",
+    "original_question_id": "DSA_019",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_020",
+    "original_question_id": "DSA_020",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_021",
+    "original_question_id": "ADA_001",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_022",
+    "original_question_id": "ADA_002",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_023",
+    "original_question_id": "ADA_003",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_024",
+    "original_question_id": "ADA_004",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_025",
+    "original_question_id": "ADA_005",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_026",
+    "original_question_id": "ADA_006",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_027",
+    "original_question_id": "ADA_007",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_028",
+    "original_question_id": "ADA_008",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_029",
+    "original_question_id": "ADA_009",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_030",
+    "original_question_id": "ADA_010",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_031",
+    "original_question_id": "ADA_011",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_032",
+    "original_question_id": "ADA_012",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_033",
+    "original_question_id": "ADA_013",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_034",
+    "original_question_id": "ADA_014",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_035",
+    "original_question_id": "ADA_015",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_036",
+    "original_question_id": "ADA_016",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_037",
+    "original_question_id": "ADA_017",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_038",
+    "original_question_id": "ADA_018",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_039",
+    "original_question_id": "ADA_019",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_040",
+    "original_question_id": "ADA_020",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_041",
+    "original_question_id": "CN_001",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_042",
+    "original_question_id": "CN_002",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_043",
+    "original_question_id": "CN_003",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_044",
+    "original_question_id": "CN_004",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_045",
+    "original_question_id": "CN_005",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_046",
+    "original_question_id": "CN_006",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_047",
+    "original_question_id": "CN_007",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_048",
+    "original_question_id": "CN_008",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_049",
+    "original_question_id": "CN_009",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_050",
+    "original_question_id": "CN_010",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_051",
+    "original_question_id": "CN_011",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_052",
+    "original_question_id": "CN_012",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_053",
+    "original_question_id": "CN_013",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_054",
+    "original_question_id": "CN_014",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_055",
+    "original_question_id": "CN_015",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_056",
+    "original_question_id": "CN_016",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_057",
+    "original_question_id": "CN_017",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_058",
+    "original_question_id": "CN_018",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_059",
+    "original_question_id": "CN_019",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_060",
+    "original_question_id": "CN_020",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_061",
+    "original_question_id": "ML_001",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_062",
+    "original_question_id": "ML_002",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_063",
+    "original_question_id": "ML_003",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_064",
+    "original_question_id": "ML_004",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_065",
+    "original_question_id": "ML_005",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_066",
+    "original_question_id": "ML_006",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_067",
+    "original_question_id": "ML_007",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_068",
+    "original_question_id": "ML_008",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_069",
+    "original_question_id": "ML_009",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_070",
+    "original_question_id": "ML_010",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_071",
+    "original_question_id": "ML_011",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_072",
+    "original_question_id": "ML_012",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_073",
+    "original_question_id": "ML_013",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_074",
+    "original_question_id": "ML_014",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_075",
+    "original_question_id": "ML_015",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_076",
+    "original_question_id": "ML_016",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_077",
+    "original_question_id": "ML_017",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_078",
+    "original_question_id": "ML_018",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_079",
+    "original_question_id": "ML_019",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_080",
+    "original_question_id": "ML_020",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_081",
+    "original_question_id": "OS_001",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_082",
+    "original_question_id": "OS_002",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_083",
+    "original_question_id": "OS_003",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_084",
+    "original_question_id": "OS_004",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_085",
+    "original_question_id": "OS_005",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_086",
+    "original_question_id": "OS_006",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_087",
+    "original_question_id": "OS_007",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_088",
+    "original_question_id": "OS_008",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_089",
+    "original_question_id": "OS_009",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_090",
+    "original_question_id": "OS_010",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_091",
+    "original_question_id": "OS_011",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_092",
+    "original_question_id": "OS_012",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_093",
+    "original_question_id": "OS_013",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_094",
+    "original_question_id": "OS_014",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_095",
+    "original_question_id": "OS_015",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_096",
+    "original_question_id": "OS_016",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_097",
+    "original_question_id": "OS_017",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_098",
+    "original_question_id": "OS_018",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_099",
+    "original_question_id": "OS_019",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_100",
+    "original_question_id": "OS_020",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_101",
+    "original_question_id": "SEPM_001",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_102",
+    "original_question_id": "SEPM_002",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_103",
+    "original_question_id": "SEPM_003",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_104",
+    "original_question_id": "SEPM_004",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_105",
+    "original_question_id": "SEPM_005",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_106",
+    "original_question_id": "SEPM_006",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_107",
+    "original_question_id": "SEPM_007",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_108",
+    "original_question_id": "SEPM_008",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_109",
+    "original_question_id": "SEPM_009",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_110",
+    "original_question_id": "SEPM_010",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_111",
+    "original_question_id": "SEPM_011",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_112",
+    "original_question_id": "SEPM_012",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_113",
+    "original_question_id": "SEPM_013",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_114",
+    "original_question_id": "SEPM_014",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_115",
+    "original_question_id": "SEPM_015",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_116",
+    "original_question_id": "SEPM_016",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_117",
+    "original_question_id": "SEPM_017",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  },
+  {
+    "evaluation_id": "EVAL_118",
+    "original_question_id": "SEPM_018",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_119",
+    "original_question_id": "SEPM_019",
+    "answer_A_system": "llm_only",
+    "answer_B_system": "kg_rag"
+  },
+  {
+    "evaluation_id": "EVAL_120",
+    "original_question_id": "SEPM_020",
+    "answer_A_system": "kg_rag",
+    "answer_B_system": "llm_only"
+  }
+]
