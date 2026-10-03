@@ -1,0 +1,9 @@
+# Research Contribution Statement: EduGraphAI
+
+The EduGraphAI research study provides five concrete contributions to educational natural language processing and retrieval-augmented generation:
+
+1. **Curriculum-Grounded Educational Architecture**: Design and implementation of a domain-tailored Knowledge Graph Retrieval-Augmented Generation (KG-RAG) system integrating Neo4j graph storage with large language model generation for university-level computer science curricula.
+2. **Context-Aware Pedagogical Interaction**: An educational interface coupling structured graph traversal (parent/child concept hierarchies, prerequisite chains, and concept recommendations) with examination-aligned answer synthesis across standardized marking schemes (2, 5, and 10 marks).
+3. **Multi-Domain Educational Question Benchmark**: Construction of a standardized 120-question evaluation dataset spanning six academic computer science subjects (ADA, CN, DSA, ML, OS, and SEPM) across five pedagogical query categories (factual, conceptual, comparison, relationship, and out-of-scope curriculum queries).
+4. **Double-Blind Human Evaluation Protocol**: Execution of a double-blind, paired human evaluation audit ($N=30$ questions) comparing KG-RAG directly against an unaugmented LLM baseline, incorporating pre-registered rubrics and automated evaluator calibration.
+5. **Rigorous Statistical Multiplicity Analysis & Empirical Trade-Offs**: Empirical validation utilizing two-sided paired Wilcoxon signed-rank tests with Holm-Bonferroni family-wise error control, percentile bootstrap confidence intervals ($B=10,000$), and Cohen's $d_z$ effect sizes. The study demonstrates that adding graph retrieval introduces measurable latency costs ($2.34\times$) and does not inherently increase subjective answer correctness over strong unaugmented baselines, while identifying directional exploratory utility in curriculum boundary guardrails.
