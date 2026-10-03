@@ -17,6 +17,7 @@ interface SidebarProps {
   onDeleteConversation: (id: string) => void;
   onPinConversation: (id: string) => void;
   onArchiveConversation: (id: string) => void;
+  onShareConversation?: (conversation: Conversation) => void;
   onNewChat: () => void;
   onClearAllConversations?: () => void;
   user: User | null;
@@ -49,6 +50,7 @@ export default function Sidebar({
   onDeleteConversation,
   onPinConversation,
   onArchiveConversation,
+  onShareConversation,
   onNewChat,
   onClearAllConversations,
   user,
@@ -158,6 +160,7 @@ export default function Sidebar({
               onDeleteConversation={onDeleteConversation}
               onPinConversation={onPinConversation}
               onArchiveConversation={onArchiveConversation}
+              onShareConversation={onShareConversation}
               onClearAllConversations={onClearAllConversations}
             />
           )}

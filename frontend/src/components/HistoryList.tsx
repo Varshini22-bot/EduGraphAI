@@ -12,6 +12,7 @@ interface HistoryListProps {
   onDeleteConversation: (id: string) => void;
   onPinConversation: (id: string) => void;
   onArchiveConversation: (id: string) => void;
+  onShareConversation?: (conversation: Conversation) => void;
   onClearAllConversations?: () => void;
 }
 
@@ -26,8 +27,6 @@ function formatRelativeTime(iso: string): string {
   return `${days}d ago`;
 }
 
-// Matches a search term against title, each question, resolved topic, and
-// answer text — per "search conversation titles, questions, topics, answers".
 function matchesSearch(conversation: Conversation, term: string): boolean {
   const needle = term.toLowerCase();
   if (conversation.title.toLowerCase().includes(needle)) return true;
@@ -41,6 +40,23 @@ function matchesSearch(conversation: Conversation, term: string): boolean {
   });
 }
 
+type TimeBucket = "TODAY" | "YESTERDAY" | "PREVIOUS 7 DAYS" | "OLDER";
+
+function getTimeBucket(iso: string): TimeBucket {
+  const date = new Date(iso);
+  const now = new Date();
+
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const startOfYesterday = startOfToday - 24 * 60 * 60 * 1000;
+  const sevenDaysAgo = startOfToday - 6 * 24 * 60 * 60 * 1000;
+
+  const time = date.getTime();
+  if (time >= startOfToday) return "TODAY";
+  if (time >= startOfYesterday) return "YESTERDAY";
+  if (time >= sevenDaysAgo) return "PREVIOUS 7 DAYS";
+  return "OLDER";
+}
+
 export default function HistoryList({
   conversations,
   activeConversationId,
@@ -49,6 +65,7 @@ export default function HistoryList({
   onDeleteConversation,
   onPinConversation,
   onArchiveConversation,
+  onShareConversation,
   onClearAllConversations,
 }: HistoryListProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -65,10 +82,39 @@ export default function HistoryList({
   const active = filtered.filter((c) => !c.archived);
   const archived = filtered.filter((c) => c.archived);
 
-  const sorted = [...active].sort((a, b) => {
-    if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
-    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-  });
+  // Group active into Pinned and Temporal Buckets
+  const groupedSections = useMemo(() => {
+    const pinned: Conversation[] = [];
+    const today: Conversation[] = [];
+    const yesterday: Conversation[] = [];
+    const previous7Days: Conversation[] = [];
+    const older: Conversation[] = [];
+
+    const sortedActive = [...active].sort(
+      (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
+
+    for (const c of sortedActive) {
+      if (c.pinned) {
+        pinned.push(c);
+      } else {
+        const bucket = getTimeBucket(c.updatedAt);
+        if (bucket === "TODAY") today.push(c);
+        else if (bucket === "YESTERDAY") yesterday.push(c);
+        else if (bucket === "PREVIOUS 7 DAYS") previous7Days.push(c);
+        else older.push(c);
+      }
+    }
+
+    const sections: { title: string; items: Conversation[] }[] = [];
+    if (pinned.length > 0) sections.push({ title: "PINNED", items: pinned });
+    if (today.length > 0) sections.push({ title: "TODAY", items: today });
+    if (yesterday.length > 0) sections.push({ title: "YESTERDAY", items: yesterday });
+    if (previous7Days.length > 0) sections.push({ title: "PREVIOUS 7 DAYS", items: previous7Days });
+    if (older.length > 0) sections.push({ title: "OLDER", items: older });
+
+    return sections;
+  }, [active]);
 
   function startEditing(conversation: Conversation) {
     setEditingId(conversation.id);
@@ -128,6 +174,17 @@ export default function HistoryList({
 
         {!isEditing && (
           <div className="hidden flex-shrink-0 gap-0.5 group-hover:flex">
+            {/* Inline share button */}
+            {onShareConversation && (
+              <button
+                onClick={() => onShareConversation(conversation)}
+                aria-label="Share conversation"
+                title="Share"
+                className="flex h-6 w-6 items-center justify-center rounded text-ink-tertiary hover:bg-hoverbg hover:text-ink-primary"
+              >
+                🔗
+              </button>
+            )}
             <button
               onClick={() => onPinConversation(conversation.id)}
               aria-label={conversation.pinned ? "Unpin conversation" : "Pin conversation"}
@@ -183,16 +240,25 @@ export default function HistoryList({
         <div className="px-2.5 py-4 text-[12.5px] leading-relaxed text-ink-tertiary">
           No conversations yet. Start a new chat to see it appear here.
         </div>
-      ) : sorted.length === 0 ? (
+      ) : active.length === 0 ? (
         <div className="px-2.5 py-4 text-[12.5px] leading-relaxed text-ink-tertiary">
           No conversations match &quot;{search}&quot;.
         </div>
       ) : (
-        <div className="flex flex-col gap-0.5">{sorted.map(renderRow)}</div>
+        <div className="flex flex-col gap-3">
+          {groupedSections.map((section) => (
+            <div key={section.title} className="flex flex-col gap-0.5">
+              <div className="px-2 py-1 font-mono text-[10px] font-semibold tracking-wider text-ink-tertiary">
+                {section.title}
+              </div>
+              {section.items.map(renderRow)}
+            </div>
+          ))}
+        </div>
       )}
 
       {archived.length > 0 && (
-        <div className="px-1">
+        <div className="mt-2 border-t border-border-subtle/40 px-1 pt-2">
           <button
             onClick={() => setShowArchived((v) => !v)}
             className="text-[11.5px] text-ink-tertiary hover:text-ink-primary"
