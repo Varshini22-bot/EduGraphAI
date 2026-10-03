@@ -54,3 +54,22 @@
 - [`FINAL_RESEARCH_FINDINGS.md`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/FINAL_RESEARCH_FINDINGS.md) — Neutral research findings by dimension.
 - [`PAPER_READY_RESULTS_SECTION.md`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/PAPER_READY_RESULTS_SECTION.md) — Manuscript-ready Results section.
 - [`figure_data.csv`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/figure_data.csv) — Plotting data for research figures.
+
+
+---
+
+## 6. Part 9K Statistical Validation & Multiple-Comparison Correction
+- **SciPy & Statsmodels Verification**: All non-parametric tests independently recomputed using official `scipy.stats.wilcoxon(alternative='two-sided', zero_method='wilcox')` and `statsmodels.stats.multitest.multipletests(method='holm')`.
+- **Multiple-Comparison Adjustment**: Applied Holm-Bonferroni correction across all 5 evaluated outcome metrics at $alpha = 0.05$.
+- **Key Statistical Corrections**:
+  1. **Factual Grounding**: Raw $p = 0.01963$ is **no longer statistically significant after Holm correction** (Holm-adjusted $p = 0.07852 > 0.05$).
+  2. **Unsupported Handling ($n=6$)**: Re-classified as an **exploratory finding** (raw $p = 0.25000$, Holm $p = 0.25000$). The positive bootstrap CI ([0.167, 1.500]) describes sample tendency but does not substitute for non-significant hypothesis testing.
+  3. **Correctness ($n=30$)**: Remains **statistically significant** favoring the LLM-only baseline after Holm correction (2.6 vs 2.1333; raw $p = 0.00175$, Holm $p = 0.00875 < 0.01$).
+  4. **Gold-Fact Coverage ($n=24$)**: Aggregate coverage (56/60 = 93.3% vs 60/60 = 100.0%) and question-level rates (0.931 vs 1.000; Holm $p = 0.24978$) clearly distinguished and verified as non-significant.
+- **Strict Separation of Latency**: Response latency ($N=120$, $2.34x$ multiplier) kept strictly separate from generation quality ($N=30$).
+
+### Generated Part 9K Validated Research Artifacts:
+- [`part_9k_validated_statistics.json`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/part_9k_validated_statistics.json) — Full machine-readable validated statistics with Holm corrections.
+- [`PART_9K_STATISTICAL_VALIDATION.md`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/PART_9K_STATISTICAL_VALIDATION.md) — Complete statistical validation and methodology report.
+- [`PAPER_READY_RESULTS_SECTION_VALIDATED.md`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/PAPER_READY_RESULTS_SECTION_VALIDATED.md) — Validated manuscript-ready draft with multiple-comparison corrected text.
+- [`FINAL_RESEARCH_FINDINGS_VALIDATED.md`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/FINAL_RESEARCH_FINDINGS_VALIDATED.md) — Neutral scientific findings document adhering to publication standards.
