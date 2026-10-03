@@ -13,6 +13,9 @@ const ProgressDashboard = dynamic(() => import("@/components/ProgressDashboard")
 const BookmarkList = dynamic(() => import("@/components/BookmarkList"), {
   ssr: false,
 });
+const GraphModal = dynamic(() => import("@/components/chat/GraphModal"), {
+  ssr: false,
+});
 import { ApiError, askQuestion, getGraph } from "@/lib/api";
 import {
   clearGuestStorage,
@@ -34,9 +37,14 @@ function createId(prefix: string): string {
 }
 
 function describeError(err: unknown): string {
-  if (err instanceof ApiError) return err.message;
-  if (err instanceof Error) return err.message;
-  return "Something went wrong. Please try again.";
+  let message = "Something went wrong. Please try again.";
+  if (err instanceof ApiError) message = err.message;
+  else if (err instanceof Error) message = err.message;
+
+  if (/neo4j|bolt:\/\/|render\.com|password|credential|traceback|line \d+/i.test(message)) {
+    return "EduGraphAI encountered a server error. Please try again or rephrase your question.";
+  }
+  return message;
 }
 
 function nowIso(): string {
@@ -72,6 +80,11 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
   const isMountedRef = useRef(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [shareTargetConversation, setShareTargetConversation] = useState<Conversation | null>(null);
+  const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [editingQuery, setEditingQuery] = useState<string>("");
+  const [graphModalMessage, setGraphModalMessage] = useState<ChatMessage | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
   const { settings } = useSettings();
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [hasHydrated, setHasHydrated] = useState(false);
@@ -210,24 +223,29 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
     conversationId: string,
     messageId: string,
     query: string,
-    contextTopic?: string | null
+    contextTopic?: string | null,
+    subject?: string | null
   ) {
     const startScope = scope;
     const startEpoch = epochRef.current;
+
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
 
     pendingRef.current = conversationId;
     setPendingConversationId(conversationId);
 
     function clearPending() {
       if (pendingRef.current === conversationId) pendingRef.current = null;
+      if (abortControllerRef.current === controller) abortControllerRef.current = null;
       if (isMountedRef.current) {
         setPendingConversationId((prev) => (prev === conversationId ? null : prev));
       }
     }
 
     try {
-      const augmentedQuery = buildAugmentedQuery(query, settings);
-      const askResult = await askQuestion(augmentedQuery, contextTopic);
+      const augmentedQuery = buildAugmentedQuery(query, settings, subject);
+      const askResult = await askQuestion(augmentedQuery, contextTopic, controller.signal);
 
       if (
         !isMountedRef.current ||
@@ -276,9 +294,47 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
       ) {
         return;
       }
+      if (err instanceof Error && err.name === "AbortError") {
+        updateMessage(conversationId, messageId, {
+          askError: "Answer generation was stopped.",
+        });
+        clearPending();
+        return;
+      }
       updateMessage(conversationId, messageId, { askError: describeError(err) });
       clearPending();
     }
+  }
+
+  function handleStopGenerating() {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    if (pendingConversationId && activeConversationId) {
+      const conv = conversations.find((c) => c.id === activeConversationId);
+      const pendingMsg = conv?.messages.slice().reverse().find((m) => !m.response && !m.askError);
+      if (pendingMsg) {
+        updateMessage(activeConversationId, pendingMsg.id, {
+          askError: "Answer generation was stopped.",
+        });
+      }
+    }
+    pendingRef.current = null;
+    setPendingConversationId(null);
+  }
+
+  function handleDismissAskError(messageId: string) {
+    if (!activeConversationId) return;
+    updateMessage(activeConversationId, messageId, { askError: null });
+  }
+
+  function handleEditQuery(query: string) {
+    setEditingQuery(query);
+  }
+
+  function handleClearInitialQuery() {
+    setEditingQuery("");
   }
 
   function isContextualFollowUp(query: string): boolean {
@@ -290,19 +346,15 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
     );
   }
 
-  async function handleSubmitQuery(query: string) {
-    // ChatInput already blocks blank sends, but topic chips, bookmarks and
-    // quick actions call in here too — so the guard lives here as well.
+  async function handleSubmitQuery(query: string, subjectOverride?: string | null) {
     const trimmedQuery = query.trim();
     if (!trimmedQuery) return;
 
-    // One /ask in flight at a time. Checked against the ref (not state)
-    // because setState is async: two clicks in the same tick would both see
-    // the stale value and each append a message + fire a request.
     if (pendingRef.current !== null) return;
 
     setActiveView("chat");
 
+    const effectiveSubject = subjectOverride !== undefined ? subjectOverride : selectedSubject;
     let conversationId = activeConversationId;
     const messageId = createId("msg");
     const timestamp = nowIso();
@@ -344,7 +396,7 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
       );
     }
 
-    await runAskStage(conversationId, messageId, trimmedQuery, contextTopicToPass);
+    await runAskStage(conversationId, messageId, trimmedQuery, contextTopicToPass, effectiveSubject);
   }
 
   async function handleRetryAsk(messageId: string, query: string) {
@@ -356,15 +408,13 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
     const priorTopic =
       [...priorMessages].reverse().find((m) => m.response?.topic)?.response?.topic ?? null;
     const contextTopicToPass = isContextualFollowUp(query) ? priorTopic : null;
-    await runAskStage(activeConversationId, messageId, query, contextTopicToPass);
+    await runAskStage(activeConversationId, messageId, query, contextTopicToPass, selectedSubject);
   }
 
   async function handleRegenerate(messageId: string, query: string) {
     if (!activeConversationId || !activeConversation) return;
     if (pendingRef.current !== null) return;
-    // Clears the previous answer for THIS message id only, then re-runs the
-    // same stage against the same id — so the regenerated answer replaces the
-    // correct response instead of appending a new exchange.
+
     updateMessage(activeConversationId, messageId, {
       response: null,
       graph: null,
@@ -377,7 +427,7 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
     const priorTopic =
       [...priorMessages].reverse().find((m) => m.response?.topic)?.response?.topic ?? null;
     const contextTopicToPass = isContextualFollowUp(query) ? priorTopic : null;
-    await runAskStage(activeConversationId, messageId, query, contextTopicToPass);
+    await runAskStage(activeConversationId, messageId, query, contextTopicToPass, selectedSubject);
   }
 
   async function handleRetryGraph(messageId: string, _query: string) {
@@ -518,6 +568,10 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
         onDeleteConversation={handleDeleteConversation}
         onPinConversation={handlePinConversation}
         onArchiveConversation={handleArchiveConversation}
+        onShareConversation={(conv) => {
+          setShareTargetConversation(conv);
+          setShareDialogOpen(true);
+        }}
         onNewChat={handleNewChat}
         onClearAllConversations={handleClearAllConversations}
         user={user}
@@ -533,7 +587,10 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
           title={navbarTitle()}
           subtitle={navbarSubtitle()}
           onOpenSidebar={() => setSidebarOpen(true)}
-          onShare={() => setShareDialogOpen(true)}
+          onShare={() => {
+            setShareTargetConversation(activeConversation);
+            setShareDialogOpen(true);
+          }}
           showBookmarkAction={activeView === "chat" && !!lastMessage?.response}
           isBookmarked={isCurrentTopicBookmarked}
           onToggleBookmark={handleToggleBookmarkForLastMessage}
@@ -545,9 +602,21 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
             isLoading={isLoading}
             isSendBlocked={isAnyRequestPending}
             onSubmitQuery={handleSubmitQuery}
+            onStopGenerating={handleStopGenerating}
+            selectedSubject={selectedSubject}
+            onSelectSubject={setSelectedSubject}
+            initialQuery={editingQuery}
+            onClearInitialQuery={handleClearInitialQuery}
+            onEditQuery={handleEditQuery}
             onRetryAsk={handleRetryAsk}
+            onDismissAskError={handleDismissAskError}
             onRetryGraph={handleRetryGraph}
             onRegenerate={handleRegenerate}
+            onShareConversation={() => {
+              setShareTargetConversation(activeConversation);
+              setShareDialogOpen(true);
+            }}
+            onOpenGraphModal={(msg) => setGraphModalMessage(msg)}
             bookmarkedTopics={bookmarks.map((b) => b.topic)}
             onToggleBookmark={handleToggleBookmark}
           />
@@ -567,8 +636,19 @@ function ChatApp({ scope, user, onSignOut }: ChatAppProps) {
 
         <ShareDialog
           isOpen={shareDialogOpen}
-          onClose={() => setShareDialogOpen(false)}
-          conversation={activeConversation}
+          onClose={() => {
+            setShareDialogOpen(false);
+            setShareTargetConversation(null);
+          }}
+          conversation={shareTargetConversation || activeConversation}
+        />
+
+        <GraphModal
+          isOpen={!!graphModalMessage}
+          onClose={() => setGraphModalMessage(null)}
+          topic={graphModalMessage?.response?.topic || graphModalMessage?.query || ""}
+          graph={graphModalMessage?.graph || null}
+          isLoading={graphModalMessage?.isGraphLoading}
         />
       </main>
     </div>

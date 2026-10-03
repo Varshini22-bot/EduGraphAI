@@ -10,13 +10,14 @@ interface QuickActionsProps {
 // introducing a separate state system or a new backend call.
 const ACTIONS: { label: string; buildQuery: (topic: string) => string }[] = [
   { label: "Explain simpler", buildQuery: (t) => `Explain ${t} more simply` },
-  { label: "More detail", buildQuery: (t) => `Give a more detailed explanation of ${t}` },
+  { label: "Short answer (2M)", buildQuery: (t) => `${t} — give a concise short answer, for 2 marks` },
+  { label: "5-Mark answer", buildQuery: (t) => `${t} — give an exam-oriented answer, for 5 marks` },
+  { label: "10-Mark answer", buildQuery: (t) => `${t} — give a comprehensive university exam answer, for 10 marks` },
+  { label: "Give example", buildQuery: (t) => `Give a clear concrete example of ${t}` },
+  { label: "Related concepts", buildQuery: (t) => `Show related concepts for ${t}` },
   { label: "Revision notes", buildQuery: (t) => `Create revision notes for ${t}` },
   { label: "Viva questions", buildQuery: (t) => `Generate viva questions for ${t}` },
-  { label: "Exam questions", buildQuery: (t) => `Generate likely exam questions for ${t}` },
-  { label: "Short quiz", buildQuery: (t) => `Create a short quiz on ${t}` },
   { label: "Prerequisites", buildQuery: (t) => `Show prerequisites for ${t}` },
-  { label: "Related concepts", buildQuery: (t) => `Show related concepts for ${t}` },
   { label: "Compare", buildQuery: (t) => `Compare ${t} with a similar concept` },
 ];
 

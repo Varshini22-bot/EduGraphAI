@@ -34,77 +34,57 @@ const MARKS_MENTION_PATTERN = /\bmarks?\b/i;
 
 export function buildAugmentedQuery(
   rawQuery: string,
-  settings: Pick<SettingsPreferences, "marksPreference" | "explanationMode">
+  settings: Pick<SettingsPreferences, "marksPreference" | "explanationMode">,
+  subject?: string | null
 ): string {
+  const subjectSuffix = subject && subject !== "all" ? ` [Subject: ${subject.toUpperCase()}]` : "";
+
   // If the user already specified marks themselves ("...for 10 marks"),
   // never override their explicit wording — respect what they typed.
   if (MARKS_MENTION_PATTERN.test(rawQuery)) {
-    return rawQuery;
+    return `${rawQuery}${subjectSuffix}`;
   }
 
   const modePhrase = MODE_LABEL[settings.explanationMode];
 
   if (settings.marksPreference === "auto") {
-    return `${rawQuery} (please answer as ${modePhrase})`;
+    return `${rawQuery}${subjectSuffix} (please answer as ${modePhrase})`;
   }
 
   const marksPhrase = MARKS_LABEL[settings.marksPreference];
-  return `${rawQuery} (please answer for ${marksPhrase}, as ${modePhrase})`;
+  return `${rawQuery}${subjectSuffix} (please answer for ${marksPhrase}, as ${modePhrase})`;
 }
 
 // ---------------------------------------------------------------------------
-// CONTEXTUAL EDUCATIONAL ACTIONS (More detail, Explain simpler, etc.)
-//
-// BUG THIS FIXES: these actions were previously phrased as a normal new
-// sentence (e.g. "Give a more detailed explanation of Binary Search") and
-// sent through the exact same free-text pipeline as a fresh question. The
-// backend's TopicExtractor only strips a fixed filler-word list (explain/
-// describe/define/what is/etc.) — none of these action phrasings are in
-// that list, so the full sentence survives, fails the whole-phrase graph
-// match, and falls back to matching individual words. Whichever word hits
-// any node first wins — which is how "detailed" could resolve to an
-// unrelated node instead of "Binary Search".
-//
-// FIX (frontend-only, no backend access to change TopicExtractor itself):
-// anchor the topic as the FIRST word(s) of the query, so the backend's own
-// existing word-by-word fallback tries the real topic before any generic
-// instruction word (detailed/simple/quiz/etc.) ever gets a chance to
-// false-match an unrelated node. This reuses the existing extraction path
-// exactly as-is — no duplicate topic-extraction logic is introduced here.
-//
-// This also fixes marks preservation: the ORIGINAL question's marks (e.g.
-// "for 8 marks") are extracted from message.query and re-embedded verbatim,
-// so buildAugmentedQuery's existing MARKS_MENTION_PATTERN check (above)
-// sees them and leaves them untouched — it does NOT fall through to the
-// user's global Settings marks preference, which was the second bug.
-//
-// NOTE — the fully robust fix would be a backend change: a new endpoint
-// accepting {topic, action, marks} directly, skipping TopicExtractor
-// entirely since the topic is already known. That's not implemented here
-// (no backend write access); this is the best mitigation achievable
-// entirely from the frontend.
+// CONTEXTUAL EDUCATIONAL ACTIONS (Explain simply, Short Answer, 5-Mark, etc.)
 // ---------------------------------------------------------------------------
 
 export type ContextualAction =
   | "explain_simpler"
+  | "short_answer"
+  | "five_mark_answer"
+  | "ten_mark_answer"
+  | "give_example"
+  | "related_concepts"
   | "more_detail"
   | "revision_notes"
   | "viva_questions"
   | "exam_questions"
-  | "short_quiz"
   | "prerequisites"
-  | "related_concepts"
   | "compare";
 
 const ACTION_INSTRUCTION: Record<ContextualAction, string> = {
   explain_simpler: "explain it more simply",
+  short_answer: "give a concise short answer, for 2 marks",
+  five_mark_answer: "give an exam-oriented answer, for 5 marks",
+  ten_mark_answer: "give a comprehensive university exam answer, for 10 marks",
+  give_example: "give a clear concrete example",
+  related_concepts: "show related concepts and prerequisites",
   more_detail: "give a more detailed explanation",
   revision_notes: "create revision notes",
   viva_questions: "generate viva questions",
   exam_questions: "generate likely exam questions",
-  short_quiz: "create a short quiz",
   prerequisites: "show the prerequisites",
-  related_concepts: "show related concepts",
   compare: "compare it with a similar concept",
 };
 
@@ -134,6 +114,9 @@ export function buildContextualActionQuery(
   originalQuery: string
 ): string {
   const instruction = ACTION_INSTRUCTION[action];
+  if (action === "short_answer" || action === "five_mark_answer" || action === "ten_mark_answer") {
+    return `${topic} — ${instruction}`;
+  }
   const marks = extractExplicitMarks(originalQuery);
   return marks
     ? `${topic} — ${instruction}, for ${marks}`

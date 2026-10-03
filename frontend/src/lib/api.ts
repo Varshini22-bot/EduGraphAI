@@ -76,7 +76,10 @@ async function fetchJson<T>(path: string, options: RequestInit = {}): Promise<T>
         ...(options.headers ?? {}),
       },
     });
-  } catch {
+  } catch (err) {
+    if (err instanceof Error && err.name === "AbortError") {
+      throw err;
+    }
     // fetch() throws a TypeError for DNS failures, connection refused,
     // CORS blocks, etc. — i.e. "the backend is unreachable".
     throw new ApiError(
@@ -152,12 +155,14 @@ interface BackendAskResponse {
  */
 export async function askQuestion(
   query: string,
-  contextTopic?: string | null
+  contextTopic?: string | null,
+  signal?: AbortSignal
 ): Promise<AskResponse> {
   const queryParam = `query=${encodeURIComponent(query)}`;
   const contextParam = contextTopic ? `&context_topic=${encodeURIComponent(contextTopic)}` : "";
   const data = await fetchJson<BackendAskResponse>(
-    `/ask?${queryParam}${contextParam}`
+    `/ask?${queryParam}${contextParam}`,
+    { signal }
   );
 
   if (data.status === false) {
