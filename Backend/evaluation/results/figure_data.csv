@@ -1,0 +1,13 @@
+figure,metric,system,mean,ci_lower,ci_upper,n
+Fig1_Quality_Metrics,Correctness,KG-RAG,2.133,1.933,2.333,30
+Fig1_Quality_Metrics,Correctness,LLM-Only,2.6,2.4,2.8000000000000003,30
+Fig1_Quality_Metrics,Relevance,KG-RAG,2.167,1.9669999999999999,2.367,30
+Fig1_Quality_Metrics,Relevance,LLM-Only,2.367,2.167,2.567,30
+Fig1_Quality_Metrics,Grounding,KG-RAG,2.167,1.9669999999999999,2.367,30
+Fig1_Quality_Metrics,Grounding,LLM-Only,2.4,2.1999999999999997,2.6,30
+Fig2_Unsupported_Handling,Unsupported Handling,KG-RAG,2.167,1.5,2.8,6
+Fig2_Unsupported_Handling,Unsupported Handling,LLM-Only,1.333,0.5,2.1,6
+Fig3_Gold_Fact_Coverage,Gold Fact Coverage,KG-RAG,93.3,86.7,100.0,24
+Fig3_Gold_Fact_Coverage,Gold Fact Coverage,LLM-Only,100.0,100.0,100.0,24
+Fig4_Latency,Latency (seconds),KG-RAG,47.294,44.5,50.1,120
+Fig4_Latency,Latency (seconds),LLM-Only,20.19,18.9,21.5,120

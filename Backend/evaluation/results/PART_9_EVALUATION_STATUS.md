@@ -37,3 +37,20 @@
 - **Curriculum Guardrails**: KG-RAG demonstrates superior curriculum boundary enforcement (+0.834 points on unsupported questions), effectively refusing out-of-scope queries.
 - **Factual Grounding**: Both systems deliver high factual precision on core curriculum concepts, with KG-RAG ensuring answers remain tied to defined syllabus nodes.
 - **Human vs AI Alignment**: Human evaluations revealed a noticeable leniency bias in automated LLM evaluators, validating the necessity of human domain audits for educational AI benchmarks.
+
+
+---
+
+## 5. Part 9J Statistical Analysis & Final Research Synthesis
+- **Paired Hypothesis Testing**: Wilcoxon signed-rank tests confirmed that KG-RAG demonstrates a strong, positive advantage on **unsupported curriculum handling** (+0.833 points, $d_z = +0.85$, 95% bootstrap CI [+0.167, +1.500]), successfully preventing out-of-scope curriculum hallucinations.
+- **Supported Curriculum Performance**: On core syllabus topics, both systems demonstrated near-complete factual coverage (>93% for KG-RAG vs 100% for LLM-Only; $p = 0.25$), with LLM-only scoring higher in subjective fluency and correctness on small local models (2.6 vs 2.133; $p < 0.01$).
+- **Latency Cost**: The structured graph retrieval pipeline imposes a 2.34× latency multiplier (47.3 s vs 20.2 s), reflecting the overhead of multi-hop Cypher queries and structured context assembly.
+- **Evaluator Calibration**: Automated LLM evaluation exhibited significant leniency bias (+0.38 to +0.65 points), establishing the necessity of human expert evaluation for reliable pedagogical benchmark conclusions.
+
+### Generated Part 9J Research Artifacts:
+- [`part_9j_statistics.json`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/part_9j_statistics.json) — Full machine-readable paired statistics.
+- [`TABLE_HUMAN_EVALUATION_RESULTS.md`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/TABLE_HUMAN_EVALUATION_RESULTS.md) — Paper-ready Table 1.
+- [`PART_9J_STATISTICAL_ANALYSIS.md`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/PART_9J_STATISTICAL_ANALYSIS.md) — Complete 16-section statistical treatise.
+- [`FINAL_RESEARCH_FINDINGS.md`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/FINAL_RESEARCH_FINDINGS.md) — Neutral research findings by dimension.
+- [`PAPER_READY_RESULTS_SECTION.md`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/PAPER_READY_RESULTS_SECTION.md) — Manuscript-ready Results section.
+- [`figure_data.csv`](file:///c:/Users/varsh/OneDrive/Attachments/Desktop/Knowledge_Graph_Project/Backend/evaluation/results/figure_data.csv) — Plotting data for research figures.
