@@ -11,24 +11,24 @@ This document specifies the four primary figures designed for the EduGraphAI res
 - **Visual Structure**: Multi-tier architectural block diagram showing four interconnected layers:
   1. **Client Tier**: Next.js 14 / React frontend with interactive graph visualization canvas (`vis-network`), responsive markdown rendering, follow-up pedagogical action pills, and authenticated user profile views.
   2. **API & Service Tier**: FastAPI application gateway exposing REST endpoints (`/api/query`, `/api/ask`, `/api/auth`, `/api/graph`), coordinating conversation history management, and orchestrating the RAG execution service.
-  3. **Data & Retrieval Tier**: Neo4j Graph Database (managed Neo4j AuraDB with local fallback failover) storing curriculum concept nodes, hierarchical taxonomy (`IS_A`, `PART_OF`), and prerequisite relations (`USES`, `REQUIRES`), alongside SQLite / SQLAlchemy for relational student accounts and shared conversations.
+  3. **Data & Retrieval Tier**: Neo4j Graph Database (managed Neo4j AuraDB with local fallback failover) storing 458 curriculum concept nodes (497 edges across 6 subjects), hierarchical taxonomy (`IS_A`, `PART_OF`), and prerequisite relations (`USES`, `REQUIRES`), alongside SQLite / SQLAlchemy for relational student accounts and shared conversations.
   4. **Inference Tier**: Dual-mode LLM backend supporting Groq Cloud API (`llama-3.3-70b-versatile`) in production and local Ollama daemon (`llama3.2:latest`, context 4096 tokens) in local/evaluation environments.
 - **Interpretation**: Demonstrates how EduGraphAI decouples curriculum graph traversal from generative language modeling, enabling modular retrieval failover and flexible deployment across cloud and local runtimes.
 
 ---
 
-### Figure 2: Knowledge Graph-Grounded Educational Retrieval Pipeline
+### Figure 2: Empirical Evaluation & Validation Methodology Pipeline
 
-- **Figure Title**: Execution Flow of the Multi-Hop Knowledge Graph Retrieval Pipeline
-- **Purpose**: Details the chronological lifecycle of an incoming student query through entity identification, graph query synthesis, multi-hop context extraction, and answer generation.
-- **Visual Structure**: Sequential flowchart with six distinct stages:
-  1. **Query Ingestion**: Student submits natural language question with optional topic focus and examination mark specification (2, 5, or 10 marks).
-  2. **Topic & Action Extraction**: `TopicExtractor` regex and fuzzy token matching identifies canonical concept entities and detects contextual pedagogical directives (e.g., "explain simply", "prerequisites", "viva questions").
-  3. **Graph Traversal & Resolution**: `GraphService` executes parameterized Cypher queries against Neo4j to retrieve the target concept definition, outgoing/incoming relationships, 1-to-2 hop connected neighbors, and prerequisite learning paths.
-  4. **Boundary Detection**: If the identified concept does not exist within the defined syllabus taxonomy, the pipeline routes to an unsupported-topic refusal protocol.
-  5. **Prompt Assembly**: `PromptBuilder` formats retrieved graph facts, prerequisite sequences, and syllabus constraints into an examination-calibrated instruction template.
-  6. **Generation & UI Delivery**: The LLM synthesizes an educational response, and the frontend displays the answer alongside interactive graph subgraphs, prerequisite paths, and recommended study concepts.
-- **Interpretation**: Visualizes the explicit structural grounding mechanism that differentiates KG-RAG from unconstrained free-form generation.
+- **Figure Title**: Empirical Evaluation & Validation Methodology Pipeline
+- **Purpose**: Illustrates the end-to-end experimental workflow from multi-subject query bank construction through local paired execution, dual-track quality evaluation, and rigorous statistical validation.
+- **Visual Structure**: Four-stage sequential methodology diagram:
+  1. **Stage 1: Question Bank Construction ($N=120$)**: 6 undergraduate computer science subjects (ADA, CN, DSA, ML, OS, SEPM) $\times$ 20 questions across 5 pedagogical categories (Factual, Conceptual, Comparison, Relationship, Unsupported Boundary).
+  2. **Stage 2: Local Benchmark Execution**: Paired execution on local Ollama runtime (`llama3.2:latest`, 3B) under deterministic settings (temperature 0.2, seed 42) comparing KG-RAG against unaugmented LLM-only generation, with end-to-end latency measurement across all 240 runs.
+  3. **Stage 3: Dual-Track Quality Evaluation**:
+     - *Automated Track*: LLM-as-a-judge scoring across the full benchmark ($N=120$) using a 0–3 evaluation rubric.
+     - *Blinded Human Audit Track*: Rigorous double-blind evaluation of a stratified representative sample ($N=30$, 5 per subject, 24 supported, 6 unsupported), with system identity masked (Answer A vs. Answer B) and independent scoring against gold facts.
+  4. **Stage 4: Statistical Validation & Multiplicity Correction**: Formal confirmatory hypothesis testing via Wilcoxon signed-rank tests ($W$), family-wise error rate control via Holm-Bonferroni step-down correction across 5 primary outcomes ($\alpha=0.05$), and non-parametric percentile bootstrap 95% confidence intervals ($B=10,000$ resamples, seed 42).
+- **Interpretation**: Highlights the methodological rigor, blinding integrity, and multiple-comparison correction employed to prevent false-positive discovery in LLM educational benchmarking.
 
 ---
 
