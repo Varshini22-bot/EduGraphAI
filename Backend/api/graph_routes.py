@@ -24,7 +24,7 @@ def graph_health():
 # Get Complete Topic
 # ----------------------------------------------------
 
-@router.get("/topic/{topic_name}")
+@router.get("/topic/{topic_name:path}")
 def get_topic(topic_name: str):
 
     result = GraphService.get_complete_response(topic_name)
