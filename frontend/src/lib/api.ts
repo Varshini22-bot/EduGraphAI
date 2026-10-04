@@ -143,6 +143,7 @@ interface BackendAskResponse {
   learning_path?: string[];
   recommendations?: string[];
   error?: string;
+  is_connection_error?: boolean;
 }
 
 /**
@@ -150,8 +151,13 @@ interface BackendAskResponse {
  *
  * The backend signals soft failure (empty query, RAG exception, topic not
  * found) via "status": false with HTTP 200, not via an HTTP error status —
- * verified directly in api/routes.py. That must be checked explicitly, or
- * the backend's real message/error text never reaches the UI.
+ * verified directly in api/routes.py.
+ *
+ * For expected curriculum-boundary cases (the topic is outside the knowledge graph),
+ * the backend provides helpful curriculum guidance in `answer`. We return this as
+ * an assistant response rather than throwing, so students receive educational guidance
+ * instead of an error banner. Genuine failures (database disconnect, LLM failure,
+ * missing answer) continue to throw an ApiError.
  */
 export async function askQuestion(
   query: string,
@@ -166,10 +172,36 @@ export async function askQuestion(
   );
 
   if (data.status === false) {
-    throw new ApiError(
-      data.message ?? data.error ?? "The backend could not answer this question.",
-      "empty"
-    );
+    const hasCurriculumGuidance =
+      typeof data.answer === "string" &&
+      data.answer.trim().length > 0 &&
+      !data.is_connection_error &&
+      data.message !== "Unable to generate the answer.";
+
+    if (!hasCurriculumGuidance || typeof data.answer !== "string") {
+      throw new ApiError(
+        data.message ?? data.error ?? "The backend could not answer this question.",
+        "empty"
+      );
+    }
+
+    const resolvedTopic = (data.topic && data.topic.trim()) || "Curriculum Guidance";
+    return {
+      query: data.query ?? query,
+      topic: resolvedTopic,
+      answer: data.answer,
+      graph_context: (data.graph_context ?? []).flatMap((item) =>
+        item && item.relationship && item.target
+          ? [{ relation: item.relationship, related: item.target }]
+          : []
+      ),
+      learning_path: data.learning_path ?? [],
+      recommendations: data.recommendations ?? [],
+      graph:
+        data.topic && data.topic.trim()
+          ? buildGraphResponse(data.topic, data.graph_context, data.incoming)
+          : { nodes: [], links: [] },
+    };
   }
 
   if (!data.topic || !data.answer) {
