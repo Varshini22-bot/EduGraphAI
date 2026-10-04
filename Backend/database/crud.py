@@ -37,10 +37,12 @@ def create_user(db: Session, user: UserCreate) -> User:
 
 
 def authenticate_user(db: Session, email: str, password: str) -> Optional[User]:
-    """Returns the User if email+password are correct, else None."""
+    """Returns the User if email+password are correct and account is active, else None."""
     user = get_user_by_email(db, email)
     if not user:
         return None
     if not verify_password(password, user.hashed_password):
+        return None
+    if not user.is_active:
         return None
     return user

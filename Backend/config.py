@@ -180,17 +180,18 @@ API_TITLE = "Knowledge Graph Learning Assistant API"
 API_VERSION = "1.0.0"
 
 # ==========================================================
-# JWT Authentication
+# JWT Authentication Constants
 # ==========================================================
 
-JWT_SECRET_KEY = os.getenv(
-    "JWT_SECRET_KEY",
-    "knowledge_graph_secret_key_change_this"
-)
-
 JWT_ALGORITHM = "HS256"
-
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
+
+# Known insecure default secret keys that must never be permitted in production
+INSECURE_DEFAULT_JWT_SECRETS = {
+    "knowledge_graph_secret_key_change_this",
+    "change-this-secret-in-production",
+    "change-this-to-a-secure-random-32-byte-hex-string",
+}
 
 # ==========================================================
 # Frontend & CORS Configuration
@@ -219,19 +220,28 @@ GRAPH_HTML = "../frontend/assets/graph.html"
 TOPIC_MATCH_THRESHOLD = 70
 
 # ==========================================================
-# Application Settings
+# Application Settings & Security Validation
 # ==========================================================
 
 DEBUG = os.getenv("DEBUG", "false").lower() in ("true", "1", "yes")
 
 LOG_LEVEL = os.getenv("LOG_LEVEL", "DEBUG" if DEBUG else "INFO")
 
-# In production mode, issue an explicit warning if running with the insecure default secret key
-if not DEBUG and JWT_SECRET_KEY == "knowledge_graph_secret_key_change_this":
-    import warnings
-    warnings.warn(
-        "SECURITY WARNING: Running in production (DEBUG=False) with default insecure JWT_SECRET_KEY! "
-        "Please set a cryptographically secure key via the JWT_SECRET_KEY environment variable.",
-        UserWarning,
-        stacklevel=2,
-    )
+# Validate JWT_SECRET_KEY: fail safely in production if missing or insecure default
+_raw_jwt_secret = os.getenv("JWT_SECRET_KEY", "").strip()
+
+if not DEBUG:
+    if not _raw_jwt_secret:
+        raise RuntimeError(
+            "FATAL CONFIGURATION ERROR: JWT_SECRET_KEY environment variable is required in production mode (DEBUG=False). "
+            "Please set a cryptographically secure secret key."
+        )
+    if _raw_jwt_secret in INSECURE_DEFAULT_JWT_SECRETS:
+        raise RuntimeError(
+            "FATAL CONFIGURATION ERROR: Insecure default JWT_SECRET_KEY detected in production mode (DEBUG=False). "
+            "Please set a unique cryptographically secure key via the JWT_SECRET_KEY environment variable."
+        )
+    JWT_SECRET_KEY = _raw_jwt_secret
+else:
+    # Development mode: allow fallback for local convenience
+    JWT_SECRET_KEY = _raw_jwt_secret or "knowledge_graph_secret_key_change_this"

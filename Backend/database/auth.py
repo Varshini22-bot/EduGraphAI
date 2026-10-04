@@ -31,7 +31,13 @@ try:
         ACCESS_TOKEN_EXPIRE_MINUTES,
     )
 except ImportError:
-    SECRET_KEY = os.getenv("JWT_SECRET_KEY", "knowledge_graph_secret_key_change_this")
+    _raw_key = os.getenv("JWT_SECRET_KEY", "").strip()
+    _is_dev = os.getenv("DEBUG", "false").lower() in ("true", "1", "yes")
+    if not _is_dev and (not _raw_key or _raw_key == "knowledge_graph_secret_key_change_this"):
+        raise RuntimeError(
+            "FATAL CONFIGURATION ERROR: JWT_SECRET_KEY environment variable is required in production."
+        )
+    SECRET_KEY = _raw_key or "knowledge_graph_secret_key_change_this"
     ALGORITHM = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 
@@ -88,6 +94,6 @@ def get_current_user(
         raise credentials_exception
 
     user = db.query(User).filter(User.email == email).first()
-    if user is None:
+    if user is None or not user.is_active:
         raise credentials_exception
     return user
