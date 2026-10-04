@@ -133,8 +133,6 @@ class Neo4jClient:
                 "healthy": True,
                 "mode": self._mode,
                 "active_target": "cloud" if is_cloud else "local",
-                "active_uri": self.primary_uri,
-                "database": target_db,
                 "latency_ms": primary_latency,
                 "paused": False,
                 "failover_active": False,
@@ -156,12 +154,9 @@ class Neo4jClient:
                     "healthy": True,
                     "mode": self._mode,
                     "active_target": "local (failover)",
-                    "active_uri": self.fallback_uri,
-                    "database": target_db,
                     "latency_ms": fb_latency,
                     "paused": is_cloud,
                     "failover_active": True,
-                    "primary_error": primary_err,
                 }
             except Exception:
                 pass
@@ -171,12 +166,10 @@ class Neo4jClient:
             "healthy": False,
             "mode": self._mode,
             "active_target": "none",
-            "active_uri": self.primary_uri,
-            "database": target_db,
             "latency_ms": None,
             "paused": is_cloud,
             "static_fallback_active": True,
-            "error": primary_err,
+            "error": "Graph database unreachable or temporarily unavailable.",
             "guidance": (
                 "AuraDB instance may be paused. Visit console.neo4j.io and click 'Resume' (~60s), "
                 "or start your local Neo4j database service."
@@ -224,8 +217,8 @@ class ResilientSession:
             )
             if can_fallback:
                 print(
-                    f"[NEO4J RESILIENCE] Primary query failed ({type(e).__name__}: {e}). "
-                    f"Auto-failing over to fallback: {self.client.fallback_uri}"
+                    f"[NEO4J RESILIENCE] Primary query failed ({type(e).__name__}). "
+                    "Auto-failing over to fallback target."
                 )
                 try:
                     session.close()

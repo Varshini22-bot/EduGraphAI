@@ -9,7 +9,7 @@ SQL table) so the API shape can evolve independently of the DB schema.
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, EmailStr, ConfigDict, Field
 
 
 class UserBase(BaseModel):
@@ -19,7 +19,11 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     """Payload for POST /auth/register"""
-    password: str
+    password: str = Field(
+        ...,
+        min_length=8,
+        description="Password must be at least 8 characters long",
+    )
 
 
 class UserResponse(UserBase):

@@ -16,11 +16,17 @@ from database.schemas import UserCreate, UserResponse, Token
 from database import crud
 from database.auth import create_access_token, get_current_user
 from database.models import User
+from utils.rate_limiter import login_rate_limiter, register_rate_limiter
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
-@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/register",
+    response_model=UserResponse,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(register_rate_limiter)],
+)
 def register(user: UserCreate, db: Session = Depends(get_db)):
     existing = crud.get_user_by_email(db, user.email)
     if existing:
@@ -28,7 +34,11 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db, user)
 
 
-@router.post("/login", response_model=Token)
+@router.post(
+    "/login",
+    response_model=Token,
+    dependencies=[Depends(login_rate_limiter)],
+)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     # OAuth2PasswordRequestForm's field is named "username" by the OAuth2
     # spec — your frontend should submit the user's email in that field.
