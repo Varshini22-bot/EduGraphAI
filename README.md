@@ -156,7 +156,7 @@ The EduGraphAI knowledge graph represents academic knowledge as a directed, labe
   * `HAS_TOPIC`: Subject-to-topic ownership.
 
 ### Verified Production Snapshot
-* **Total Nodes**: `474`
+* **Total Nodes**: `475`
 * **Total Relationships**: `972`
 
 *(Note: These figures represent the verified production snapshot of the current curriculum graph and may evolve as additional modules are integrated).*
@@ -393,7 +393,7 @@ Backend: Render (https://edugraphai-backend.onrender.com)
 Knowledge Graph: Neo4j AuraDB Cloud (Connected)
 LLM Provider: Groq Cloud (llama-3.3-70b-versatile)
 Supported Subjects: DSA, ADA, CN, ML, OS, SEPM
-Verified Graph Snapshot: 474 nodes, 972 relationships
+Verified Graph Snapshot: 475 nodes, 972 relationships
 Current Git Baseline: main (synchronized)
 ```
 
