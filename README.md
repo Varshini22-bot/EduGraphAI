@@ -1,6 +1,6 @@
-# EduGraphAI 🎓🕸️
+# EduGraphAI
 
-### Knowledge Graph-Based Question Answering System for Educational Content
+**Knowledge-Graph-Grounded Question Answering System for Educational Content**
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-edu--graph--ai.vercel.app-success?style=for-the-badge&logo=vercel&logoColor=white)](https://edu-graph-ai.vercel.app/)
 [![Backend Status](https://img.shields.io/badge/Backend-Render%20Cloud-informational?style=for-the-badge&logo=render&logoColor=white)](https://edugraphai-backend.onrender.com/health)
@@ -8,205 +8,222 @@
 [![Lighthouse Audit](https://img.shields.io/badge/Lighthouse-100%25%20A11y%20%7C%20100%25%20SEO-brightgreen?style=for-the-badge&logo=googlechrome&logoColor=white)](https://pagespeed.web.dev/analysis/https-edu-graph-ai-vercel-app/s9kniyxn2b?form_factor=desktop)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-**EduGraphAI** is an AI-powered, knowledge graph-grounded educational question answering and learning assistance platform. It transforms computer science and engineering curricula into a structured semantic knowledge graph, empowering students to master complex academic topics, explore prerequisite chains, and visualize conceptual relationships.
+---
 
-Unlike conventional chatbots that rely strictly on unstructured LLM recall, EduGraphAI anchors every explanation in an explicit **Neo4j Knowledge Graph** to eliminate hallucinations, enforce exam-tailored structure, and dynamically render interactive node-link concept maps.
+## 1. Overview
+
+**EduGraphAI** is an AI-powered educational question answering and learning platform designed to help computer science students, educators, and academic evaluators explore complex academic curricula through structured, knowledge-graph-grounded explanations.
+
+### The Educational Problem
+Traditional conversational AI systems rely on unconstrained parametric memory. When asked academic or exam-oriented questions, generic language models frequently:
+* Drift outside established university syllabi.
+* Omit crucial conceptual prerequisites and dependency hierarchies.
+* Invent plausible-sounding but unverified algorithmic relationships.
+* Fail to tailor explanations to academic grading criteria (e.g., standard 2-mark definitions vs. 10-mark structured breakdowns).
+
+### The Knowledge Graph Solution
+EduGraphAI addresses this challenge by grounding question answering in an explicit **Neo4j Knowledge Graph**. Rather than generating text in isolation, the system:
+1. Identifies core academic entities from student questions.
+2. Traverses semantic relationships in the curriculum graph (such as prerequisites, constituent sub-concepts, and applications).
+3. Injects structured graph context into the language model prompt.
+4. Generates cohesive, curriculum-grounded educational answers accompanied by interactive visual concept maps.
+
+This grounding ensures that students receive answers aligned with accredited course structures while visually exploring how academic concepts connect.
 
 ---
 
-## 🌐 Live Deployments
+## 2. Key Features
 
-| Component | Platform | Status | Live Link |
-| :--- | :--- | :---: | :--- |
-| **Frontend Web App** | Vercel | 🟢 Active | [https://edu-graph-ai.vercel.app/](https://edu-graph-ai.vercel.app/) |
-| **Backend REST API** | Render | 🟢 Active | [https://edugraphai-backend.onrender.com](https://edugraphai-backend.onrender.com) |
-| **API Health Endpoint** | Render | 🟢 Active | [https://edugraphai-backend.onrender.com/health](https://edugraphai-backend.onrender.com/health) |
-| **Graph Database** | Neo4j AuraDB Cloud | 🟢 Active | Encrypted Bolt Protocol (`neo4j+s://`) |
+### 🎓 Educational Question Answering
+* **Knowledge-Graph-Grounded QA**: Responses are synthesized conditioned on explicit graph entities and relationship triples.
+* **Curriculum-Aware Retrieval**: Exact and fuzzy entity matching across engineering syllabus topics.
+* **Subject Selector**: Filter questions by specific academic subjects or search across the entire curriculum.
+* **Concept & Relationship Display**: Every response highlights identified concept nodes and related graph connections.
 
----
+### 📝 Educational Answer Modes
+Students can request explanations tailored to specific academic needs:
+* **Explain Simply**: High-level conceptual analogies for intuitive understanding.
+* **Short Answer (2-Mark Style)**: Concise formal definitions and key terminology.
+* **5-Mark Answer**: Medium-depth explanations covering core working principles.
+* **10-Mark Answer**: Comprehensive university-format breakdown including Definition, Need, Working Principle, Algorithm/Pseudocode, Step-by-Step Flow, Complexity Analysis, Advantages/Disadvantages, and Exam Tips.
+* **Give Example**: Real-world scenarios and walkthrough demonstrations.
+* **Related Concepts**: Adjacent topics and prerequisite chains derived from graph edges.
 
-## ⚡ Key Highlights & Features
+### 🕸️ Knowledge Graph & Exploration
+* **Interactive Concept Map**: Visualized using React Flow, displaying concept nodes, prerequisite hierarchies, and outgoing links.
+* **Direct Topic Exploration**: Inspect complete concept subgraphs (`/graph/topic/{topic}`) and immediate neighbors.
+* **Curriculum Boundary Handling**: Out-of-curriculum questions receive constructive guidance detailing supported subjects rather than ungrounded speculative answers.
 
-* **🧠 Knowledge Graph Retrieval (Neo4j)**: Maps academic entities, definitions, sub-concepts, and dependencies across 6 core Computer Science subjects.
-* **📝 Exam-Tailored Response Engine**: Automatically adapts formatting based on question marks/intent (2-mark definitions, 5-mark summaries, 8/10/16-mark university exam breakdowns with definitions, algorithms, diagrams, and complexity analysis).
-* **🕸️ Interactive Graph Visualizer**: Built with React Flow; visualizes concept nodes, prerequisite hierarchies (`DEPENDS_ON`, `PREREQUISITE_FOR`), and related topics directly inside the browser.
-* **🧭 Curriculum Learning Paths**: Generates progressive, step-by-step topic mastery sequences derived directly from graph relationships.
-* **📊 Progress Dashboard & Bookmarks**: Tracks session mastery, studied concepts, topic coverage metrics, and saved bookmarks across student sessions.
-* **🛡️ Zero Truncation & Session Isolation**: Up to 4096 output tokens with strict anti-drift contextual anchoring; supports both authenticated and private guest workflows with zero cross-contamination.
-* **🔗 Zero-Database Conversation Sharing**: Instant, shareable conversation links (`/share/[shareId]`) powered by client-side Raw Deflate compression and URL-safe Base64; recipients view complete educational conversations in a clean, read-only markdown interface with syntax highlighting, with zero database storage or server overhead.
-* **⚡ 100/100 Lighthouse & Accessibility Rating**: Optimized with zero render-blocking delays, sub-second Core Web Vitals (FCP 0.7s, LCP 0.7s, CLS 0), and full WCAG AA contrast compliance.
+### 💬 Chat Experience
+* **Interactive Controls**: One-click actions to *Stop Generating*, *Regenerate*, and *Edit/Resend* queries.
+* **Smart Auto-Scroll & Copy**: Smooth scroll tracking during generation and one-click Markdown copy buttons.
+* **Client-Side Conversation Sharing**: Instant zero-database sharing via URL-safe Raw Deflate compression tokens (`/share/{token}`).
+* **Isolated Guest Mode**: Full access to educational QA and graph visualization without mandatory sign-up.
 
----
+### 🔐 Authentication & Account Management
+* **Student Registration & Login**: Account creation with minimum 8-character password enforcement.
+* **JWT Session Management**: Standard OAuth2 Bearer token authentication.
+* **Authentication Rate Limiting**: Built-in sliding-window protection on login and registration endpoints.
+* **Account Deactivation Protection**: Inactive user verification at login and credential evaluation.
 
-## 📚 Supported Academic Subjects
-
-EduGraphAI models structured relationships across core engineering domains:
-
-```
-                    ┌─────────────────────────┐
-                    │      EduGraphAI         │
-                    │     Knowledge Graph     │
-                    └────────────┬────────────┘
-                                 │
-     ┌──────────────┬────────────┼────────────┬──────────────┐
-     │              │            │            │              │
-┌────┴───┐     ┌────┴───┐   ┌────┴───┐   ┌────┴───┐     ┌────┴───┐
-│  DSA   │     │  ADA   │   │   CN   │   │   OS   │     │   ML   │
-└────────┘     └────────┘   └────────┘   └────────┘     └────────┘
-                                 │
-                            ┌────┴───┐
-                            │  SEPM  │
-                            └────────┘
-```
-
-1. **Data Structures & Algorithms (DSA)**: Arrays, Linked Lists, Trees, Graphs, Sorting, Dynamic Programming.
-2. **Analysis & Design of Algorithms (ADA)**: Asymptotic Notations, Divide & Conquer, Greedy Strategies, Backtracking, NP-Completeness.
-3. **Computer Networks (CN)**: OSI Model, TCP/IP Suite, Flow/Congestion Control, Routing Protocols, Network Security.
-4. **Operating Systems (OS)**: Process Scheduling, Synchronization, Deadlocks, Memory Management, Virtual Memory, File Systems.
-5. **Machine Learning (ML)**: Supervised/Unsupervised Learning, Regression, Classification, Neural Networks, Model Evaluation.
-6. **Software Engineering & Project Management (SEPM)**: SDLC Models, Agile, Requirements Engineering, Software Testing, Quality Assurance.
+### 🎨 Modern Responsive UI
+* **Design System**: Tailored dark-mode-first aesthetic with accessible high-contrast typography.
+* **Mobile Support**: Fully responsive layout with sliding drawer navigation on mobile viewports.
+* **Accessible Visualizations**: WCAG AA compliant contrast ratios and keyboard-navigable controls.
 
 ---
 
-## 🏗️ System Architecture
+## 3. System Architecture
 
 ```text
-  User Browser (Next.js 14 / Tailwind CSS)
-                   │
-                   ▼  HTTPS / REST
-  ┌──────────────────────────────────────────────────┐
-  │         Backend Application (Flask / REST)       │
-  │                                                  │
-  │  1. Query Processor & Intent Classifier          │
-  │     - Topic Resolution                           │
-  │     - Mark/Intent Extraction (2/5/8/10/16 marks) │
-  │                                                  │
-  │  2. Graph Retrieval Engine (Cypher)              │
-  │     - Subgraph Extraction & Prerequisite Lookup  │
-  │                                                  │
-  │  3. Context Builder & Prompt Synthesizer         │
-  │     - Grounding Context Injection                │
-  │                                                  │
-  │  4. LLM Response Generator                       │
-  │     - Structured Explanations (up to 4096 tokens)│
-  └──────────────┬────────────────────────┬──────────┘
-                 │                        │
-                 ▼ Bolt/TLS               ▼ HTTPS
-      ┌────────────────────┐    ┌────────────────────┐
-      │  Neo4j AuraDB      │    │  Google Gemini /   │
-      │  Knowledge Graph   │    │  Groq LLM Engine   │
-      └────────────────────┘    └────────────────────┘
+                           Student
+                              │
+                              ▼
+                   Next.js 14 Frontend
+                (Vercel Edge CDN / React Flow)
+                              │
+                              ▼ HTTPS / REST
+                   FastAPI Backend
+                    (Render Cloud)
+                              │
+             ┌────────────────┴────────────────┐
+             │                                 │
+             ▼                                 ▼
+      Question Processing             Knowledge Graph
+     & Entity Extraction                 Retrieval
+             │                                 │
+             │                                 ▼
+             │                           Neo4j AuraDB
+             │                        (Encrypted Bolt)
+             │                                 │
+             └────────────────┬────────────────┘
+                              │
+                              ▼
+                      Retrieved Context
+                   (Concepts + Relations)
+                              │
+                              ▼
+                          Groq LLM
+                  (llama-3.3-70b-versatile)
+                              │
+                              ▼
+                      Grounded Answer
+                              │
+                              ▼
+                         Student UI
 ```
 
-### End-to-End Workflow
-1. **Query Processing**: The student submits a query (e.g., *"Explain Binary Search for 8 marks"*). The query processor identifies candidate topics and determines mark intent.
-2. **Graph Context Retrieval**: Cypher queries retrieve the concept node, definitions, prerequisite topics, child nodes, and adjacent relationship edges from Neo4j.
-3. **Grounded Prompt Construction**: Structured graph facts are formatted into an explicit system prompt, preventing hallucinated connections.
-4. **Answer Generation**: The LLM constructs a complete, cohesive answer following academic criteria (Definition $\rightarrow$ Algorithm $\rightarrow$ Complexity $\rightarrow$ Example).
-5. **Interactive UI Delivery**: The frontend renders the structured markdown response, generates actionable follow-up questions, and displays the interactive graph subgraph.
+### End-to-End Execution Flow
+1. **Student Question**: Student submits an inquiry (e.g., *"Explain Binary Search for 8 marks"*).
+2. **Entity & Intent Extraction**: Topic extractor resolves candidate curriculum topics and marks/depth requirements.
+3. **Graph Retrieval**: Cypher queries retrieve the central node, definitions, prerequisite dependencies (`PREREQUISITE_FOR`, `DEPENDS_ON`), and adjacent relationships.
+4. **Context Construction**: Extracted graph triples and syllabus constraints are assembled into an augmented prompt.
+5. **LLM Generation**: Groq cloud inference engine generates structured educational prose anchored to the retrieved context.
+6. **Frontend Rendering**: Next.js renders structured Markdown with syntax-highlighted code, LaTeX equations, and interactive graph topology.
 
 ---
 
-## 📊 Performance & Lighthouse Benchmarks
+## 4. Technology Stack
 
-Audited on the live production frontend (`https://edu-graph-ai.vercel.app/`):
-
-| Metric | Score | Industry Standard | Status |
-| :--- | :---: | :---: | :---: |
-| **Accessibility (WCAG AA)** | **100 / 100** | $\ge 90$ | 🟢 Perfect |
-| **Search Engine Optimization (SEO)**| **100 / 100** | $\ge 90$ | 🟢 Perfect |
-| **Best Practices** | **100 / 100** | $\ge 90$ | 🟢 Perfect |
-| **First Contentful Paint (FCP)** | **0.7 s** | $< 1.8\text{ s}$ | 🟢 Instant |
-| **Largest Contentful Paint (LCP)** | **0.7 s** | $< 2.5\text{ s}$ | 🟢 Instant |
-| **Total Blocking Time (TBT)** | **0 ms** | $< 200\text{ ms}$ | 🟢 Zero Lag |
-| **Cumulative Layout Shift (CLS)** | **0.000** | $< 0.1$ | 🟢 Stable |
-
----
-
-## 🛠️ Technology Stack
-
-### Frontend
-* **Framework**: [Next.js 14](https://nextjs.org/) (App Router, React 18, TypeScript)
-* **Styling**: [Tailwind CSS](https://tailwindcss.com/) with full Dark/Light adaptive themes
-* **Graph Visualization**: [React Flow (@xyflow/react)](https://reactflow.dev/) & [Dagre](https://github.com/dagrejs/dagre)
-* **Client-Side Data Sharing**: Browser Streams API (`CompressionStream` / `DecompressionStream` with `deflate-raw`) for zero-database URL sharing
-* **Icons & Rendering**: Lucide React, React Markdown, KaTeX Math rendering
-* **Hosting**: [Vercel](https://vercel.com/) (Edge CDN with global SSL)
-
-### Backend
-* **Runtime**: [Python 3.14](https://www.python.org/)
-* **Framework**: [Flask](https://flask.palletsprojects.com/) / Flask-CORS
-* **Graph Database Driver**: [Neo4j Python Driver](https://neo4j.com/developer/python/) (Bolt+Routing)
-* **LLM Orchestration**: Google GenAI SDK (`google-genai` / Gemini 2.5) & Groq API Fallback
-* **Hosting**: [Render](https://render.com/) (PaaS with automated continuous deployment)
-
-### Database & Storage
-* **Graph Database**: [Neo4j AuraDB Cloud](https://neo4j.com/cloud/aura/)
-* **Session Storage**: LocalStorage with account-scoped and guest-isolated keys
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Frontend Framework** | Next.js 14 (App Router), React 18, TypeScript | Client-side user interface, state management, routing |
+| **Frontend Styling** | Tailwind CSS | Modern responsive design with light/dark adaptive themes |
+| **Graph Visualization**| React Flow (`@xyflow/react`), Dagre | Node-link concept graphs and layout calculation |
+| **Backend Framework** | FastAPI, Python 3.14, Uvicorn | High-performance asynchronous REST API |
+| **Validation & ORM** | Pydantic v2, SQLAlchemy | Strict request validation, settings parsing, SQLite ORM |
+| **Knowledge Graph** | Neo4j AuraDB (Cloud), Neo4j Python Driver | Semantic storage of curriculum entities and relations |
+| **LLM Provider** | Groq API (`llama-3.3-70b-versatile`) | Fast, structured educational response generation |
+| **Local LLM Fallback** | Ollama (`llama3.2`) | Local development without external API costs |
+| **Authentication** | OAuth2 Bearer, JWT (`python-jose`, `passlib`) | Token-based stateless authentication |
+| **Application DB** | SQLite | User credentials and conversation metadata |
+| **Frontend Hosting** | Vercel | Global CDN distribution with edge caching |
+| **Backend Hosting** | Render | Managed container hosting with continuous integration |
 
 ---
 
-## 📁 Repository Structure
+## 5. Knowledge Graph
 
-```text
-Knowledge_Graph_Project/
-├── Backend/
-│   ├── app.py                  # Primary Flask REST API entry point
-│   ├── config.py               # Production configuration & environment loaders
-│   ├── graph_query.py          # Cypher query builder & graph retrieval logic
-│   ├── graph_visualizer.py     # Graph data transformation for React Flow
-│   ├── learning_path.py        # Prerequisite graph traversals for curricula
-│   ├── llm.py                  # LLM integration (Gemini & Groq fallbacks)
-│   ├── load_topics.py          # Topic index loader & synonym mappings
-│   ├── neo4j_connection.py     # Resilient Neo4j connection pool
-│   ├── prompt_builder.py       # Graph-grounded prompt engineering
-│   ├── query_processor.py      # Natural language query parsing & intent classification
-│   ├── requirements.txt        # Backend Python dependencies
-│   ├── stats.py                # Graph analytics & relationship counts
-│   └── topic_extractor.py      # Fuzzy & keyword entity extraction
-│
-├── frontend/
-│   ├── src/
-│   │   ├── app/                # Next.js App Router (layout, page, auth, settings, share/[shareId])
-│   │   │   ├── ...             # Core pages & route handlers
-│   │   │   └── share/[shareId]/# Public read-only shared conversation viewer
-│   │   ├── components/         # UI Components (Sidebar, Navbar, AnswerCard, ShareDialog, etc.)
-│   │   │   └── chat/           # Chat-specific components (ChatInput, ChatBubble, etc.)
-│   │   ├── context/            # React Contexts (Auth, Settings, Toast)
-│   │   ├── lib/                # API client, metrics, storage, share compression, TypeScript types
-│   │   └── styles/             # Global CSS & Tailwind configuration
-│   ├── package.json            # Node.js dependencies & scripts
-│   └── tsconfig.json           # TypeScript compiler configuration
-│
-├── data/                       # Curated datasets for all 6 subjects
-│   ├── ADA/                    # Analysis & Design of Algorithms nodes/edges
-│   ├── CN/                     # Computer Networks nodes/edges
-│   ├── DSA/                    # Data Structures & Algorithms nodes/edges
-│   ├── ML/                     # Machine Learning nodes/edges
-│   ├── OS/                     # Operating Systems nodes/edges
-│   ├── SEPM/                   # Software Engineering nodes/edges
-│   ├── master_nodes.csv        # Consolidated concepts dataset
-│   └── master_edges.csv        # Consolidated relationships dataset
-│
-├── SCRIPTS/                    # Automation & validation scripts
-│   ├── check_missing_nodes.py  # Integrity check for graph edges
-│   └── merge_csv.py            # Subject dataset merger
-│
-├── .gitignore                  # Production exclusion rules
-└── README.md                   # Project documentation
-```
+The EduGraphAI knowledge graph represents academic knowledge as a directed, labeled property graph:
+
+* **Nodes**: Represent distinct curriculum entities (e.g., Subjects, Modules, Concepts, Algorithms, Data Structures).
+* **Edges (Relationships)**: Represent pedagogical dependencies and structural ties:
+  * `PREREQUISITE_FOR`: Strict conceptual dependency order.
+  * `DEPENDS_ON`: Functional requirements between concepts.
+  * `USES`: Algorithmic techniques applied by an entity.
+  * `PART_OF`: Hierarchical module or unit containment.
+  * `TYPE_OF`: Categorical taxonomy relationships.
+  * `HAS_TOPIC`: Subject-to-topic ownership.
+
+### Verified Production Snapshot
+* **Total Nodes**: `474`
+* **Total Relationships**: `972`
+
+*(Note: These figures represent the verified production snapshot of the current curriculum graph and may evolve as additional modules are integrated).*
 
 ---
 
-## 🚀 Local Installation & Setup
+## 6. Supported Academic Subjects
+
+EduGraphAI is currently grounded in six fundamental undergraduate Computer Science & Engineering subjects:
+
+| Code | Subject Name | Key Covered Topics |
+| :--- | :--- | :--- |
+| **DSA** | Data Structures & Algorithms | Arrays, Linked Lists, Binary Trees, AVL Trees, Graphs, Quick Sort, Merge Sort |
+| **ADA** | Analysis & Design of Algorithms | Asymptotic Analysis, Divide & Conquer, Greedy Strategies, Dynamic Programming |
+| **CN** | Computer Networks | OSI Model, TCP/IP Suite, Flow Control, Sliding Window Protocols, Routing, DNS |
+| **ML** | Machine Learning | Supervised Learning, Linear Regression, Decision Trees, Logistic Regression |
+| **OS** | Operating Systems | Process Scheduling, Deadlock, Banker's Algorithm, Paging, Virtual Memory |
+| **SEPM** | Software Engineering & Project Management | SDLC Models, Agile Methodologies, Software Testing, Quality Assurance |
+
+---
+
+## 7. Production Deployment & Live Endpoints
+
+* **Frontend URL**: [https://edu-graph-ai.vercel.app/](https://edu-graph-ai.vercel.app/) (Vercel)
+* **Backend API Base**: [https://edugraphai-backend.onrender.com](https://edugraphai-backend.onrender.com) (Render)
+* **Knowledge Graph**: Neo4j AuraDB Cloud (Encrypted Bolt Protocol)
+* **Primary LLM**: Groq Cloud (`llama-3.3-70b-versatile`)
+
+### Monitoring & Health Check Endpoints
+
+| Endpoint | Method | Description |
+| :--- | :---: | :--- |
+| `/health` | `GET` | High-level system health monitoring (graph database and LLM configuration). |
+| `/graph/health` | `GET` | Operational diagnostics (connection latency, active target, AuraDB pause state; URIs and credentials redacted). |
+| `/stats` | `GET` | Real-time counts of active graph nodes and relationships. |
+| `/ask` | `GET` | Primary question answering query endpoint with optional topic context. |
+| `/query` | `POST` | Structured JSON request endpoint for educational question answering. |
+| `/graph/topic/{topic}` | `GET` | Subgraph retrieval for a specific curriculum concept. |
+| `/graph/neighbors/{topic}` | `GET` | Adjacent outgoing and incoming conceptual connections. |
+
+---
+
+## 8. Security & Reliability Hardening
+
+EduGraphAI incorporates multi-layered security controls implemented and verified across production audits:
+
+* **Production JWT Secret Validation**: Startup executes a strict fail-fast check; missing or default placeholder secrets trigger an immediate `RuntimeError` in production (`DEBUG=False`).
+* **Inactive Account Blocking**: Login authentication and bearer token dependency resolution reject inactive accounts (`is_active == False`) with standard uniform error messages.
+* **Password Policy**: New user registration enforces a minimum password length of 8 characters via schema validation.
+* **Authentication Rate Limiting**: Dedicated in-memory sliding-window limiter on `/auth/login` and `/auth/register` (5 attempts / minute / client IP) with standard `Retry-After` HTTP 429 headers.
+* **Infrastructure Redaction**: Public health probes and connection logs redact internal hostnames, connection strings, database identifiers, and credentials.
+* **Parameterized Cypher Queries**: Graph operations use parameterized queries to prevent Cypher injection vulnerabilities.
+* **CORS Origin Whitelisting**: Strict origin controls restrict cross-origin browser requests to the official Vercel domain and local developer instances.
+
+---
+
+## 9. Local Development Setup
+
+Follow these steps to run EduGraphAI locally for development or evaluation:
 
 ### 1. Prerequisites
-* Python 3.10+ (Python 3.11/3.12/3.14 supported)
-* Node.js 18+ & npm
-* A free [Neo4j AuraDB](https://console.neo4j.io/) instance or local Neo4j Desktop
-* A free [Google Gemini API Key](https://aistudio.google.com/) or [Groq API Key](https://console.groq.com/)
+* **Python**: 3.10 to 3.14
+* **Node.js**: 18+ and `npm`
+* **Neo4j**: Local instance (Neo4j Desktop / Community) or free [Neo4j AuraDB](https://console.neo4j.io/)
+* **LLM**: Free [Groq API Key](https://console.groq.com/) or local [Ollama](https://ollama.ai/) instance
 
-### 2. Clone Repository
+### 2. Clone the Repository
 ```bash
 git clone https://github.com/Varshini22-bot/EduGraphAI.git
 cd EduGraphAI
@@ -216,7 +233,7 @@ cd EduGraphAI
 ```bash
 cd Backend
 
-# Create and activate virtual environment
+# Create and activate Python virtual environment
 python -m venv venv
 # On Windows:
 venv\Scripts\activate
@@ -226,154 +243,162 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Configure environment variables
+# Create environment configuration
 cp .env.example .env
 ```
 
-Edit `Backend/.env`:
+Configure `Backend/.env` with your development values:
 ```ini
-NEO4J_URI=neo4j+s://<your-auradb-instance-id>.databases.neo4j.io
+DEBUG=true
+JWT_SECRET_KEY=dev-secret-key-for-local-runs-only-replace-in-production-1234
+
+# Neo4j Settings (Local or AuraDB)
+NEO4J_URI=bolt://localhost:7687
 NEO4J_USERNAME=neo4j
-NEO4J_PASSWORD=<your-auradb-password>
-GEMINI_API_KEY=<your-gemini-api-key>
-# Optional fallback:
-GROQ_API_KEY=<your-groq-api-key>
-PORT=5000
+NEO4J_PASSWORD=your_password_here
+NEO4J_DATABASE=neo4j
+NEO4J_MODE=auto
+
+# LLM Configuration (Groq or Ollama)
+LLM_PROVIDER=groq
+LLM_API_KEY=your_groq_api_key_here
+LLM_MODEL=llama-3.3-70b-versatile
+
+# Alternatively, for local offline Ollama:
+# LLM_PROVIDER=ollama
+# OLLAMA_MODEL=llama3.2
+# OLLAMA_BASE_URL=http://localhost:11434
 ```
 
-Start the backend:
+Start the backend API server:
 ```bash
-python app.py
+uvicorn app:app --reload --host 0.0.0.0 --port 8000
 ```
-*API runs at `http://localhost:5000`.*
+*Backend API available at: `http://localhost:8000` (Docs at `http://localhost:8000/docs`).*
 
 ### 4. Frontend Setup
 ```bash
 cd ../frontend
 
-# Install dependencies
+# Install Node dependencies
 npm install
 
-# Configure environment
+# Create environment configuration
 cp .env.example .env.local
 ```
 
-Edit `frontend/.env.local`:
+Configure `frontend/.env.local`:
 ```ini
-NEXT_PUBLIC_API_URL=http://localhost:5000
+NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 Start the Next.js development server:
 ```bash
 npm run dev
 ```
-*Web application opens at `http://localhost:3000`.*
+*Frontend application available at: `http://localhost:3000`.*
 
 ---
 
-## 📡 API Reference
-
-### 1. Ask Question
-```http
-POST /ask
-Content-Type: application/json
-
-{
-  "query": "Explain Binary Search for 8 marks",
-  "history": []
-}
-```
-**Response**:
-```json
-{
-  "topic": "Binary Search",
-  "subject": "Data Structures & Algorithms",
-  "answer": "### 1. Definition\nBinary Search is a divide-and-conquer...",
-  "prerequisites": ["Arrays", "Linear Search"],
-  "related_topics": ["Divide and Conquer", "Time Complexity"],
-  "learning_path": [
-    {"step": 1, "topic": "Arrays"},
-    {"step": 2, "topic": "Linear Search"},
-    {"step": 3, "topic": "Binary Search"}
-  ]
-}
-```
-
-### 2. Retrieve Graph Subgraph
-```http
-POST /graph
-Content-Type: application/json
-
-{
-  "topic": "Binary Search"
-}
-```
-**Response**:
-```json
-{
-  "nodes": [
-    {"id": "Binary Search", "label": "Binary Search", "type": "Concept"},
-    {"id": "Arrays", "label": "Arrays", "type": "Prerequisite"}
-  ],
-  "edges": [
-    {"source": "Arrays", "target": "Binary Search", "relationship": "PREREQUISITE_FOR"}
-  ]
-}
-```
-
-### 3. Service Health
-```http
-GET /health
-```
-**Response**:
-```json
-{
-  "status": "healthy",
-  "database": "connected",
-  "version": "1.0.0"
-}
-```
-
----
-
-## 🔗 Client-Side Conversation Sharing Architecture
-
-EduGraphAI incorporates a decentralized, client-side conversation sharing mechanism that avoids server database dependencies and prevents infrastructure overhead:
+## 10. Repository Structure
 
 ```text
-┌────────────────────────┐      Raw Deflate       ┌────────────────────────┐
-│  User Active Chat      │  ───────────────────►  │  Compressed URL Token  │
-│  (Questions & Answers) │       + Base64url      │  (/share/df.<token>)   │
-└────────────────────────┘                        └───────────┬────────────┘
-                                                              │
-                                                        Shared Link
-                                                              │
-┌────────────────────────┐      Raw Inflate                   ▼
-│  Read-Only Viewer      │  ◄───────────────────  ┌────────────────────────┐
-│  - Formatted Markdown  │       via Browser      │  Public Recipient      │
-│  - Code Block Copying  │       Streams API      │  (No account required) │
-└────────────────────────┘                        └────────────────────────┘
+EduGraphAI/
+├── Backend/
+│   ├── api/                    # FastAPI route definitions (routes, auth_routes, graph_routes)
+│   ├── database/               # SQLAlchemy models, schemas, crud, and auth utilities
+│   ├── evaluation/             # Research benchmark scripts, datasets, and audit reports
+│   │   ├── baselines/          # Baseline runner implementations
+│   │   ├── results/            # Statistical analysis and camera-ready figures
+│   │   └── eval_dataset.json   # 120-question multi-subject benchmark dataset
+│   ├── graph/                  # Neo4j connection pool, graph service, and recommendation
+│   ├── llm/                    # RAG service, topic extractor, and LLM prompt builder
+│   ├── tests/                  # Automated unit and integration test suites
+│   ├── utils/                  # In-memory rate limiter and statistics helpers
+│   ├── app.py                  # FastAPI application entrypoint
+│   ├── config.py               # Environment configuration and security validation
+│   └── requirements.txt        # Python backend dependencies
+│
+├── frontend/
+│   ├── src/
+│   │   ├── app/                # Next.js 14 App Router (chat, login, signup, share, settings)
+│   │   ├── components/         # Modular React components (chat, graph, sidebar, navbar)
+│   │   ├── context/            # React context providers (Auth, Settings, Toast)
+│   │   └── lib/                # API clients, compression utilities, and TypeScript types
+│   ├── package.json            # Frontend npm dependencies and build scripts
+│   └── tsconfig.json           # TypeScript configuration
+│
+├── data/                       # Curriculum datasets across 6 subjects
+│   ├── ADA/                    # Analysis & Design of Algorithms nodes/edges
+│   ├── CN/                     # Computer Networks nodes/edges
+│   ├── DSA/                    # Data Structures & Algorithms nodes/edges
+│   ├── ML/                     # Machine Learning nodes/edges
+│   ├── OS/                     # Operating Systems nodes/edges
+│   └── SEPM/                   # Software Engineering nodes/edges
+│
+├── EDUGRAPHAI_RELEASE_SNAPSHOT.md # Production release snapshot
+├── LICENSE                     # MIT License
+└── README.md                   # Project documentation
 ```
-
-* **Zero-Database Storage**: Entire study conversations are encoded directly into URL-safe hash tokens, requiring zero backend database tables, migration risk, or hosting expenses.
-* **Privacy by Design**: Chat contents are never retained on server disks or external analytics databases. The data remains strictly between the sharer and recipient.
-* **High-Density Deflate Compression**: Utilizes browser-native `CompressionStream('deflate-raw')` and compact schema aliases (`v`, `t`, `top`, `m`, `r`, `c`), reducing payload size by ~70–80% to fit within standard browser URL limits (< 2,800 characters).
-* **Dedicated Read-Only Reader**: Public links at `/share/[shareId]` unpack the snapshot in real-time, displaying academic topics, structured markdown formatting, formulas, and code blocks with one-click clipboard copying.
 
 ---
 
-## 👩‍💻 Author & Academic Affiliation
+## 11. Research & Evaluation Summary
 
-**Varshini V B**  
-*B.E. — Artificial Intelligence and Data Science*  
-*Department of Artificial Intelligence and Data Science*  
+EduGraphAI was systematically evaluated in an academic study comparing Knowledge-Graph-Grounded RAG (KG-RAG) against an unaugmented Large Language Model baseline across a 120-question computer science curriculum dataset, supplemented by an $N=30$ double-blind human audit.
 
-* **GitHub**: [@Varshini22-bot](https://github.com/Varshini22-bot)  
-* **Repository**: [Varshini22-bot/EduGraphAI](https://github.com/Varshini22-bot/EduGraphAI)  
-* **Live Application**: [https://edu-graph-ai.vercel.app/](https://edu-graph-ai.vercel.app/)
+### Validated Findings
+* **Educational Relevance**: Both KG-RAG and the unaugmented baseline achieved comparable educational relevance ratings on curriculum topics (paired mean difference $-0.200$, Wilcoxon $W = 9.0$, Holm-adjusted $p = 0.250$), indicating both generated pedagogically applicable content.
+* **Factual Grounding**: Both systems sustained high factual grounding across core syllabus topics. Although unadjusted metrics suggested a nominal difference, the difference was not statistically significant after Holm-Bonferroni correction ($p = 0.079 > 0.05$).
+* **Curriculum Gold-Fact Coverage**: On supported syllabus topics ($n=24$), both systems exhibited near-ceiling fact coverage: KG-RAG achieved 93.3% aggregate coverage (56/60 facts), compared to 100.0% for the baseline (paired difference not statistically significant, $p = 0.250$).
+* **Out-of-Scope Handling**: On out-of-syllabus queries ($n=6$), KG-RAG exhibited descriptive guardrail behavior, refusing unsupported topics with higher mean restraint (2.167 vs. 1.333), directing students to supported subjects.
+* **Generator Style & Fluency**: When evaluated with small local models (`llama3.2`), unconstrained generation produced longer, more elaborative prose that scored higher in subjective human fluency ratings, whereas graph-augmented synthesis produced structured, concise answers.
+* **Retrieval Latency Trade-Off**: Graph-augmented generation required additional computational overhead (mean latency of 47.29 s vs. 20.19 s for the baseline on local test runtimes), representing the processing cost of entity extraction, Cypher traversals, and context injection.
+
+---
+
+## 12. Known Limitations & Future Improvements
+
+To ensure transparent academic reporting, current architectural limitations are documented below:
+
+* **Render Free-Tier Cold Starts**: The backend service on Render's free tier spins down after 15 minutes of inactivity. Initial wake-up requests incur an approximate 50-second latency.
+* **AuraDB Free-Tier Pause Behavior**: Neo4j AuraDB Free instances auto-pause after 3 consecutive days of zero database activity. Instances can be resumed in approximately 60 seconds.
+* **Guest History Persistence**: Unauthenticated guest conversation history is managed in browser memory and does not persist across full page reloads.
+* **Client-Side Token Storage**: Authenticated JWT tokens are stored in browser `localStorage`. For enterprise production environments, migration to `HttpOnly` `SameSite=Lax` cookies is recommended.
+* **In-Memory Rate Limiting**: The sliding-window rate limiter is instance-local and resets if the backend dyno restarts.
+* **Manual Password Recovery**: Automated email dispatch for self-service password reset is disabled in the demo deployment; administrator assistance is required for account resets.
+* **Database Architecture**: User management relies on SQLite, suitable for the current single-instance deployment but requiring migration to PostgreSQL for horizontally scaled clusters.
+
+---
+
+## 13. Research Reproducibility
+
+Researchers wishing to inspect or reproduce evaluation benchmarks can locate the primary artifacts in the repository:
+
+* **Benchmark Dataset**: `Backend/evaluation/eval_dataset.json` (120 curated questions across 6 subjects).
+* **Automated Runner**: `Backend/evaluation/run_benchmark.py` and `evaluate_quality.py`.
+* **Statistical Validation Scripts**: `Backend/evaluation/validate_part_9k_statistics.py` and `analyze_results.py`.
+* **Human Audit Data**: `Backend/evaluation/human_audit_sample.csv` and `Backend/evaluation/results/HUMAN_AUDIT_FINAL_REPORT.md`.
+* **Camera-Ready Figures & Data**: `Backend/evaluation/results/figures/` and `FIGURE_SOURCE_DATA.md`.
+
+---
+
+## 14. Project Status
+
+```text
+Current Status: Deployed and operational
+
+Frontend: Vercel (https://edu-graph-ai.vercel.app/)
+Backend: Render (https://edugraphai-backend.onrender.com)
+Knowledge Graph: Neo4j AuraDB Cloud (Connected)
+LLM Provider: Groq Cloud (llama-3.3-70b-versatile)
+Supported Subjects: DSA, ADA, CN, ML, OS, SEPM
+Verified Graph Snapshot: 474 nodes, 972 relationships
+Current Git Baseline: main (synchronized)
+```
 
 ---
 
 ## 📜 License
 
-This project is licensed under the [MIT License](LICENSE) — free to use and adapt for academic and educational research.
+This project is licensed under the [MIT License](LICENSE) — free for academic, non-commercial, and educational research use.
