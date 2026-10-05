@@ -216,13 +216,13 @@ def test_out_of_graph_returns_none() -> None:
 # ==============================================================
 
 MARKS_QUESTIONS = [
-    ("Explain Binary Search for 8 marks", 8, "Binary Search", 950),
-    ("Explain Binary Search for 2 marks", 2, "Binary Search", 180),
-    ("Explain Quick Sort for 5 marks", 5, "Quick Sort", 400),
-    ("Explain Merge Sort for 10 marks", 10, "Merge Sort", 1300),
-    ("Explain Deadlock for 15 marks", 15, "Deadlock", 1700),
+    ("Explain Binary Search for 8 marks", 8, "Binary Search", 2200),
+    ("Explain Binary Search for 2 marks", 2, "Binary Search", 450),
+    ("Explain Quick Sort for 5 marks", 5, "Quick Sort", 1000),
+    ("Explain Merge Sort for 10 marks", 10, "Merge Sort", 3000),
+    ("Explain Deadlock for 15 marks", 15, "Deadlock", 4000),
     # No marks mentioned at all -> the 7-8 mark default.
-    ("Explain Binary Search.", 8, "Binary Search", 950),
+    ("Explain Binary Search.", 8, "Binary Search", 2200),
 ]
 
 
